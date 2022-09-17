@@ -33,10 +33,6 @@ a:hover {
   color: $main-color;
 }
 
-img {
-  max-width: 100%;
-}
-
 @each $color, $val in $colors {
   .color-#{$color} {
     color: $val;
@@ -63,18 +59,14 @@ img {
   }
 }
 
-.container {
-  width: 100%;
-  max-width: 1440px;
+// .container {
 
-  @include tablet {
-      padding: 0 20px;
-  }
+//   @include tablet {     
+//   }
 
-  @include mobile {
-      padding: 0 10px;
-  }
-}
+//   @include mobile {
+//   }
+// }
 
 .main {
   margin-top: $header-height;

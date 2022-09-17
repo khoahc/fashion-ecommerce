@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import categoryData from "../assets/fake-data/category";
-import logo from "../assets/images/logo_dark.png";
+import Logo from "../assets/images/logo_dark.png";
 
 const Navbar = () => {
   const { pathname } = useLocation();
@@ -12,7 +12,7 @@ const Navbar = () => {
     <div className="navbar">
       <div className="container">
         <Link to="/">
-          <img className="navbar__logo" src={logo} alt="logo"></img>
+          <img className="navbar__logo" src={Logo} alt="logo"></img>
         </Link>
 
         <div className="navbar__menu">

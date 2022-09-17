@@ -10,12 +10,7 @@ const Layout = () => {
     <BrowserRouter>
       <div>
         <Navbar />
-        <Header />
-        <div className="container">
-          <div className="main">
-            <GlobalRoutes />
-          </div>
-        </div>
+        <GlobalRoutes />
         <Footer />
       </div>
     </BrowserRouter>
