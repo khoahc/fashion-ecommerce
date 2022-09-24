@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Logo from "../assets/images/logo_dark.png";
+import Logo from "../../../assets/images/logo_dark.png";
 
 const Footer = () => {
   return (
@@ -72,12 +72,12 @@ const Footer = () => {
               </div>
               <div className="footer-content__item">
                 <a href="">
-                  <i class="bx bxl-instagram-alt bx-sm white"></i>
+                  <i className="bx bxl-instagram-alt bx-sm white"></i>
                 </a>
               </div>
               <div className="footer-content__item">
                 <a href="">
-                  <i class="bx bxl-youtube bx-sm white"></i>
+                  <i className="bx bxl-youtube bx-sm white"></i>
                 </a>
               </div>
             </div>

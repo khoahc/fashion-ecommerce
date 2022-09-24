@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import categoryData from "../assets/fake-data/category";
-import Logo from "../assets/images/logo_dark.png";
+import categoryData from "../../../assets/fake-data/category";
+import Logo from "../../../assets/images/logo_dark.png";
 
 const Navbar = () => {
   const { pathname } = useLocation();

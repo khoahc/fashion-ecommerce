@@ -1,9 +1,9 @@
 import React from "react";
 import { Link, Outlet } from "react-router-dom";
-import Logo from "../assets/images/LIZI.png";
-import SloganText from "../assets/images/fashionstyle-text.png";
-import Year from "../assets/images/2022.png";
-import Banner from "../assets/images/banner1.png";
+import Logo from "../../../assets/images/LIZI.png"
+import SloganText from "../../../assets/images/fashionstyle-text.png";
+import Year from "../../../assets/images/2022.png";
+import Banner from "../../../assets/images/banner1.png";
 
 const Header = () => {
   return (
