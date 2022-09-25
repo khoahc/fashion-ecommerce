@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 
 * {
   padding: 0;
@@ -17,7 +17,7 @@ html {
 }
 
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 ul {
@@ -45,27 +45,29 @@ a:hover {
 
 @each $val in $numbers {
   .grid-col-md-#{$val} {
-      @include tablet {
-          grid-template-columns: repeat($val, 1fr);
-      }
+    @include tablet {
+      grid-template-columns: repeat($val, 1fr);
+    }
   }
 }
 
 @each $val in $numbers {
   .grid-col-sm-#{$val} {
-      @include mobile {
-          grid-template-columns: repeat($val, 1fr);
-      }
+    @include mobile {
+      grid-template-columns: repeat($val, 1fr);
+    }
   }
 }
 
 // .container {
+//   width: 90%;
+//   display: flex;
+ 
+//   //   @include tablet {
+//   //   }
 
-//   @include tablet {     
-//   }
-
-//   @include mobile {
-//   }
+//   //   @include mobile {
+//   //   }
 // }
 
 .main {
@@ -74,11 +76,11 @@ a:hover {
   min-height: 100vh;
 
   @include tablet {
-      margin-top: calc(#{$header-tablet-height} + 20px);
+    margin-top: calc(#{$header-tablet-height} + 20px);
   }
 
   @include mobile {
-      margin-top: calc(#{$header-mobile-height} + 10px);
+    margin-top: calc(#{$header-mobile-height} + 10px);
   }
 }
 
@@ -87,5 +89,5 @@ a:hover {
 }
 
 .white {
-  color: #fff;  
+  color: #fff;
 }
