@@ -29,10 +29,6 @@ a {
   color: unset;
 }
 
-a:hover {
-  color: $main-color;
-}
-
 @each $color, $val in $colors {
   .color-#{$color} {
     color: $val;

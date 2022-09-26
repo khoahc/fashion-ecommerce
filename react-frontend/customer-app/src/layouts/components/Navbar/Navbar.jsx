@@ -23,7 +23,7 @@ const Navbar = () => {
                 index === activeNav ? "active" : ""
               }`}
             >
-              <Link to={"/" + item.categorySlug}>
+              <Link to={"/c/" + item.categorySlug}>
                 <span>{item.name}</span>
               </Link>
             </div>
@@ -38,13 +38,14 @@ const Navbar = () => {
               placeholder="Tìm kiếm"
               onKeyPress={(e) => {
                 if (e.key === "Enter") {
-                  
                 }
               }}
             />
           </div>
           <div className="navbar__items__item">
-            <i className="bx bx-user bx-sm"></i>
+            <Link to="/login">
+              <i className="bx bx-user bx-sm"></i>
+            </Link>
           </div>
           <div className="navbar__items__item">
             <Link to="/cart">

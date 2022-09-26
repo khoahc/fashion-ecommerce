@@ -1,4 +1,6 @@
 import { useRef } from "react";
+import { Link } from "react-router-dom";
+
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, A11y, Autoplay } from "swiper";
@@ -15,7 +17,9 @@ export default (props) => {
   const listData = props.data;
   const listItems = listData.map((item, index) => (
     <SwiperSlide key={index}>
-      <Product product={item} />
+      <Link to={"/p/"+ item.slug}>
+        <Product product={item} />
+      </Link>
     </SwiperSlide>
   ));
   return (
