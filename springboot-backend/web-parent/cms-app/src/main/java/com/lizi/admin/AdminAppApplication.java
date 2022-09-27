@@ -1,4 +1,4 @@
-package com.lizi;
+package com.lizi.admin;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
