@@ -1,6 +1,7 @@
 package com.lizi.common.entity;
 
 import java.math.BigDecimal;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,24 +19,21 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "tbl_order_details")
-public class OrderDetail {
+@Table(name = "tbl_wards")
+public class Ward {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @ManyToOne
-  @JoinColumn(name = "product_option_id")
-  private ProductOption productOption;
+  @Column(length = 20, nullable = false, unique = true)
+  private String name;
 
-  private BigDecimal price;
+  private BigDecimal shipCost;
 
-  private Integer quantity;
-
-  private BigDecimal shippingCost;
+  private int shipTime;
 
   @ManyToOne
-  @JoinColumn(name = "order_id")
-  private Order order;
+  @JoinColumn(name = "district_id")
+  private District district;
 }
