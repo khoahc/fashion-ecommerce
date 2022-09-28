@@ -1,4 +1,4 @@
-package com.lizi;
+package com.lizi.admin;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
