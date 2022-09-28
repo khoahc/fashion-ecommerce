@@ -4,7 +4,6 @@ import Carousel from "../Carousel";
 import styles from "./TopProduct.module.scss";
 
 function TopProduct(props) {
-  console.log(props.listProduct);
   return (
     <div className={clsx(styles.topProduct)}>
       <div className={clsx(styles.container)}>

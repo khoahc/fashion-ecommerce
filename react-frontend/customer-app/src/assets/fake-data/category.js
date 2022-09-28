@@ -1,15 +1,20 @@
 const category = [
   {
     name: "Nam",
-    categorySlug: "nam",
+    slug: "nam",
+    image: "http://localhost/static/media/banner1.1ce4613e24fdc45e3182.png"
   },
   {
     name: "Nữ",
-    categorySlug: "nu",
+    slug: "nu",
+    image: "http://localhost/static/media/banner1.1ce4613e24fdc45e3182.png"
+
   },
   {
     name: "Trẻ em",
-    categorySlug: "tre-em",
+    slug: "tre-em",
+    image: "http://localhost/static/media/banner1.1ce4613e24fdc45e3182.png"
+
   },
 ];
 

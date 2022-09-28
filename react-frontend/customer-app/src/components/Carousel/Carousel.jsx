@@ -17,7 +17,7 @@ export default (props) => {
   const listData = props.data;
   const listItems = listData.map((item, index) => (
     <SwiperSlide key={index}>
-      <Link to={"/p/"+ item.slug}>
+      <Link to={"/p/" + item.slug}>
         <Product product={item} />
       </Link>
     </SwiperSlide>
@@ -30,8 +30,6 @@ export default (props) => {
       autoplay={{ delay: 2000 }}
       navigation
       pagination={{ clickable: true }}
-      onSwiper={(swiper) => console.log(swiper)}
-      onSlideChange={() => console.log("slide change")}
     >
       {listItems}
     </Swiper>

@@ -6,7 +6,7 @@ import Logo from "../../../assets/images/logo_dark.png";
 const Navbar = () => {
   const { pathname } = useLocation();
   const activeNav = categoryData.findIndex(
-    (e) => "/" + e.categorySlug === pathname
+    (e) => "/" + e.slug === pathname
   );
   return (
     <div className="navbar">
@@ -23,7 +23,7 @@ const Navbar = () => {
                 index === activeNav ? "active" : ""
               }`}
             >
-              <Link to={"/c/" + item.categorySlug}>
+              <Link to={"/c/" + item.slug}>
                 <span>{item.name}</span>
               </Link>
             </div>
