@@ -5,7 +5,7 @@ import config from '../config';
 
 // Pages
 import Home from '../pages/Home';
-import Catelog from '../pages/Catelog';
+import Catalog from '../pages/Catalog';
 // import Profile from '../pages/Profile';
 import Product from '../pages/Product';
 import Search from '../pages/Search';
@@ -15,7 +15,7 @@ import Cart from '../pages/Cart';
 const publicRoutes = [
     { path: config.routes.home, element: Home },
     { path: config.routes.cart, element: Cart },
-    { path: config.routes.category, element: Catelog },
+    { path: config.routes.category, element: Catalog },
     //{ path: config.routes.product, element: Product, layout: HeaderOnly },
     { path: config.routes.product, element: Product},
     { path: config.routes.search, element: Search, layout: null },
