@@ -32,7 +32,7 @@ const Footer = () => {
 
           <div className="footer-content__wrap">
             <div className="footer-content__title">
-              <h2>Hỗ trợ khách hàng</h2>
+              <h3>Hỗ trợ khách hàng</h3>
             </div>
             <div className="footer-content__item">
               <p>Phí vận chuyển</p>
@@ -50,7 +50,7 @@ const Footer = () => {
 
           <div className="footer-content__wrap">
             <div className="footer-content__title">
-              <h2>Dịch vụ khách hàng</h2>
+              <h3>Dịch vụ khách hàng</h3>
             </div>
             <div className="footer-content__item">
               <p>Liên hệ với chúng tôi</p>
@@ -62,7 +62,7 @@ const Footer = () => {
 
           <div className="footer-content__wrap">
             <div className="footer-content__title">
-              <h2>Kết nối với chúng tôi</h2>
+              <h3>Kết nối với chúng tôi</h3>
             </div>
             <div className="footer-content__social">
               <div className="footer-content__item">
