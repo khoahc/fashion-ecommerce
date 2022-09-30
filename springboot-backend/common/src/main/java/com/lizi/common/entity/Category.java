@@ -3,6 +3,7 @@ package com.lizi.common.entity;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,6 +15,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -41,6 +43,10 @@ public class Category {
   private String name;
 
   private boolean enabled;
+
+  @OneToOne(cascade = CascadeType.ALL)
+  @JoinTable(name = "image_id")
+  private Image image;
 
   @ManyToOne
   @JoinColumn(name = "parent_id")
