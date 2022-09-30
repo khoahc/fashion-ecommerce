@@ -1,6 +1,7 @@
 package com.lizi.common.entity;
 
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -30,8 +32,9 @@ public class ProductImage {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(length = 128, nullable = false)
-  private String name;
+  @OneToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "image_id")
+  private Image image;
 
   @ManyToOne
   @JoinColumn(name = "product_id")
