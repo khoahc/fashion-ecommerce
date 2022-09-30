@@ -18,4 +18,7 @@ const category = [
   },
 ];
 
+export const getCategoryBySlug = (slug) => category.find(e => e.slug === slug)
+
+
 export default category;

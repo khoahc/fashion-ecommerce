@@ -6,8 +6,11 @@ import Logo from "../../../assets/images/logo_dark.png";
 const Navbar = () => {
   const { pathname } = useLocation();
   const activeNav = categoryData.findIndex(
-    (e) => "/" + e.slug === pathname
+    (e) => "/c/" + e.slug === pathname
   );
+
+  console.log(pathname);
+
   return (
     <div className="navbar">
       <div className="container">
