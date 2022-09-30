@@ -45,7 +45,7 @@ public class Category {
   private boolean enabled;
 
   @OneToOne(cascade = CascadeType.ALL)
-  @JoinTable(name = "image_id")
+  @JoinColumn(name = "image_id")
   private Image image;
 
   @ManyToOne
