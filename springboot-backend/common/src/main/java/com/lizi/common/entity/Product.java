@@ -52,7 +52,7 @@ public class Product {
   private BigDecimal price;
 
   @OneToOne(cascade = CascadeType.ALL)
-  @JoinTable(name = "main_image_id")
+  @JoinColumn(name = "main_image_id")
   private Image mainImage;
 
   @ManyToOne
