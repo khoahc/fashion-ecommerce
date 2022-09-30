@@ -21,6 +21,7 @@ public interface UserMapper {
   User dtoToUser(UserReqDto dto);
 
   @Mapping(source = "enabled", target = "enabled")
+  @Mapping(source = "photo.url", target = "photo")
   UserResDto userToDto(User user);
 
   @Named("idsSetToRolesSet")
