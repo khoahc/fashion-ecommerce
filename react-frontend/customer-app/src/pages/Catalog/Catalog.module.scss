@@ -1,0 +1,41 @@
+.container {
+  img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .wrap {
+    display: flex;
+    flex-direction: column;
+    max-width: 90%;
+    margin: auto;
+
+    .content {
+      display: flex;
+      margin-top: 30px;
+
+      div.left:nth-of-type(1) {
+        flex-grow: 1;
+
+        .title {
+          display: flex;
+          flex-direction: row;
+          margin-top: 20px;
+          justify-content: space-between;
+          align-self: center;
+        }
+      }
+
+      div.right:nth-of-type(2) {
+        flex-grow: 8;
+        margin-left: 30px;
+
+        .sort {
+          width: 200px;
+          margin-left: auto;
+          margin-right: 0;
+        }
+      }
+    }
+  }
+}
