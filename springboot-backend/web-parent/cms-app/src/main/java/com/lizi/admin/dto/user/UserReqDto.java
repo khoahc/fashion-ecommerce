@@ -18,6 +18,7 @@ public class UserReqDto {
   private String firstName;
   private String lastName;
   private boolean enabled;
-  private Set<Long> role_ids;
+  private Long photoId;
+  private Set<Long> roleIds;
 
 }

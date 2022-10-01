@@ -48,7 +48,7 @@ public class User {
   @Column(length = 40, nullable = false)
   private String lastName;
 
-  @OneToOne(cascade = CascadeType.ALL)
+  @OneToOne
   @JoinColumn(name = "photo_id")
   private Image photo;
 

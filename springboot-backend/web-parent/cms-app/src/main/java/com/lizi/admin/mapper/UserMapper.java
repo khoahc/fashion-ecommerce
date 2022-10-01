@@ -2,6 +2,7 @@ package com.lizi.admin.mapper;
 
 import com.lizi.admin.dto.user.UserReqDto;
 import com.lizi.admin.dto.user.UserResDto;
+import com.lizi.common.entity.Image;
 import com.lizi.common.entity.Role;
 import com.lizi.common.entity.User;
 import java.util.Set;
@@ -17,12 +18,18 @@ public interface UserMapper {
   UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
   @Mapping(source = "enabled", target = "enabled")
-  @Mapping(source = "role_ids", target = "roles", qualifiedByName = "idsSetToRolesSet")
+  @Mapping(source = "roleIds", target = "roles", qualifiedByName = "idsSetToRolesSet")
+  @Mapping(source = "photoId", target = "photo", qualifiedByName = "idPhotoToImage")
   User dtoToUser(UserReqDto dto);
 
   @Mapping(source = "enabled", target = "enabled")
   @Mapping(source = "photo.url", target = "photo")
   UserResDto userToDto(User user);
+
+  @Named("idPhotoToImage")
+   public static Image idPhotoToImage(Long id) {
+     return Image.builder().id(id).build();
+   }
 
   @Named("idsSetToRolesSet")
   public static Set<Role> idsSetToRolesSet(Set<Long> ids) {
