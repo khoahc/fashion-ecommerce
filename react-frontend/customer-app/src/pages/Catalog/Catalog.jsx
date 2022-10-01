@@ -26,6 +26,8 @@ const Catalog = () => {
   ];
 
   const [selectedOption, setSelectedOption] = useState(null);
+  
+  console.log(selectedOption);
 // -----------------------------------------------------
   const initFilter = {
     category: [],
@@ -67,6 +69,7 @@ const Catalog = () => {
               <div className=""></div>
             </div>
 
+            {/* filter */}
             <div className={clsx(styles.filter)}>
               <div className={clsx(styles.colorList)}>
                 <div className={clsx(styles.title)}>
@@ -94,6 +97,7 @@ const Catalog = () => {
             </div>
           </div>
 
+          {/* list product */}
           <div className={clsx(styles.right)}>
             <div className={clsx(styles.sort)}>
               <Select
@@ -114,7 +118,7 @@ const Catalog = () => {
               />
             </div>
             <div className={clsx(styles.listProduct)}>
-              <InfinityList data={products} />
+              <InfinityList data={productList} />
             </div>
           </div>
         </div>
