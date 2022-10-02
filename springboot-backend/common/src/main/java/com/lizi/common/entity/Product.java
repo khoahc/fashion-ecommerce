@@ -64,9 +64,6 @@ public class Product {
   private Category category;
 
   @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-  private Set<ProductImage> images = new HashSet<>();
-
-  @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
   private Set<ProductOption> options = new HashSet<>();
 
   @ManyToMany(fetch = FetchType.LAZY)
