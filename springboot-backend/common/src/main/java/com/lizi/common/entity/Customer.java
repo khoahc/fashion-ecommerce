@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,6 +23,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 @Table(name = "tbl_customers")
 public class Customer {
@@ -48,7 +50,7 @@ public class Customer {
   private boolean enabled;
 
   @Column(length = 128, nullable = false)
-  private String address;
+  private String mainAddress;
 
   @Enumerated(EnumType.STRING)
   @Column(length = 10)

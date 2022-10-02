@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,6 +18,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 @Table(name = "tbl_order_details")
 public class OrderDetail {
@@ -33,7 +35,7 @@ public class OrderDetail {
 
   private Integer quantity;
 
-  private BigDecimal shippingCost;
+  private BigDecimal shipCost;
 
   @ManyToOne
   @JoinColumn(name = "order_id")

@@ -21,6 +21,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -31,6 +32,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 @Table(name = "tbl_products")
 public class Product {
@@ -51,7 +53,9 @@ public class Product {
 
   private BigDecimal price;
 
-  @OneToOne(cascade = CascadeType.ALL)
+  private long numberOfOrder;
+
+  @OneToOne
   @JoinColumn(name = "main_image_id")
   private Image mainImage;
 
