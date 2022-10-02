@@ -5,7 +5,7 @@ import Grid from "../Grid";
 import ProductCard from "../ProductCard";
 
 const InfinityList = (props) => {
-  const perLoad = 6; // items each load
+  const perLoad = 8; // items each load
 
   const listRef = useRef(null);
 
@@ -24,7 +24,7 @@ const InfinityList = (props) => {
 
   //scroll
   useEffect(() => {
-    window.addEventListener("scroll", () => {
+    const loadData = () => {
       if (listRef && listRef.current) {
         if (
           window.scrollY + window.innerHeight >=
@@ -34,7 +34,12 @@ const InfinityList = (props) => {
           setLoad(true);
         }
       }
-    });
+    };
+    window.addEventListener("scroll", loadData);
+
+    return () => {
+      window.removeEventListener("scroll", loadData); // clean load data
+    };
   }, [listRef]);
 
   //load all data
@@ -47,7 +52,7 @@ const InfinityList = (props) => {
         const start = perLoad * index;
         const end = start + perLoad;
 
-        setData(data.concat(props.data.slice(start, end)));      
+        setData(data.concat(props.data.slice(start, end)));
         setIndex(index + 1);
       }
     };
@@ -57,13 +62,14 @@ const InfinityList = (props) => {
 
   return (
     <div ref={listRef}>
-      <Grid col={3} mdCol={2} smCol={1} gap={20}>
+      <Grid col={4} mdCol={2} smCol={1} gap={20}>
         {data.map((item, index) => (
           <ProductCard
             key={index}
             img01={item.image01}
             img02={item.image02}
             name={item.title}
+            countColor={item.colors.length}
             price={Number(item.price)}
             slug={item.slug}
           />
@@ -78,7 +84,7 @@ InfinityList.propTypes = {
 };
 
 InfinityList.defaultProps = {
-    data: [],
-}
+  data: [],
+};
 
 export default InfinityList;

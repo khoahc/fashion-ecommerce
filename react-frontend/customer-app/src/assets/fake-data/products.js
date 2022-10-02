@@ -39,7 +39,7 @@ const products = [
     {
         title: "Áo thun Dinosaur 01",
         price: '189000',
-        image01: product_01_image_01,
+        image01: "https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/393af147-efb6-45fd-9579-f4bcf3404adf/sportswear-classic-99-trucker-cap-k3ZFDZ.png",
         image02: product_01_image_02,
         categorySlug: "ao-thun",
         colors: ["white", "red", "orange"],
@@ -50,7 +50,7 @@ const products = [
     {
         title: "Áo thun Dinosaur 02",
         price: '159000',
-        image01: product_02_image_01,
+        image01: "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_500,h_500/global/387404/01/sv01/fnd/PNA/fmt/png/RS-X-Fly-Sneakers",
         image02: product_02_image_02,
         categorySlug: "ao-thun",
         colors: ["white", "red", "blue"],
@@ -61,7 +61,7 @@ const products = [
     {
         title: "Áo thun Dinosaur 03",
         price: '190000',
-        image01: product_03_image_01,
+        image01: "https://cdn2.yame.vn/pimg/ao-thun-co-tron-y-nguyen-ban-18--ver74-0021192/6b694605-f3bc-0c01-da58-001978bdf5f6.jpg?w=540&h=756",
         image02: product_03_image_02,
         categorySlug: "ao-thun",
         colors: ["white", "red", "orange", "yellow"],
@@ -72,9 +72,9 @@ const products = [
     {
         title: "Áo thun Polo 04",
         price: '194000',
-        image01: product_04_image_01,
+        image01: "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_500,h_500/global/658051/47/mod01/fnd/PNA/fmt/png/individualLiga-Women's-Leggings",
         image02: product_04_image_02,
-        categorySlug: "ao-thun",
+        categorySlug: "ao-thun",        
         colors: ["white", "orange", "blue"],
         slug: "ao-thun-polo-04",
         size: ["xl"],
@@ -83,7 +83,7 @@ const products = [
     {
         title: "Áo thun Polo 05",
         price: '194000',
-        image01: product_05_image_01,
+        image01: "https://cdn2.yame.vn/pimg/ao-thun-co-tron-on-gian-y-nguyen-ban-ver90-0021476/64ab863c-069c-5900-e7dc-00197e32326a.jpg?w=540&h=756",
         image02: product_05_image_02,
         categorySlug: "ao-thun",
         colors: ["white", "pink"],
