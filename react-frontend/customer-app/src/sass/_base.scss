@@ -67,16 +67,16 @@ a {
   }
 }
 
-// .container {
-//   width: 90%;
-//   display: flex;
+.container {
+  max-width: 90%;
+  margin: auto;
 
-//   //   @include tablet {
-//   //   }
+  //   @include tablet {
+  //   }
 
-//   //   @include mobile {
-//   //   }
-// }
+  //   @include mobile {
+  //   }
+}
 
 .main {
   margin-top: $header-height;
@@ -100,6 +100,31 @@ a {
   color: #fff;
 }
 // ------------margin----------------
+.m-auto {
+  margin: auto;
+}
+
+.m-autoX {
+  margin: 0 auto;
+}
+
+.m-1 {
+  margin: 10px;
+}
+
+.m-2 {
+  margin: 20px;
+}
+
+.m-3 {
+  margin: 30px;
+}
+
+.mY-10 {
+  margin-top: 100px;
+  margin-bottom: 100px;
+}
+
 .mt-1 {
   margin-top: 10px;
 }
@@ -187,6 +212,11 @@ a {
 .font-weight-3 {
   font-weight: 300;
 }
+// -----------------font-size--------
+.font-size-1 {
+  font-weight: 700;
+}
+
 //-------------width---------
 .w-100 {
   width: 100% !important;
@@ -195,4 +225,13 @@ a {
 //--------text-------
 .uppercase {
   text-transform: uppercase;
+}
+
+.center {
+  width: 50%;
+  padding: 10px;
+}
+
+.text-center {
+  text-align: center;
 }
