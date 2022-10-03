@@ -12,10 +12,14 @@
     display: flex;
     flex-direction: row;
     gap: 10px;
-    
+    margin-bottom: 10px;
     .promotional{
       text-decoration: line-through;
     }
+
   }
 
+  .discount {
+    color: red;
+  }
 }

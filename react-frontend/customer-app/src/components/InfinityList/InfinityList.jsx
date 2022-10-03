@@ -66,12 +66,12 @@ const InfinityList = (props) => {
         {data.map((item, index) => (
           <ProductCard
             key={index}
-            img01={item.image01}
-            img02={item.image02}
-            name={item.title}
-            countColor={item.colors.length}
+            name={item.name}            
+            slug={item.slug}                 
             price={Number(item.price)}
-            slug={item.slug}
+            discountValue={item.discountValue}
+            promotionalPrice={item.promotionalPrice}
+            colors={item.colors}
           />
         ))}
       </Grid>
