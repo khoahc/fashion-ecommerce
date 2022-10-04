@@ -2,6 +2,7 @@ package com.lizi.admin.controller;
 
 import com.lizi.common.entity.ResponseObject;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,7 +34,7 @@ public class ProductController {
     return null;
   }
 
-  @PutMapping(value = "/{id}")
+  @DeleteMapping(value = "/{id}")
   public ResponseEntity<ResponseObject> deleteProduct(@PathVariable(name = "id") Long id) {
     return null;
   }
