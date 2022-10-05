@@ -44,6 +44,9 @@ public class Category {
   @Column(length = 128, nullable = false, unique = true)
   private String name;
 
+  @Column(length = 256, nullable = false, unique = true)
+  private String slug;
+
   private boolean enabled;
 
   @OneToOne

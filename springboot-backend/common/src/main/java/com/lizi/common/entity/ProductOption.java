@@ -35,7 +35,7 @@ public class ProductOption {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(length = 2, nullable = false)
+  @Column(length = 3, nullable = false)
   private String size;
 
   private int quantity;

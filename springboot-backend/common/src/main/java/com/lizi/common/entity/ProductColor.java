@@ -1,6 +1,7 @@
 package com.lizi.common.entity;
 
 import java.util.Set;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,6 +30,9 @@ public class ProductColor {
   private Long id;
 
   private String name;
+
+  @Column(length = 128, nullable = false)
+  private String slug;
 
   private String hexCode;
 
