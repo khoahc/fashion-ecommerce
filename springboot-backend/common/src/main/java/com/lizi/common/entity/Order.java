@@ -56,19 +56,12 @@ public class Order {
 
   private BigDecimal shipCost;
 
-  private BigDecimal productCost;
-
   private BigDecimal subtotal;
-
-  private BigDecimal tax;
 
   private BigDecimal totalPrice;
 
   @Enumerated(EnumType.STRING)
   private PaymentMethod paymentMethod;
-
-  @Enumerated(EnumType.STRING)
-  private OrderStatus orderStatus;
 
   @ManyToOne
   @JoinColumn(name = "customer_id")
