@@ -17,7 +17,10 @@
     background-color: #fff;
     z-index: 2;
     transition: top 0.3s;
-    
+    -webkit-box-shadow: 0px 1px 0px #666;
+    -moz-box-shadow: 0px 1px 0px #666;
+    box-shadow: 0px 1px 0px #666;
+
     .titleCategory {
       font-size: 1.25rem;
       text-transform: uppercase;
@@ -36,17 +39,17 @@
     .content {
       margin-top: 30px;
       display: flex;
-       
+
       .up {
-        top: 60px;        
+        top: 60px;
         font-size: 1rem;
       }
-      
+
       .down {
         top: 120px;
         font-size: 1rem;
       }
-      
+
       div.left:nth-of-type(1) {
         flex-grow: 1;
         min-width: 250px;
@@ -55,7 +58,7 @@
         position: -webkit-sticky;
         overflow: auto;
         align-self: flex-start;
-        transition: top 0.3s;       
+        transition: top 0.3s;
 
         .title {
           display: flex;
@@ -95,10 +98,8 @@
   .up {
     top: 0;
   }
-  
+
   .down {
-    top: 60px;  
+    top: 60px;
   }
 }
-
-

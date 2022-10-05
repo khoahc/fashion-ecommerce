@@ -263,11 +263,7 @@ const Catalog = () => {
           </div>
         </div>
 
-        <hr
-          style={{
-            boxShadow: "0px 0.2px #888888",
-          }}
-        />
+      
 
         <div className={clsx(styles.wrap)}>
           <div className={clsx(styles.content)}>

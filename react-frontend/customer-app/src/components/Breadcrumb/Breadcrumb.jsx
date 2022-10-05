@@ -6,7 +6,7 @@ const Breadcrumb = (props) => {
     <>
       <div className="mt-1 mb-2">
         <Link to="/">Trang chủ</Link> /{" "}
-        <span className="font-weight-bold">Đồ {props.name}</span>
+        <span className="font-weight-bold">{props.name}</span>
       </div>
     </>
   );

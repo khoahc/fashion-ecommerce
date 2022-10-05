@@ -18,7 +18,7 @@ const publicRoutes = [
     { path: config.routes.cart, element: Cart },
     { path: config.routes.category, element: Catalog, layout: NoHeaderLayout},
     //{ path: config.routes.product, element: Product, layout: HeaderOnly },
-    { path: config.routes.product, element: Product},
+    { path: config.routes.product, element: Product, layout: NoHeaderLayout},
     { path: config.routes.search, element: Search, layout: null },
     { path: "/*", element: Page404, layout: NoHeaderLayout },
 ];
