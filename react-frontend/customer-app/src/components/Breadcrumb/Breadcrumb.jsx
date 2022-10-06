@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const Breadcrumb = (props) => {
   return (
     <>
-      <div className="mt-1 mb-2">
+      <div className="mt-2 mb-2">
         <Link to="/">Trang chủ</Link> /{" "}
         <span className="font-weight-bold">{props.name}</span>
       </div>

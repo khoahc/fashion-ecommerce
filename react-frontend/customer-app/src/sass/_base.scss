@@ -35,6 +35,12 @@ a {
   color: unset;
 }
 
+hr {
+  margin: 10px auto;
+  height: 0px;
+  border: 0.2px solid rgb(229, 231, 235);
+}
+
 @each $color, $val in $colors {
   .color-#{$color} {
     color: $val;
@@ -90,6 +96,14 @@ a {
   @include mobile {
     margin-top: calc(#{$header-mobile-height} + 10px);
   }
+}
+
+.right {
+  flex: right;
+}
+
+.left {
+  flex: left;
 }
 
 .grid {
@@ -182,6 +196,8 @@ a {
   color: $txt-main-color;
   font-size: 1rem;
   font-weight: 600;
+  border-style: none;
+  cursor: pointer;
 }
 
 .bg-main {
@@ -196,9 +212,38 @@ a {
   background-color: #000;
 }
 
+.btn-bg-black {
+  background-color: #000;
+}
+
+.btn-bg-black:hover {
+  background-color: #666;
+}
+
 .btn-border {
+  border: 1px solid #aaa;
+}
+
+.btn-bg-white {
+  background-color: #fff;
+}
+
+.btn-bg-white:hover {
   border: 1px solid #000;
 }
+
+.btn-size-3 {
+  height: 30px;
+}
+
+.btn-size-4 {
+  height: 40px;
+}
+
+.btn-size-5 {
+  height: 50px;
+}
+
 //-----------------color----------------
 .color-white {
   color: #fff;
@@ -264,6 +309,16 @@ a {
 .flex-column {
   display: flex;
   flex-direction: column;
+}
+
+.flex-center {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flex-right {
+  justify-content: center;
+  align-items: flex-end;
 }
 
 .flex-row {

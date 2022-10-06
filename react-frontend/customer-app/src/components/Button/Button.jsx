@@ -1,26 +1,38 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import styles from './Button.module.scss'
 
 const Button = props => {
 
-    const bg = props.backgroundColor ? 'bg-' + props.backgroundColor : 'bg-main'
+    const bg = props.backgroundColor ? 'btn-bg-' + props.backgroundColor : 'bg-main'
 
-    const size = props.size ? 'btn-' + props.size : ''
+    const size = props.size ? 'btn-size-' + props.size : ''
 
     const animate = props.animate ? 'btn-animate' : ''
 
     const border = props.border ? 'btn-border' : ''
 
+    const radius = props.radius ? 'border-radius-' + props.radius : ''
+
+    const color = props.color ? 'color-' + props.color : ''
+
+    const fontWeight = props.fontWeight ? 'font-weight-' + props.fontWeight : ''
+
+    const paddingX = props.paddingX ? 'px-' + props.paddingX : ''
+
+    const paddingY = props.paddingY ? 'py-' + props.paddingY : ''
+
+
     return (
         <button
-            className={`btn px-2 py-1 ${bg} ${size} ${animate} ${border}`}
+            className={`btn ${paddingX} ${paddingY} ${bg} ${color} ${fontWeight} ${size} ${animate} ${border} ${radius}`}
             onClick={props.onClick ? () => props.onClick() : null}
         >
-            <span className="btn__txt">{props.children}</span>
+            <span className="">{props.children}</span>
             {
                 props.icon ? (
-                    <span className="btn__icon">
-                        <i className={`${props.icon} bx-tada`}></i>
+                    <span className="">
+                        <i className={`${props.icon}`}></i>
                     </span>
                 ) : null
             }

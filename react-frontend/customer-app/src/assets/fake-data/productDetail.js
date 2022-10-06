@@ -2,6 +2,8 @@ const productDetail = {
   name: "Áo Thun Cổ Tròn Đơn Giản Ngân Hà Space Ver30",
   slug: "ao-thun-co-tron-don-gian-ngan-ha-space-ver30",
   price: 180000,
+  discountValue: null,
+  promotionalPrice: null,
   isStock: true,
   mainImage:
     "https://cdn2.yame.vn/pimg/ao-thun-co-tron-on-gian-ngan-ha-space-ver30-0021311/83c3c161-a05d-a200-c56f-001968329d65.jpg?w=540&h=756",
@@ -47,7 +49,9 @@ const productDetail = {
       name: "L",
     },
   ],
-  description: "Áo Thun Cổ Tròn Đơn Giản Ngân Hà Space Ver30\nChất liệu: Vải Da Lộn\nThành phần : 90% Polyester 10% Spandex\n+ Họa tiết thêu 2D + 3D",
+  description:
+    "Áo Thun Cổ Tròn Đơn Giản Ngân Hà Space Ver30\n+ Chất liệu: Vải Da Lộn\n+ Thành phần : 90% Polyester 10% Spandex\n+ Họa tiết thêu 2D + 3D",
+  rate: 3,
 };
 
 export default productDetail;

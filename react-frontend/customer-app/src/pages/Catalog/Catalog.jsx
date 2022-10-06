@@ -277,6 +277,8 @@ const Catalog = () => {
                 {/* Button component */}
                 <Button
                   border={true}
+                  paddingX={2}
+                  paddingY={1}
                   children={"Xóa tất cả"}
                   onClick={clearFilter}
                 />

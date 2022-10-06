@@ -5,7 +5,35 @@
   .wrap {
     display: flex;
     flex-direction: row;
+    gap: 1.5rem;
     justify-content: center;
     align-items: flex-start;
+    max-width: 1440px;
+    margin: auto;
+
+    .left {
+      flex-grow: 2;
+    }
+
+    .right {
+      flex-grow: 1;
+
+      .list {
+        display: flex;
+        flex-direction: row;
+        gap: 1rem;
+        margin-top: 10px;
+      }
+
+      .countInStock {
+        float: right;
+        color: green;
+      }
+
+      .description {
+        white-space: pre-wrap;
+        line-height: 1.7;
+      }
+    }
   }
 }
