@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.lizi;
+package com.lizi.admin;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

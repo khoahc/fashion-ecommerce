@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,6 +23,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 @Table(name = "tbl_reviews")
 public class Review {
@@ -36,9 +38,7 @@ public class Review {
   @Column(length = 300, nullable = false)
   private String comment;
 
-  private Integer rating;
-
-  private Integer vote;
+  private int rating;
 
   @ManyToOne
   @JoinColumn(name = "customer_id")

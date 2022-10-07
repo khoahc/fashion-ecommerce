@@ -16,10 +16,12 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -30,6 +32,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 @Table(name = "tbl_products")
 public class Product {
@@ -41,6 +44,9 @@ public class Product {
   @Column(length = 256, nullable = false, unique = true)
   private String name;
 
+  @Column(length = 256, nullable = false, unique = true)
+  private String slug;
+
   @Column(length = 4096, nullable = false)
   private String description;
 
@@ -50,12 +56,15 @@ public class Product {
 
   private BigDecimal price;
 
+  private long numberOfOrder;
+
+  @OneToOne
+  @JoinColumn(name = "main_image_id")
+  private Image mainImage;
+
   @ManyToOne
   @JoinColumn(name = "category_id")
   private Category category;
-
-  @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-  private Set<ProductImage> images = new HashSet<>();
 
   @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
   private Set<ProductOption> options = new HashSet<>();

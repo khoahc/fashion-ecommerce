@@ -3,6 +3,7 @@ package com.lizi.common.entity;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,11 +15,13 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,6 +32,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 @Table(name = "tbl_categories")
 public class Category {
@@ -40,7 +44,14 @@ public class Category {
   @Column(length = 128, nullable = false, unique = true)
   private String name;
 
+  @Column(length = 256, nullable = false, unique = true)
+  private String slug;
+
   private boolean enabled;
+
+  @OneToOne
+  @JoinColumn(name = "image_id")
+  private Image image;
 
   @ManyToOne
   @JoinColumn(name = "parent_id")
