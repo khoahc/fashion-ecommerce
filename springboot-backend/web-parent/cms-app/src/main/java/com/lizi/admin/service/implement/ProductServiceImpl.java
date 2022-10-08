@@ -2,11 +2,11 @@ package com.lizi.admin.service.implement;
 
 import com.lizi.admin.dto.product.ProductReqDto;
 import com.lizi.admin.dto.product.ProductResDto;
-import com.lizi.admin.exception.ResourceNotFoundException;
 import com.lizi.admin.mapper.ProductMapper;
 import com.lizi.admin.repository.ProductRepository;
 import com.lizi.admin.service.ProductService;
 import com.lizi.common.entity.Product;
+import com.lizi.common.exception.ResourceNotFoundException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

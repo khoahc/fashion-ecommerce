@@ -2,13 +2,13 @@ package com.lizi.admin.service.implement;
 
 import com.lizi.admin.dto.category.CategoryReqDto;
 import com.lizi.admin.dto.category.CategoryResDto;
-import com.lizi.admin.exception.ResourceNotFoundException;
 import com.lizi.admin.mapper.CategoryMapper;
 import com.lizi.admin.repository.CategoryRepository;
 import com.lizi.admin.repository.ImageRepository;
 import com.lizi.admin.service.CategoryService;
 import com.lizi.common.entity.Category;
 import com.lizi.common.entity.Image;
+import com.lizi.common.exception.ResourceNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
