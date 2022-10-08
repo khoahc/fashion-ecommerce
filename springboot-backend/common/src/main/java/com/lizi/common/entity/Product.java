@@ -58,10 +58,6 @@ public class Product {
 
   private long numberOfOrder;
 
-  @OneToOne
-  @JoinColumn(name = "main_image_id")
-  private Image mainImage;
-
   @ManyToOne
   @JoinColumn(name = "category_id")
   private Category category;
