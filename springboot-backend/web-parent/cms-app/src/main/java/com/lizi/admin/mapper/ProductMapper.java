@@ -14,11 +14,9 @@ public interface ProductMapper {
   ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
 
   @Mapping(source = "enabled", target = "enabled")
-  @Mapping(source = "image.url", target = "image")
   ProductResDto productToDto(Product product);
 
   @Mapping(source = "enabled", target = "enabled")
-  @Mapping(source = "image.url", target = "image")
   List<ProductResDto> productsToDtos(List<Product> product);
 
   @Mapping(source = "enabled", target = "enabled")
