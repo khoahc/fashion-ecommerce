@@ -28,15 +28,13 @@ import org.hibernate.annotations.UpdateTimestamp;
 public class CartItem {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
-
-  @ManyToOne
-  @JoinColumn(name = "customer_id")
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "customer_id", nullable = false)
   private Customer customer;
 
-  @ManyToOne
-  @JoinColumn(name = "product_option_id")
+  @Id
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "product_option_id", nullable = false)
   private ProductOption productOption;
 
   private Integer quantity;
