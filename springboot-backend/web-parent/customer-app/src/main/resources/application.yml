@@ -1,0 +1,37 @@
+server:
+    port: 81
+    servlet:
+        context-path: /lizi
+spring:
+    datasource:
+        password: 1234
+        url: jdbc:mysql://localhost:3306/lizidb
+        username: root
+        #hikari:
+        #minimum-idle: 1
+        #maximum-pool-size: 2
+    jpa:
+        hibernate:
+            ddl-auto: none
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.MySQL8Dialect
+                format_sql: true
+        show-sql: false
+
+    security:
+        oauth2:
+            client:
+                registration:
+                    google:
+                        client-id: 926625362263-k7cif6220lm95hrsucdvqsqfj3lls2ra.apps.googleusercontent.com
+                        client-secret: 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
+                        scope:
+                        - email
+                        - profile
+                    facebook:
+                        client-id: 4856333857808999
+                        client-secret: 11b31c79f8e66e5311642e8cf6c29aa5
+                        scope:
+                        - email
+                        - public_profile
