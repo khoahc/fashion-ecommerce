@@ -1,2 +1,4 @@
-package com.lizi.customer.service;public class ProductService {
+package com.lizi.customer.service;
+
+public interface ProductService {
 }

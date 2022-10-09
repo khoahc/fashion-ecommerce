@@ -1,2 +1,4 @@
-package com.lizi.customer.repository;public class ProductRepository {
+package com.lizi.customer.repository;
+
+public class ProductRepository {
 }

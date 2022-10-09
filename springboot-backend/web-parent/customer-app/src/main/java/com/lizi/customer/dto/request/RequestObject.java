@@ -1,2 +1,4 @@
-package com.lizi.customer.dto.request;public class RequestObject {
+package com.lizi.customer.dto.request;
+
+public class RequestObject {
 }

@@ -1,4 +1,4 @@
-package com.lizi.admin.exception;
+package com.lizi.customer.exception;
 
 public class UploadException extends RuntimeException {
 
