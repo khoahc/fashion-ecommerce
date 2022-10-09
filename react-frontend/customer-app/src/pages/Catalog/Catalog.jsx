@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState, useRef } from "react";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import { IconContext } from "react-icons";
 import { FaTrashAlt } from "react-icons/fa";
 import Select from "react-select";
@@ -11,8 +11,8 @@ import Breadcrumb from "../../components/Breadcrumb";
 import Button from "../../components/Button";
 import CheckBox from "../../components/Checkbox";
 import InfinityList from "../../components/InfinityList";
-import catalogCategory from "../../assets/fake-data/catalogCategory";
-import * as catalogProduct from "../../services/catalogProduct";
+import catalogCategory1 from "../../assets/fake-data/catalogCategory";
+import * as catalogCategory from "../../services/catalogCategory";
 
 const Catalog = () => {
   const { pathname } = useLocation();
@@ -45,11 +45,14 @@ const Catalog = () => {
     price: [],
   };
 
-  const productList = catalogCategory.products;
-
+  const productList = catalogCategory1.products;
+  let navigate = useNavigate();
   const [products, setProducts] = useState(productList);
 
   let productList1 = [];
+
+  const [category, setCategory] = useState([]);
+  // const [productList, setProductList] = useState([]);
 
   useEffect(() => {
     // const fetchData = async () => {
@@ -59,11 +62,11 @@ const Catalog = () => {
 
     // fetchData();
 
-    catalogProduct
+    catalogCategory
       .getCategoryBySlug(slug)
       .then((data) => {
         if (data.status === "OK") {
-          productList1 = data;
+          setCategory(data.data);
           console.log(data);
         } else {
           return Promise.reject(new Error(data.message));
@@ -71,6 +74,7 @@ const Catalog = () => {
       })
       .catch((error) => {
         console.log(error);
+        navigate('/error')
       });
   }, []);
 
@@ -197,7 +201,7 @@ const Catalog = () => {
   }, [updateProducts]);
 
   // menu
-  const menuData = catalogCategory.menu;
+  const menuData = catalogCategory1.menu;
   const menu = menuData.map((item, index) => (
     <div key={index}>
       {/* <Link to={"/c/" + item.slug}>
@@ -222,7 +226,7 @@ const Catalog = () => {
   ));
 
   //colors
-  const colors = catalogCategory.colors.map((item, index) => (
+  const colors = catalogCategory1.colors.map((item, index) => (
     <div key={index} className="">
       <CheckBox
         label={item.name}
@@ -254,12 +258,12 @@ const Catalog = () => {
     <>
       <img
         className={clsx(styles.banner)}
-        src={catalogCategory.image}
+        src={category.image}
         alt="image-category"
       />
 
       <div className={clsx(styles.container)}>
-        <Breadcrumb name={catalogCategory.name} />
+        <Breadcrumb name={category.name} />
 
         <div
           className={clsx(styles.nav, "py-1", {
@@ -269,7 +273,7 @@ const Catalog = () => {
         >
           <div>
             <h2 className={clsx(styles.titleCategory)}>
-              Đồ {catalogCategory.name}
+              {category.name}
             </h2>
           </div>
           <div className={clsx(styles.sort)}>

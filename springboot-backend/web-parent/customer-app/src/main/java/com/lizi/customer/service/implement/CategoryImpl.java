@@ -20,7 +20,7 @@ public class CategoryImpl implements CategoryService {
 
   @Override
   public CategoryResponseDTO getCategoryBySlug(String slug) {
-    CategoryResponseDTO categoryResponseDTO = mapper.categoryToCategoryResponseDTO(categoryRepository.findBySlug(slug).orElseThrow(
+    CategoryResponseDTO categoryResponseDTO = mapper.categoryToCategoryResponseDTO(categoryRepository.findBySlugAndEnabledTrue(slug).orElseThrow(
             () -> new ResourceNotFoundException("Could not find any category with slug: " + slug)
     ));
     return categoryResponseDTO;
