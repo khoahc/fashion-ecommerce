@@ -12,6 +12,7 @@ import Button from "../../components/Button";
 import CheckBox from "../../components/Checkbox";
 import InfinityList from "../../components/InfinityList";
 import catalogCategory from "../../assets/fake-data/catalogCategory";
+import * as catalogProduct from "../../services/catalogProduct";
 
 const Catalog = () => {
   const { pathname } = useLocation();
@@ -42,11 +43,36 @@ const Catalog = () => {
     category: [],
     color: [],
     price: [],
-  }; 
+  };
 
   const productList = catalogCategory.products;
 
   const [products, setProducts] = useState(productList);
+
+  let productList1 = [];
+
+  useEffect(() => {
+    // const fetchData = async () => {
+    //   productList1 = await catalogProduct.getCategoryBySlug(slug);
+    //   console.log(productList1);
+    // };
+
+    // fetchData();
+
+    catalogProduct
+      .getCategoryBySlug(slug)
+      .then((data) => {
+        if (data.status === "OK") {
+          productList1 = data;
+          console.log(data);
+        } else {
+          return Promise.reject(new Error(data.message));
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   //scroll
   const [scrollDirection, setScrollDirection] = useState(null);
@@ -76,17 +102,17 @@ const Catalog = () => {
 
   const initMenuFilter = {
     ...filter,
-    category: [],    
-  };  
+    category: [],
+  };
 
   const initColorFilter = {
     ...filter,
-    color: [],    
-  }; 
+    color: [],
+  };
 
   const initPriceFilter = {
     ...filter,
-    price: [],    
+    price: [],
   };
 
   const clearFilter = () => setFilter(initFilter);
@@ -211,7 +237,10 @@ const Catalog = () => {
     <div key={index} className="">
       <CheckBox
         label={
-          numberWithCommas(item.start) + ' đ' + " - " + (item.end < MAX_PRICE ? numberWithCommas(item.end) + ' đ' : "Vô hạn")
+          numberWithCommas(item.start) +
+          " đ" +
+          " - " +
+          (item.end < MAX_PRICE ? numberWithCommas(item.end) + " đ" : "Vô hạn")
         }
         onChange={(input) => filterSelect("PRICE", input.checked, item)}
         checked={filter.price.some((elem) => {
@@ -263,8 +292,6 @@ const Catalog = () => {
           </div>
         </div>
 
-      
-
         <div className={clsx(styles.wrap)}>
           <div className={clsx(styles.content)}>
             <div
@@ -288,7 +315,7 @@ const Catalog = () => {
                     <h4>Danh mục</h4>
                     <IconContext.Provider value={{ color: "#444" }}>
                       <div>
-                        <FaTrashAlt onClick={clearMenuFilter}/>
+                        <FaTrashAlt onClick={clearMenuFilter} />
                       </div>
                     </IconContext.Provider>
                   </div>
@@ -303,7 +330,7 @@ const Catalog = () => {
                       <h4>Màu sắc</h4>
                       <IconContext.Provider value={{ color: "#444" }}>
                         <div>
-                          <FaTrashAlt onClick={clearColorFilter}/>
+                          <FaTrashAlt onClick={clearColorFilter} />
                         </div>
                       </IconContext.Provider>
                     </div>
@@ -315,7 +342,7 @@ const Catalog = () => {
                       <h4>Giá</h4>
                       <IconContext.Provider value={{ color: "#444" }}>
                         <div>
-                          <FaTrashAlt onClick={clearPriceFilter}/>
+                          <FaTrashAlt onClick={clearPriceFilter} />
                         </div>
                       </IconContext.Provider>
                     </div>
