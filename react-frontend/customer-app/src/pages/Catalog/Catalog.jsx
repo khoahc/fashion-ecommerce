@@ -45,38 +45,52 @@ const Catalog = () => {
     price: [],
   };
 
-  const productList = catalogCategory1.products;
   let navigate = useNavigate();
-  const [products, setProducts] = useState(productList);
 
-  let productList1 = [];
+  const [products, setProducts] = useState([]);
 
   const [category, setCategory] = useState([]);
-  // const [productList, setProductList] = useState([]);
 
   useEffect(() => {
     // const fetchData = async () => {
-    //   productList1 = await catalogProduct.getCategoryBySlug(slug);
+    //   productList1 = await catalogCategory.getCategoryBySlug(slug);
     //   console.log(productList1);
     // };
 
     // fetchData();
 
-    catalogCategory
-      .getCategoryBySlug(slug)
-      .then((data) => {
-        if (data.status === "OK") {
-          setCategory(data.data);
-          console.log(data);
-        } else {
-          return Promise.reject(new Error(data.message));
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        navigate("/error");
-      });
-  }, []);
+    Promise.all([
+      catalogCategory
+        .getCategoryBySlug(slug)
+        .then((data) => {
+          if (data.status === "OK") {
+            setCategory(data.data);
+            console.log(data);
+          } else {
+            return Promise.reject(new Error(data.message));
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          navigate("/error");
+        }),
+
+      catalogCategory
+        .getAllProductBySlugCategory(slug)
+        .then((data) => {
+          if (data.status === "OK") {
+            setProducts(data.data);
+            console.log(data);
+          } else {
+            return Promise.reject(new Error(data.message));
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          navigate("/error");
+        }),
+    ]);
+  }, [slug]);
 
   //scroll
   const [scrollDirection, setScrollDirection] = useState(null);
@@ -164,7 +178,7 @@ const Catalog = () => {
 
   //filter
   const updateProducts = useCallback(() => {
-    let temp = productList;
+    let temp = products;
 
     if (filter.category.length > 0) {
       temp = temp.filter((e) => filter.category.includes(e.categorySlug));
@@ -194,7 +208,7 @@ const Catalog = () => {
     }
 
     setProducts(temp);
-  }, [filter, productList]);
+  }, [filter, products]);
 
   useEffect(() => {
     updateProducts();
