@@ -26,21 +26,21 @@ public class VoucherController {
   @GetMapping(value = "")
   public ResponseEntity<ResponseObject> getAll() {
     return ResponseEntity.ok().body(
-        ResponseObject.builder().code(HttpStatus.OK.value()).message(Constant.SUCCESS)
+        ResponseObject.builder().status(HttpStatus.OK).message(Constant.SUCCESS)
             .data(voucherService.getAll()).build());
   }
 
   @GetMapping(value = "/{id}")
   public ResponseEntity<ResponseObject> getVoucher(@PathVariable(name = "id") Long id) {
     return ResponseEntity.ok().body(
-        ResponseObject.builder().code(HttpStatus.OK.value()).message(Constant.SUCCESS)
+        ResponseObject.builder().status(HttpStatus.OK).message(Constant.SUCCESS)
             .data(voucherService.getVoucher(id)).build());
   }
 
   @PostMapping(value = "")
   public ResponseEntity<ResponseObject> createVoucher(@RequestBody VoucherReqDto voucherReqDto) {
     return ResponseEntity.ok().body(
-        ResponseObject.builder().code(HttpStatus.OK.value()).message(Constant.SUCCESS)
+        ResponseObject.builder().status(HttpStatus.OK).message(Constant.SUCCESS)
             .data(voucherService.createVoucher(voucherReqDto)).build());
   }
 
@@ -48,7 +48,7 @@ public class VoucherController {
   public ResponseEntity<ResponseObject> updateVoucher(@PathVariable(name = "id") Long id,
       @RequestBody VoucherReqDto voucherReqDto) {
     return ResponseEntity.ok().body(
-        ResponseObject.builder().code(HttpStatus.OK.value()).message(Constant.SUCCESS)
+        ResponseObject.builder().status(HttpStatus.OK).message(Constant.SUCCESS)
             .data(voucherService.updateVoucher(id, voucherReqDto)).build());
   }
 
@@ -56,6 +56,6 @@ public class VoucherController {
   public ResponseEntity<ResponseObject> deleteVoucher(@PathVariable(name = "id") Long id) {
     voucherService.deleteVoucher(id);
     return ResponseEntity.ok().body(
-        ResponseObject.builder().code(HttpStatus.OK.value()).message(Constant.SUCCESS).build());
+        ResponseObject.builder().status(HttpStatus.OK).message(Constant.SUCCESS).build());
   }
 }

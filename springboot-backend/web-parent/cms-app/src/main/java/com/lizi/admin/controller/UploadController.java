@@ -22,7 +22,7 @@ public class UploadController {
   @PostMapping(value = "/image")
   public ResponseEntity<ResponseObject> upload(
       @RequestParam(name = "image") MultipartFile multipartFile) {
-    return ResponseEntity.ok().body(ResponseObject.builder().message(Constant.SUCCESS).code(
-        HttpStatus.OK.value()).data(cloudinaryService.uploadImage(multipartFile)).build());
+    return ResponseEntity.ok().body(ResponseObject.builder().message(Constant.SUCCESS).status(
+        HttpStatus.OK).data(cloudinaryService.uploadImage(multipartFile)).build());
   }
 }
