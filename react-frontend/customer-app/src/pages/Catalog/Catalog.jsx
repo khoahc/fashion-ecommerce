@@ -74,7 +74,7 @@ const Catalog = () => {
       })
       .catch((error) => {
         console.log(error);
-        navigate('/error')
+        navigate("/error");
       });
   }, []);
 
@@ -272,9 +272,7 @@ const Catalog = () => {
           })}
         >
           <div>
-            <h2 className={clsx(styles.titleCategory)}>
-              {category.name}
-            </h2>
+            <h2 className={clsx(styles.titleCategory)}>{category.name}</h2>
           </div>
           <div className={clsx(styles.sort)}>
             <Select

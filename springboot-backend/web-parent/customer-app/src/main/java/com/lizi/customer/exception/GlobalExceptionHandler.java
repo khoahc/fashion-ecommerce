@@ -1,8 +1,7 @@
 package com.lizi.customer.exception;
 
-import com.lizi.common.entity.ResponseObject;
+import com.lizi.customer.dto.response.ResponseObject;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -15,7 +14,7 @@ public class GlobalExceptionHandler {
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
   protected ResponseObject handleException(RuntimeException e) {
-    return ResponseObject.builder().code(HttpStatus.BAD_REQUEST.value()).message(e.getMessage()).build();
+    return ResponseObject.builder().status(HttpStatus.BAD_REQUEST).message(e.getMessage()).build();
   }
 
   @ExceptionHandler(ResourceNotFoundException.class)
@@ -23,6 +22,6 @@ public class GlobalExceptionHandler {
   @ResponseBody
   protected ResponseObject handlerResourceNotFoundException(
           RuntimeException e) {
-    return ResponseObject.builder().code(HttpStatus.NOT_FOUND.value()).message(e.getMessage()).build();
+    return ResponseObject.builder().status(HttpStatus.NOT_FOUND).message(e.getMessage()).build();
   }
 }

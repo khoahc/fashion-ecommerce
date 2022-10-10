@@ -1,7 +1,10 @@
 package com.lizi.customer.dto.response;
 
+import lombok.Builder;
 import org.springframework.http.HttpStatus;
 
+
+@Builder
 public class ResponseObject<T> {
   private HttpStatus status;
   private String message;

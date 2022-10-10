@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class CategoryImpl implements CategoryService {
+public class CategoryServiceImpl implements CategoryService {
   private final CategoryMapper mapper =
           Mappers.getMapper(CategoryMapper.class);
   @Autowired
