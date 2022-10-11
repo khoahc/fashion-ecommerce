@@ -19,4 +19,16 @@ public class ProductController {
     return new ResponseObject<>(HttpStatus.OK, "Thành công", productService.getAllProductsByCategorySlug(slug));
   }
 
+  @RequestMapping(value = "/{slug}")
+  public ResponseObject getProductDetailByProductSlug(@PathVariable(name = "slug") String slugProduct,
+                                                      @RequestParam(name = "color", required = false) String slugColor,
+                                                      @RequestParam(name = "size", required = false) String size) {
+    return new ResponseObject<>(HttpStatus.OK, "Thành công", productService.getProductDetailBySlug(slugProduct, slugColor, size));
+  }
+
+  @RequestMapping(value = "/{slug}/size")
+  public ResponseObject getAllSizesForProductDetailByProductSlug(@PathVariable(name = "slug") String slug) {
+    return new ResponseObject<>(HttpStatus.OK, "Thành công", productService.getAllSizesForProductDetailByProductSlug(slug));
+  }
+
 }

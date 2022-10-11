@@ -1,14 +1,15 @@
 package com.lizi.customer.repository;
 
 import com.lizi.common.entity.Product;
-import com.lizi.customer.dto.response.ProductCatalogColorResponseDTO;
-import com.lizi.customer.dto.response.ProductCatalogResponseDTO;
+import com.lizi.customer.dto.response.*;
+import org.hibernate.engine.jdbc.Size;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
@@ -22,7 +23,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
           "INNER JOIN ProductOption p_o\n" +
           "ON p.id = p_o.product.id\n" +
           "WHERE c.slug = :slugCategory")
-  List<ProductCatalogResponseDTO> findAllProductsCatalogByCategorySlug(@Param("slugCategory") String slug);
+  Optional<List<ProductCatalogResponseDTO>> findAllProductsCatalogByCategorySlug(@Param("slugCategory") String slug);
 
   //find colors of product (name, slug and image attribute) by category slug and product slug
   @Query(value = "SELECT DISTINCT new com.lizi.customer.dto.response.ProductCatalogColorResponseDTO(p_c.name, p_c.slug, img.url as main_image) \n" +
@@ -37,6 +38,41 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
           "INNER JOIN Image img\n" +
           "ON p_c.mainImage.id = img.id\n" +
           "WHERE c.slug = :slugCategory AND p.slug = :slugProduct")
-  List<ProductCatalogColorResponseDTO> findProductCatalogColorByProductSlug(@Param("slugCategory") String slugCategory, @Param("slugProduct") String slugProduct);
+  Optional<List<ProductCatalogColorResponseDTO>> findProductCatalogColorByProductSlug(@Param("slugCategory") String slugCategory, @Param("slugProduct") String slugProduct);
+
+  //find product detail
+  @Query(value = "SELECT DISTINCT new com.lizi.customer.dto.response.ProductDetailResponseDTO(p.name, p.slug, p.price, p.description) \n" +
+          "FROM \n" +
+          "\tProduct p \n" +
+          "WHERE p.slug = :slugProduct\n")
+  Optional<ProductDetailResponseDTO> findProductBySlugAndEnabledTrue(@Param("slugProduct") String slug);
+
+  //find rating average for product detail
+  @Query(value =
+          "SELECT avg(r.rating) FROM Review r \n" +
+          "\tWHERE r.product.slug = :slugProduct \n"+
+          "\tGROUP BY r.product.slug\n")
+  Double findRatingAverageBySlugProduct(@Param("slugProduct") String slugProduct);
+
+  //find main image for product detail
+//  @Query(value =
+//          "")
+//  String findMainImageForProductDetailBySlugProduct(@Param("slugProduct") String slugProduct,
+//                                                    @Param("slugColor") String slugColor,
+//                                                    @Param("size") String size);
+
+  //find all images for product detail
+//  @Query(value =
+//          "")
+//  Optional<List<ImageResponseDTO>> findAllImagesForProductDetailBySlugProduct(@Param("slugProduct") String slugProduct,
+//                                                    @Param("slugColor") String slugColor,
+//                                                    @Param("size") String size);
+
+  //find size list for product detail
+  @Query(value = "SELECT DISTINCT new com.lizi.customer.dto.response.SizeResponseDTO(p_o.size) FROM Product p \n" +
+          "\tINNER JOIN ProductOption p_o\n"+
+          "\tON p.id = p_o.product.id\n"+
+          "\tWHERE p.slug = :slugProduct \n")
+  Optional<List<SizeResponseDTO>> findSizesProductBySlugProduct(@Param("slugProduct") String slug);
 
 }

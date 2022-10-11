@@ -4,6 +4,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -15,7 +16,7 @@ public class ProductCatalogResponseDTO {
   private String slug;
   private BigDecimal price;
   private BigDecimal promotionalPrice = null;
-  private List<ProductCatalogColorResponseDTO> colors;
+  private Optional<List<ProductCatalogColorResponseDTO>> colors;
 
   public ProductCatalogResponseDTO (String name, String slug, BigDecimal price) {
     this.name = name;
