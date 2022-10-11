@@ -20,9 +20,16 @@ public class UploadController {
   private CloudinaryService cloudinaryService;
 
   @PostMapping(value = "/image")
-  public ResponseEntity<ResponseObject> upload(
+  public ResponseEntity<ResponseObject> uploadImage(
       @RequestParam(name = "image") MultipartFile multipartFile) {
     return ResponseEntity.ok().body(ResponseObject.builder().message(Constant.SUCCESS).status(
         HttpStatus.OK).data(cloudinaryService.uploadImage(multipartFile)).build());
+  }
+
+  @PostMapping(value = "/images")
+  public ResponseEntity<ResponseObject> uploadImages(
+      @RequestParam(name = "images") MultipartFile[] multipartFiles) {
+    return ResponseEntity.ok().body(ResponseObject.builder().message(Constant.SUCCESS).status(
+        HttpStatus.OK).data(cloudinaryService.uploadImages(multipartFiles)).build());
   }
 }

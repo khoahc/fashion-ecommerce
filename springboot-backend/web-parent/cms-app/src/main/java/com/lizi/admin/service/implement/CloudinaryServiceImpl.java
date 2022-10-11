@@ -10,7 +10,9 @@ import com.lizi.common.entity.Image;
 import com.lizi.common.exception.UploadException;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -67,13 +69,18 @@ public class CloudinaryServiceImpl implements CloudinaryService {
   }
 
   @Override
-  public String uploadImage(MultipartFile file) {
+  public ImageResDto uploadImage(MultipartFile file) {
     beforeCheck(file);
 
-    return (String) uploadCloudinary(file, ObjectUtils.asMap(
-        "resource_type", "auto",
-        "folder", rootFolder
-    )).get("secure_url");
+    Map r = upload(file, "");
+    Image newImage = saveImage(r);
+
+    return ImageMapper.INSTANCE.imageToDto(newImage);
+  }
+
+  @Override
+  public List<ImageResDto> uploadImages(MultipartFile[] files) {
+    return Arrays.stream(files).map(file -> uploadImage(file)).collect(Collectors.toList());
   }
 
   @Override
@@ -81,12 +88,7 @@ public class CloudinaryServiceImpl implements CloudinaryService {
     beforeCheck(file);
 
     Map r = upload(file, "/users");
-
-    Image newImage = new Image();
-    newImage.setUrl((String) r.get("secure_url"));
-    newImage.setCloudinaryId((String) r.get("public_id"));
-
-    imageRepo.save(newImage);
+    Image newImage = saveImage(r);
 
     return ImageMapper.INSTANCE.imageToDto(newImage);
   }
@@ -96,14 +98,14 @@ public class CloudinaryServiceImpl implements CloudinaryService {
     beforeCheck(file);
 
     Map r = upload(file, "/products");
-
-    Image newImage = new Image();
-    newImage.setUrl((String) r.get("secure_url"));
-    newImage.setCloudinaryId((String) r.get("public_id"));
-
-    imageRepo.save(newImage);
+    Image newImage = saveImage(r);
 
     return ImageMapper.INSTANCE.imageToDto(newImage);
+  }
+
+  @Override
+  public List<ImageResDto> uploadImagesProduct(MultipartFile[] files) {
+    return Arrays.stream(files).map(file -> uploadImageProduct(file)).collect(Collectors.toList());
   }
 
   @Override
@@ -111,12 +113,7 @@ public class CloudinaryServiceImpl implements CloudinaryService {
     beforeCheck(file);
 
     Map r = upload(file, "/categories");
-
-    Image newImage = new Image();
-    newImage.setUrl((String) r.get("secure_url"));
-    newImage.setCloudinaryId((String) r.get("public_id"));
-
-    imageRepo.save(newImage);
+    Image newImage = saveImage(r);
 
     return ImageMapper.INSTANCE.imageToDto(newImage);
   }
@@ -126,5 +123,14 @@ public class CloudinaryServiceImpl implements CloudinaryService {
     assert fileExtension != null;
     return Arrays.asList(new String[]{"png", "jpg", "jpeg", "bmp"})
         .contains(fileExtension.trim().toLowerCase());
+  }
+
+  private Image saveImage(Map r) {
+    Image newImage = new Image();
+    newImage.setUrl((String) r.get("secure_url"));
+    newImage.setCloudinaryId((String) r.get("public_id"));
+
+    imageRepo.save(newImage);
+    return newImage;
   }
 }
