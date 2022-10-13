@@ -42,9 +42,9 @@ public class ProductServiceImpl implements ProductService {
 //    Optional<Product> product = Optional.ofNullable(productRepository.findProductBySlugAndEnabledTrue(slug).orElseThrow(() ->
 //            new ResourceNotFoundException("Không tìm thấy sản phẩm")));
 
-//    //set mainImage for product
-//    String mainImage = productRepository.findMainImageForProductDetailBySlugProduct(slugProduct, slugColor, size);
-//    product.get().setMainImage(mainImage);
+    //set mainImage for product
+    String mainImage = productRepository.findMainImageForProductDetailBySlugProduct(slugProduct, slugColor);
+    product.get().setMainImage(mainImage);
 //
 //    //set all images for product
 //    Optional<List<ImageResponseDTO>> images = productRepository.findAllImagesForProductDetailBySlugProduct(slugProduct, slugColor, size);

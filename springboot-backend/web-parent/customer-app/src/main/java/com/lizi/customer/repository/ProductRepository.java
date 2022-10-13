@@ -55,18 +55,25 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
   Double findRatingAverageBySlugProduct(@Param("slugProduct") String slugProduct);
 
   //find main image for product detail
-//  @Query(value =
-//          "")
-//  String findMainImageForProductDetailBySlugProduct(@Param("slugProduct") String slugProduct,
-//                                                    @Param("slugColor") String slugColor,
-//                                                    @Param("size") String size);
+  @Query(value =
+          "SELECT DISTINCT img.url\n" +
+                  "FROM \n" +
+                  "\tProduct p    \n" +
+                  "    INNER JOIN ProductOption p_o\n" +
+                  "    ON p.id = p_o.product.id\n" +
+                  "\tINNER JOIN ProductColor p_c\n" +
+                  "    ON p_o.productColor.id = p_c.id\n" +
+                  "    INNER JOIN Image img\n" +
+                  "    ON p_c.mainImage.id = img.id\n" +
+                  "WHERE p.slug = :slugProduct AND p_c.slug = :slugColor")
+  String findMainImageForProductDetailBySlugProduct(@Param("slugProduct") String slugProduct,
+                                                    @Param("slugColor") String slugColor);
 
   //find all images for product detail
 //  @Query(value =
 //          "")
 //  Optional<List<ImageResponseDTO>> findAllImagesForProductDetailBySlugProduct(@Param("slugProduct") String slugProduct,
-//                                                    @Param("slugColor") String slugColor,
-//                                                    @Param("size") String size);
+//                                                    @Param("slugColor") String slugColor);
 
   //find size list for product detail
   @Query(value = "SELECT DISTINCT new com.lizi.customer.dto.response.SizeResponseDTO(p_o.size) FROM Product p \n" +
