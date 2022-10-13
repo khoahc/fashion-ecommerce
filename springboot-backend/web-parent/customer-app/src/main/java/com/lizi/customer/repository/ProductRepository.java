@@ -56,16 +56,18 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
   //find main image for product detail
   @Query(value =
-          "SELECT DISTINCT img.url\n" +
+          "SELECT DISTINCT img.url as main_image \n" +
                   "FROM \n" +
-                  "\tProduct p    \n" +
-                  "    INNER JOIN ProductOption p_o\n" +
-                  "    ON p.id = p_o.product.id\n" +
-                  "\tINNER JOIN ProductColor p_c\n" +
-                  "    ON p_o.productColor.id = p_c.id\n" +
-                  "    INNER JOIN Image img\n" +
-                  "    ON p_c.mainImage.id = img.id\n" +
-                  "WHERE p.slug = :slugProduct AND p_c.slug = :slugColor")
+                  "\ttbl_products p    \n" +
+                  "    INNER JOIN tbl_product_options p_o\n" +
+                  "    ON p.id = p_o.product_id\n" +
+                  "\tINNER JOIN tbl_product_colors p_c\n" +
+                  "    ON p_o.product_color_id = p_c.id\n" +
+                  "    INNER JOIN tbl_images img\n" +
+                  "    ON p_c.main_image_id = img.id\n" +
+                  " --    INNER JOIN tbl_product_image_colors p_i_c\n" +
+                  "--     ON p_c.id = p_i_c.product_color_id\n" +
+                  "WHERE p.slug = :slugProduct AND (null IS NULL OR p_c.slug = :slugColor) ORDER BY p_c.slug ASC LIMIT 1", nativeQuery = true )
   String findMainImageForProductDetailBySlugProduct(@Param("slugProduct") String slugProduct,
                                                     @Param("slugColor") String slugColor);
 
