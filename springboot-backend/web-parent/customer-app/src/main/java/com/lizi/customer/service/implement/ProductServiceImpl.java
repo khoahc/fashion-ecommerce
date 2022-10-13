@@ -45,10 +45,10 @@ public class ProductServiceImpl implements ProductService {
     //set mainImage for product
     String mainImage = productRepository.findMainImageForProductDetailBySlugProduct(slugProduct, slugColor);
     product.get().setMainImage(mainImage);
-//
-//    //set all images for product
-//    Optional<List<ImageResponseDTO>> images = productRepository.findAllImagesForProductDetailBySlugProduct(slugProduct, slugColor, size);
-//    product.get().setImages(images);
+
+    //set all images for product
+    Optional<List<ImageResponseDTO>> images = productRepository.findAllImagesForProductDetailBySlugProduct(slugProduct, slugColor);
+    product.get().setImages(images);
 
     //set rate average for product
     Double ratingAverage = productRepository.findRatingAverageBySlugProduct(slugProduct);

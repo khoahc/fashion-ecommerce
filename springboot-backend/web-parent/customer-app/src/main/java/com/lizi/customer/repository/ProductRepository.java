@@ -67,15 +67,26 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                   "    ON p_c.main_image_id = img.id\n" +
                   " --    INNER JOIN tbl_product_image_colors p_i_c\n" +
                   "--     ON p_c.id = p_i_c.product_color_id\n" +
-                  "WHERE p.slug = :slugProduct AND (null IS NULL OR p_c.slug = :slugColor) ORDER BY p_c.slug ASC LIMIT 1", nativeQuery = true )
+                  "WHERE p.slug = :slugProduct AND (:slugColor IS NULL OR p_c.slug = :slugColor) ORDER BY p_c.slug ASC LIMIT 1", nativeQuery = true )
   String findMainImageForProductDetailBySlugProduct(@Param("slugProduct") String slugProduct,
                                                     @Param("slugColor") String slugColor);
 
   //find all images for product detail
-//  @Query(value =
-//          "")
-//  Optional<List<ImageResponseDTO>> findAllImagesForProductDetailBySlugProduct(@Param("slugProduct") String slugProduct,
-//                                                    @Param("slugColor") String slugColor);
+  @Query(value =
+          "SELECT DISTINCT new com.lizi.customer.dto.response.ImageResponseDTO(img.url)\n" +
+                  "FROM \n" +
+                  "\tProduct p    \n" +
+                  "    INNER JOIN ProductOption p_o\n" +
+                  "    ON p.id = p_o.product.id\n" +
+                  "\tINNER JOIN ProductColor p_c\n" +
+                  "    ON p_o.productColor.id = p_c.id    \n" +
+                  "\tINNER JOIN ProductImageColor p_i_c\n" +
+                  "\tON p_c.id = p_i_c.productColor.id\n" +
+                  "    INNER JOIN Image img\n" +
+                  "    ON p_i_c.image.id = img.id\n" +
+                  "WHERE p.slug = :slugProduct AND (:slugColor IS NULL OR p_c.slug = :slugColor) ORDER BY p_c.slug ASC")
+  Optional<List<ImageResponseDTO>> findAllImagesForProductDetailBySlugProduct(@Param("slugProduct") String slugProduct,
+                                                    @Param("slugColor") String slugColor);
 
   //find size list for product detail
   @Query(value = "SELECT DISTINCT new com.lizi.customer.dto.response.SizeResponseDTO(p_o.size) FROM Product p \n" +
