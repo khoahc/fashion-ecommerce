@@ -24,5 +24,5 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
   @Query(value = "select all_parent_ids FROM tbl_categories c \n" +
           "WHERE c.slug = :slug and (enabled is true)", nativeQuery = true)
-  String findAllParentIdsBySlugAndEnabledTrue(@Param(value = "slug") String slug);
+  Optional<String> findAllParentIdsBySlugAndEnabledTrue(@Param(value = "slug") String slug);
 }

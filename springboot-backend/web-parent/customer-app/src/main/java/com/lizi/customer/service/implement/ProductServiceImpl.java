@@ -9,6 +9,7 @@ import com.lizi.customer.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -36,12 +37,19 @@ public class ProductServiceImpl implements ProductService {
         element.setColors(productCatalogColorResponseDTO);
 
         // add categories into each product
-        String allParentIds = categoryRepository.findAllParentIdsBySlugAndEnabledTrue(element.getSlugCategory());
-        String[] slugCategoriesArray = Arrays.stream(allParentIds.split("-", 0)).
+        List<SlugCategoryResponseDTO> slugCategories = new ArrayList<SlugCategoryResponseDTO>();
+        Optional<String> allParentIds = categoryRepository.findAllParentIdsBySlugAndEnabledTrue(element.getSlugCategory());
+
+        if(allParentIds.isEmpty()) {
+          slugCategories.add(new SlugCategoryResponseDTO(element.getSlugCategory()));
+          element.setSlugCategories(slugCategories);
+          return;
+        }
+
+        String[] slugCategoriesArray = Arrays.stream(allParentIds.get().split("-", 0)).
                 filter(e -> e.trim().length() > 0).toArray(String[]::new);
 
-        List<SlugCategoryResponseDTO> slugCategories =
-                Arrays.stream(slugCategoriesArray)
+        slugCategories = Arrays.stream(slugCategoriesArray)
                         .map(e -> {
                           return new SlugCategoryResponseDTO(categoryRepository.findSlugById(Long.parseLong(e)));
                         }).toList();
