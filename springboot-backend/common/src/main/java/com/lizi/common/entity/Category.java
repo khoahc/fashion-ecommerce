@@ -56,6 +56,9 @@ public class Category {
   @JoinColumn(name = "parent_id")
   private Category parent;
 
+  @Column(length = 256)
+  private String allParentIds;
+
   @OneToMany(mappedBy = "parent")
   @OrderBy("name asc")
   private Set<Category> children = new HashSet<>();
