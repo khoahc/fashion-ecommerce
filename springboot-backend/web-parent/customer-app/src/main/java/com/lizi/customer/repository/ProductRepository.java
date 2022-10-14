@@ -15,7 +15,7 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
   //find all product (name, slug and price attribute) by category slug
-  @Query(value = "SELECT DISTINCT new com.lizi.customer.dto.response.ProductCatalogResponseDTO(p.name, p.slug, p.price) \n" +
+  @Query(value = "SELECT DISTINCT new com.lizi.customer.dto.response.ProductCatalogResponseDTO(p.name, p.slug, c.slug, p.price) \n" +
           "FROM \n" +
           "\tProduct p \n" +
           "INNER JOIN Category c\n" +
@@ -37,7 +37,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
           "ON p_o.productColor.id = p_c.id\n" +
           "INNER JOIN Image img\n" +
           "ON p_c.mainImage.id = img.id\n" +
-          "WHERE c.slug = :slugCategory AND p.slug = :slugProduct")
+          "WHERE c.slug = :slugCategory AND p.slug = :slugProduct ORDER BY p_c.slug ASC")
   Optional<List<ProductCatalogColorResponseDTO>> findProductCatalogColorByProductSlug(@Param("slugCategory") String slugCategory, @Param("slugProduct") String slugProduct);
 
   //find product detail

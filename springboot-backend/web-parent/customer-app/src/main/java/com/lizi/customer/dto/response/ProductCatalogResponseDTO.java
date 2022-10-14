@@ -13,14 +13,18 @@ import java.util.Optional;
 @Builder
 public class ProductCatalogResponseDTO {
   private String name;
-  private String slug;
+  private String slugProduct;
+  private String slugCategory;
+
+  private List<SlugCategoryResponseDTO> slugCategories;
   private BigDecimal price;
   private BigDecimal promotionalPrice = null;
   private Optional<List<ProductCatalogColorResponseDTO>> colors;
 
-  public ProductCatalogResponseDTO (String name, String slug, BigDecimal price) {
+  public ProductCatalogResponseDTO (String name, String slugProduct, String slugCategory, BigDecimal price) {
     this.name = name;
-    this.slug = slug;
+    this.slugProduct = slugProduct;
+    this.slugCategory = slugCategory;
     this.price = price;
   }
 }

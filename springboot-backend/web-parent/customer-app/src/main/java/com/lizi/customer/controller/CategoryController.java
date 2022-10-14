@@ -19,4 +19,9 @@ public class CategoryController {
   public ResponseObject getCategoryBySlug(@PathVariable(name = "slug") String slug) {
     return new ResponseObject<>(HttpStatus.OK, "Tìm được loại sản phẩm thành công", categoryService.getCategoryBySlug(slug));
   }
+
+  @RequestMapping(value = "/menu/{slug}", method = RequestMethod.GET)
+  public ResponseObject getMenuCategoryBySlug(@PathVariable(name = "slug") String slug) {
+    return new ResponseObject<>(HttpStatus.OK, "Tìm được menu thành công", categoryService.getMenuCategoryBySlug(slug));
+  }
 }

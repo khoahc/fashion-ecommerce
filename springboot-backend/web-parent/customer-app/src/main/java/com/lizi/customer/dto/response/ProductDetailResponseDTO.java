@@ -17,16 +17,15 @@ public class ProductDetailResponseDTO {
   private BigDecimal price;
   private BigDecimal promotionalPrice = null;
   private String mainImage;
-  private Optional<List<ImageResponseDTO>> images;
+  private Optional<List<ImageResponseDTO>> imageList;
   private Optional<List<SizeResponseDTO>> colors;
   private String description;
-  private Double rate;
+  private Double rate = 0.0;
 
   public ProductDetailResponseDTO(String name, String slug, BigDecimal price, String description) {
     this.name = name;
     this.slug = slug;
     this.price = price;
     this.description = description;
-    this.rate = rate;
   }
 }

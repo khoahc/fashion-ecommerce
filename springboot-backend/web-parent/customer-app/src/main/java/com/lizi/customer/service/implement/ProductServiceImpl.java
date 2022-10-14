@@ -3,13 +3,16 @@ package com.lizi.customer.service.implement;
 import com.lizi.common.entity.Product;
 import com.lizi.customer.dto.response.*;
 import com.lizi.customer.exception.ResourceNotFoundException;
+import com.lizi.customer.repository.CategoryRepository;
 import com.lizi.customer.repository.ProductRepository;
 import com.lizi.customer.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -17,16 +20,33 @@ public class ProductServiceImpl implements ProductService {
   @Autowired
   private ProductRepository productRepository;
 
+  @Autowired
+  private CategoryRepository categoryRepository;
+
   @Override
   public Optional<List<ProductCatalogResponseDTO>> getAllProductsByCategorySlug(String categorySlug) {
     // color object list of each product is empty
     Optional<List<ProductCatalogResponseDTO>> productCatalogResponseDTO = productRepository.findAllProductsCatalogByCategorySlug(categorySlug);
 
-    // add color object list into each product
+
     productCatalogResponseDTO.map((list) -> {
       list.forEach((element) -> {
-        Optional<List<ProductCatalogColorResponseDTO>> productCatalogColorResponseDTO = productRepository.findProductCatalogColorByProductSlug(categorySlug, element.getSlug());
+        // add color object list into each product
+        Optional<List<ProductCatalogColorResponseDTO>> productCatalogColorResponseDTO = productRepository.findProductCatalogColorByProductSlug(categorySlug, element.getSlugProduct());
         element.setColors(productCatalogColorResponseDTO);
+
+        // add categories into each product
+        String allParentIds = categoryRepository.findAllParentIdsBySlugAndEnabledTrue(element.getSlugCategory());
+        String[] slugCategoriesArray = Arrays.stream(allParentIds.split("-", 0)).
+                filter(e -> e.trim().length() > 0).toArray(String[]::new);
+
+        List<SlugCategoryResponseDTO> slugCategories =
+                Arrays.stream(slugCategoriesArray)
+                        .map(e -> {
+                          return new SlugCategoryResponseDTO(categoryRepository.findSlugById(Long.parseLong(e)));
+                        }).toList();
+        element.setSlugCategories(slugCategories);
+
       });
       return productCatalogResponseDTO;
     });
@@ -48,11 +68,13 @@ public class ProductServiceImpl implements ProductService {
 
     //set all images for product
     Optional<List<ImageResponseDTO>> images = productRepository.findAllImagesForProductDetailBySlugProduct(slugProduct, slugColor);
-    product.get().setImages(images);
+    product.get().setImageList(images);
 
     //set rate average for product
     Double ratingAverage = productRepository.findRatingAverageBySlugProduct(slugProduct);
-    product.get().setRate(ratingAverage);
+    if (ratingAverage != null) {
+      product.get().setRate(ratingAverage);
+    }
 
     return product;
   }
