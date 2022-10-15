@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.lang.*;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
@@ -20,10 +21,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
           "\tProduct p \n" +
           "INNER JOIN Category c\n" +
           "ON p.category.id = c.id\n" +
-          "INNER JOIN ProductOption p_o\n" +
-          "ON p.id = p_o.product.id\n" +
-          "WHERE c.slug = :slugCategory")
-  Optional<List<ProductCatalogResponseDTO>> findAllProductsCatalogByCategorySlug(@Param("slugCategory") String slug);
+          "WHERE (c.allParentIds LIKE CONCAT('%', :idCategory ,'%'))\n" +
+          " OR c.slug = :slugCategory")
+  Optional<List<ProductCatalogResponseDTO>> findAllProductsCatalogByCategorySlug(@Param("slugCategory") String slug, @Param("idCategory") Integer id);
 
   //find colors of product (name, slug and image attribute) by category slug and product slug
   @Query(value = "SELECT DISTINCT new com.lizi.customer.dto.response.ProductCatalogColorResponseDTO(p_c.name, p_c.slug, img.url as main_image) \n" +
@@ -37,8 +37,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
           "ON p_o.productColor.id = p_c.id\n" +
           "INNER JOIN Image img\n" +
           "ON p_c.mainImage.id = img.id\n" +
-          "WHERE c.slug = :slugCategory AND p.slug = :slugProduct ORDER BY p_c.slug ASC")
-  Optional<List<ProductCatalogColorResponseDTO>> findProductCatalogColorByProductSlug(@Param("slugCategory") String slugCategory, @Param("slugProduct") String slugProduct);
+          "WHERE p.slug = :slugProduct ORDER BY p_c.slug ASC")
+  Optional<List<ProductCatalogColorResponseDTO>> findProductCatalogColorByProductSlug( @Param("slugProduct") String slugProduct);
 
   //find product detail
   @Query(value = "SELECT DISTINCT new com.lizi.customer.dto.response.ProductDetailResponseDTO(p.name, p.slug, p.price, p.description) \n" +

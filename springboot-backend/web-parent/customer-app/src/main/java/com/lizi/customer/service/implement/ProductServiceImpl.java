@@ -27,32 +27,33 @@ public class ProductServiceImpl implements ProductService {
   @Override
   public Optional<List<ProductCatalogResponseDTO>> getAllProductsByCategorySlug(String categorySlug) {
     // color object list of each product is empty
-    Optional<List<ProductCatalogResponseDTO>> productCatalogResponseDTO = productRepository.findAllProductsCatalogByCategorySlug(categorySlug);
+    Integer categoryId = categoryRepository.findIdBySlug(categorySlug);
+    Optional<List<ProductCatalogResponseDTO>> productCatalogResponseDTO = productRepository.findAllProductsCatalogByCategorySlug(categorySlug, categoryId);
 
 
     productCatalogResponseDTO.map((list) -> {
       list.forEach((element) -> {
         // add color object list into each product
-        Optional<List<ProductCatalogColorResponseDTO>> productCatalogColorResponseDTO = productRepository.findProductCatalogColorByProductSlug(categorySlug, element.getSlugProduct());
+        Optional<List<ProductCatalogColorResponseDTO>> productCatalogColorResponseDTO = productRepository.findProductCatalogColorByProductSlug(element.getSlugProduct());
         element.setColors(productCatalogColorResponseDTO);
 
         // add categories into each product
         List<SlugCategoryResponseDTO> slugCategories = new ArrayList<SlugCategoryResponseDTO>();
         Optional<String> allParentIds = categoryRepository.findAllParentIdsBySlugAndEnabledTrue(element.getSlugCategory());
 
-        if(allParentIds.isEmpty()) {
-          slugCategories.add(new SlugCategoryResponseDTO(element.getSlugCategory()));
-          element.setSlugCategories(slugCategories);
-          return;
+        //add slugCategory current
+        slugCategories.add(new SlugCategoryResponseDTO(element.getSlugCategory()));
+
+        //add all slugCategory parent
+        if (!allParentIds.isEmpty()) {
+          String[] slugCategoriesArray = Arrays.stream(allParentIds.get().split("-", 0)).
+                  filter(e -> e.trim().length() > 0).toArray(String[]::new);
+
+          slugCategories.addAll(Arrays.stream(slugCategoriesArray)
+                  .map(e -> {
+                    return new SlugCategoryResponseDTO(categoryRepository.findSlugById(Long.parseLong(e)));
+                  }).toList());
         }
-
-        String[] slugCategoriesArray = Arrays.stream(allParentIds.get().split("-", 0)).
-                filter(e -> e.trim().length() > 0).toArray(String[]::new);
-
-        slugCategories = Arrays.stream(slugCategoriesArray)
-                        .map(e -> {
-                          return new SlugCategoryResponseDTO(categoryRepository.findSlugById(Long.parseLong(e)));
-                        }).toList();
         element.setSlugCategories(slugCategories);
 
       });

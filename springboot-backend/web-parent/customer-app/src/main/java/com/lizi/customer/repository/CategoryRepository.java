@@ -22,6 +22,10 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
           "WHERE c.id = :id ", nativeQuery = true)
   String findSlugById(@Param(value = "id") Long id);
 
+  @Query(value = "select c.id from tbl_categories c \n" +
+          "WHERE c.slug = :slug ", nativeQuery = true)
+  Integer findIdBySlug(@Param(value = "slug") String slug);
+
   @Query(value = "select all_parent_ids FROM tbl_categories c \n" +
           "WHERE c.slug = :slug and (enabled is true)", nativeQuery = true)
   Optional<String> findAllParentIdsBySlugAndEnabledTrue(@Param(value = "slug") String slug);
