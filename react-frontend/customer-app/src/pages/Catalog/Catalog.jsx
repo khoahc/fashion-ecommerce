@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState, useRef } from "react";
-import { useLocation, Link, useNavigate } from "react-router-dom";
+import { useLocation, Link, useNavigate, useParams } from "react-router-dom";
 import { IconContext } from "react-icons";
 import { FaTrashAlt } from "react-icons/fa";
 import Select from "react-select";
@@ -13,10 +13,12 @@ import CheckBox from "../../components/Checkbox";
 import InfinityList from "../../components/InfinityList";
 import catalogCategory1 from "../../assets/fake-data/catalogCategory";
 import * as catalogCategory from "../../services/catalogCategory";
+import MenuFilter from "../../components/MenuFilter";
+import ColorFilter from "../../components/ColorFilter";
+import PriceFilter from "../../components/PriceFilter/PriceFilter";
 
 const Catalog = () => {
-  const { pathname } = useLocation();
-  const slug = pathname.slice(3);
+  const { slugCategory } = useParams();
 
   const optionsSort = [
     { value: "priceHighToLow", label: "Giá thấp đến cao" },
@@ -24,20 +26,10 @@ const Catalog = () => {
     { value: "topSellers", label: "Bán chạy" },
     { value: "newest", label: "Mới nhất" },
   ];
-  const MAX_PRICE = 99999999999;
-  const filterPrice = [
-    { start: 0, end: 50000 },
-    { start: 50000, end: 100000 },
-    { start: 100000, end: 150000 },
-    { start: 150000, end: 200000 },
-    { start: 200000, end: 300000 },
-    { start: 300000, end: 500000 },
-    { start: 500000, end: MAX_PRICE },
-  ];
 
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState([]);
 
-  console.log(selectedOption);
+  console.log("sort" + selectedOption);
   // -----------------------------------------------------
   const initFilter = {
     category: [],
@@ -46,10 +38,13 @@ const Catalog = () => {
   };
 
   let navigate = useNavigate();
-
+   
+  const [productData, setProductData] = useState([]);
   const [products, setProducts] = useState([]);
 
   const [category, setCategory] = useState([]);
+
+  const [menuCategory, setMenuCategory] = useState([]);
 
   useEffect(() => {
     // const fetchData = async () => {
@@ -61,11 +56,10 @@ const Catalog = () => {
 
     Promise.all([
       catalogCategory
-        .getCategoryBySlug(slug)
+        .getCategoryBySlug(slugCategory)
         .then((data) => {
           if (data.status === "OK") {
             setCategory(data.data);
-            console.log(data);
           } else {
             return Promise.reject(new Error(data.message));
           }
@@ -76,11 +70,26 @@ const Catalog = () => {
         }),
 
       catalogCategory
-        .getAllProductBySlugCategory(slug)
+        .getAllProductBySlugCategory(slugCategory)
         .then((data) => {
           if (data.status === "OK") {
+            setProductData(data.data); 
             setProducts(data.data);
-            console.log(data);
+            console.log("get All product: " + JSON.stringify(data.data));
+          } else {
+            return Promise.reject(new Error(data.message));
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          navigate("/error");
+        }),
+      catalogCategory
+        .getMenuCategory(slugCategory)
+        .then((data) => {
+          if (data.status === "OK") {
+            setMenuCategory(data.data);
+            console.log(data.data);
           } else {
             return Promise.reject(new Error(data.message));
           }
@@ -90,7 +99,7 @@ const Catalog = () => {
           navigate("/error");
         }),
     ]);
-  }, [slug]);
+  }, [slugCategory]);
 
   //scroll
   const [scrollDirection, setScrollDirection] = useState(null);
@@ -118,6 +127,7 @@ const Catalog = () => {
 
   const [filter, setFilter] = useState(initFilter);
 
+  console.log(JSON.stringify(filter));
   const initMenuFilter = {
     ...filter,
     category: [],
@@ -133,19 +143,11 @@ const Catalog = () => {
     price: [],
   };
 
-  const clearFilter = () => setFilter(initFilter);
-  const clearMenuFilter = () => setFilter(initMenuFilter);
-  const clearColorFilter = () => setFilter(initColorFilter);
-  const clearPriceFilter = () => setFilter(initPriceFilter);
-
   const filterSelect = (type, checked, item) => {
     if (checked) {
       switch (type) {
         case "CATEGORY":
-          setFilter({
-            ...filter,
-            category: [...filter.category, item.slug],
-          });
+          setFilter({ ...filter, category: [...filter.category, item.slug] });
           break;
         case "COLOR":
           setFilter({ ...filter, color: [...filter.color, item.slug] });
@@ -158,9 +160,7 @@ const Catalog = () => {
     } else {
       switch (type) {
         case "CATEGORY":
-          const newCategory = filter.category.filter(
-            (e) => e !== item.categorySlug
-          );
+          const newCategory = filter.category.filter((e) => e !== item.slug);
           setFilter({ ...filter, category: newCategory });
           break;
         case "COLOR":
@@ -176,19 +176,34 @@ const Catalog = () => {
     }
   };
 
+  const clearFilter = () => setFilter(initFilter);
+  const clearMenuFilter = () => setFilter(initMenuFilter);
+  const clearColorFilter = () => setFilter(initColorFilter);
+  const clearPriceFilter = () => setFilter(initPriceFilter);
+
   //filter
   const updateProducts = useCallback(() => {
-    let temp = products;
-
+    console.log("in to call");
+    let temp = productData;
+    console.log("product call back: " + JSON.stringify(temp, null, 2));
     if (filter.category.length > 0) {
-      temp = temp.filter((e) => filter.category.includes(e.categorySlug));
+      temp = temp.filter((e) => {
+        const check = e.slugCategories.find((category) =>
+          filter.category.includes(category.slug)
+        );
+        console.log("check category: " + JSON.stringify(check));
+        return check !== undefined;
+      });
     }
 
     if (filter.color.length > 0) {
       temp = temp.filter((e) => {
-        const check = e.colors.find((color) =>
-          filter.color.includes(color.slug)
+        const check = e.colors.find((color) => 
+          filter.color.includes(color.slug)      
+     
+        
         );
+        console.log("check color: " + JSON.stringify(check));
         return check !== undefined;
       });
     }
@@ -206,67 +221,13 @@ const Catalog = () => {
         return false;
       });
     }
-
+    console.log("update product", JSON.stringify(temp));
     setProducts(temp);
-  }, [filter, products]);
+  }, [filter]);
 
   useEffect(() => {
     updateProducts();
   }, [updateProducts]);
-
-  // menu
-  const menuData = catalogCategory1.menu;
-  const menu = menuData.map((item, index) => (
-    <div key={index}>
-      {/* <Link to={"/c/" + item.slug}>
-        <ul>{item.name}</ul>
-      </Link> */}
-      <CheckBox
-        label={item.name}
-        onChange={(input) => filterSelect("CATEGORY", input.checked, item)}
-        checked={filter.category.includes(item.slug)}
-      />
-
-      {item.hasOwnProperty("children") &&
-        item.children.map((item, index) => (
-          <CheckBox
-            key={index}
-            label={item.name}
-            onChange={(input) => filterSelect("CATEGORY", input.checked, item)}
-            checked={filter.category.includes(item.slug)}
-          />
-        ))}
-    </div>
-  ));
-
-  //colors
-  const colors = catalogCategory1.colors.map((item, index) => (
-    <div key={index} className="">
-      <CheckBox
-        label={item.name}
-        onChange={(input) => filterSelect("COLOR", input.checked, item)}
-        checked={filter.color.includes(item.slug)}
-      />
-    </div>
-  ));
-
-  //price
-  const prices = filterPrice.map((item, index) => (
-    <div key={index} className="">
-      <CheckBox
-        label={
-          numberWithCommas(item.start) +
-          " đ" +
-          " - " +
-          (item.end < MAX_PRICE ? numberWithCommas(item.end) + " đ" : "Vô hạn")
-        }
-        onChange={(input) => filterSelect("PRICE", input.checked, item)}
-        checked={filter.price.some((elem) => {
-          return JSON.stringify(item) === JSON.stringify(elem);
-        })}
-      />
-    </div>
-  ));
 
   return (
     <>
@@ -336,10 +297,16 @@ const Catalog = () => {
                     </IconContext.Provider>
                   </div>
                   {/* list menu */}
-                  <div className="mt-1">{menu}</div>
+                  <div className="mt-1">
+                    <MenuFilter
+                      menuData={menuCategory}
+                      checkedList={filter.category}
+                      onChange={filterSelect}
+                    />
+                  </div>
                 </div>
 
-                {/* filter */}
+                {/* FILTER */}
                 <div className={clsx(styles.filter)}>
                   <div className={clsx(styles.colorList)}>
                     <div className={clsx(styles.title)}>
@@ -351,7 +318,13 @@ const Catalog = () => {
                       </IconContext.Provider>
                     </div>
                     {/* list color */}
-                    <div className="mt-1">{colors}</div>
+                    <div className="mt-1">
+                      <ColorFilter
+                        colorsData={catalogCategory1.colors}
+                        checkedList={filter.color}
+                        onChange={filterSelect}
+                      />
+                    </div>
                   </div>
                   <div className={clsx(styles.priceList)}>
                     <div className={clsx(styles.title)}>
@@ -363,7 +336,12 @@ const Catalog = () => {
                       </IconContext.Provider>
                     </div>
                     {/* list price */}
-                    <div className="mt-1 mb-2">{prices}</div>
+                    <div className="mt-1 mb-2">
+                      <PriceFilter
+                        onChange={filterSelect}
+                        checkedList={filter.price}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>

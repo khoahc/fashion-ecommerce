@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, memo } from "react";
 import PropTypes from "prop-types";
 
 import Grid from "../Grid";
@@ -67,7 +67,7 @@ const InfinityList = (props) => {
           <ProductCard
             key={index}
             name={item.name}            
-            slug={item.slug}                 
+            slug={item.slugProduct}                 
             price={Number(item.price)}
             discountValue={item.discountValue}
             promotionalPrice={item.promotionalPrice}

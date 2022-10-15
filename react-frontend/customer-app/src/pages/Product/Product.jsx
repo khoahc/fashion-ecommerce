@@ -1,15 +1,40 @@
-import React, { Text } from "react";
+import React, { Text, useState, useEffect } from "react";
 import clsx from "clsx";
+import { useParams, useNavigate } from "react-router-dom";
 import StarRatings from "react-star-ratings";
 
 import Breadcrumb from "../../components/Breadcrumb";
 import Grid from "../../components/Grid";
 import Button from "../../components/Button";
-import productDetail from "../../assets/fake-data/productDetail";
+import productDetail1 from "../../assets/fake-data/productDetail";
 import styles from "./Product.module.scss";
 import numberWithCommas from "../../utils/numberWithCommas";
+import * as product from "../../services/product";
 
 const Product = () => {
+  const { slugProduct } = useParams();
+  let navigate = useNavigate();
+
+  const [productDetail, setProductDetail] = useState([]);
+
+  useEffect(() => {
+    // Promise.all([
+    product
+      .getProductDetailBySlug(slugProduct)
+      .then((data) => {
+        if (data.data.status === "OK") {
+          setProductDetail(data.data.data);
+          console.log(data.data.data)
+        } else {
+          return Promise.reject(new Error(data.message));
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        navigate("/error");
+      });
+  }, []);
+
   return (
     <div className={clsx(styles.container)}>
       <Breadcrumb name={productDetail.name} />
@@ -26,7 +51,7 @@ const Product = () => {
           <div className="">
             {/* image list */}
             <Grid col={2} gap={10}>
-              {productDetail.imageList.map((item, index) => (
+              {productDetail.imageList && productDetail.imageList.map((item, index) => (
                 <div key={index}>
                   <img src={item.path} alt="product-image" />
                 </div>
@@ -41,7 +66,9 @@ const Product = () => {
               <h2 className="mb-2">{productDetail.name}</h2>
             </div>
             <div>
-              <span>{numberWithCommas(productDetail.price) + " đ"}</span>
+              <span>
+                {numberWithCommas(Number(productDetail.price)) + " đ"}
+              </span>
             </div>
           </div>
 
@@ -49,9 +76,9 @@ const Product = () => {
           <div className="mb-2">
             <h3>Màu</h3>
             <div className={clsx(styles.list)}>
-              {productDetail.color.map((item, index) => (
+              {/* {productDetail.color.map((item, index) => (
                 <p key={index}>{item.name}</p>
-              ))}
+              ))} */}
             </div>
           </div>
           <hr />
@@ -59,9 +86,9 @@ const Product = () => {
           <div className="mb-2">
             <h3>Size</h3>
             <div className={clsx(styles.list)}>
-              {productDetail.size.map((item, index) => (
+              {/* {productDetail.size.map((item, index) => (
                 <span key={index}>{item.name}</span>
-              ))}
+              ))} */}
             </div>
           </div>
           <hr />
@@ -103,7 +130,7 @@ const Product = () => {
               backgroundColor="black"
               color="white"
               radius="3"
-              fontWeight="3"              
+              fontWeight="3"
               size="5"
             >
               Thêm vào giỏ
@@ -154,6 +181,7 @@ const Product = () => {
         </div>
       </div>
     </div>
+    // <></>
   );
 };
 

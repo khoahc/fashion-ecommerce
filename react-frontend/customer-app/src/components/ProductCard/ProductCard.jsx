@@ -38,9 +38,9 @@ const ProductCard = (props) => {
 
   return (
     <div className={clsx(styles.container)}>
-      <Link to={`/p/${props.slug}?color=${props.colors[0].slug}`}>
+      <Link to={props.colors.length > 0 ? `/p/${props.slug}?color=${props.colors[0].slug}`: `/p/${props.slug}`}>
         <div className={clsx(styles.image)}>
-          <img src={props.colors[0].mainImage} alt="image-product" />
+          <img src={props.colors.length > 0 ? props.colors[0].mainImage : ''} alt="image-product" />
         </div>
         <h4 className="mt-1" style={{ color: "#9e3500" }}>
           {props.name}

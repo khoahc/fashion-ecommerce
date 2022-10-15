@@ -1,9 +1,9 @@
 const routes = {
   home: '/',
-  category: '/c/:category',
+  category: '/c/:slugCategory',
   cart: '/cart',
   profile: '/member/@:nickname',  
-  product: '/p/:product',
+  product: '/p/:slugProduct',
   search: '/search',
   login: '/login',
   register: '/register',
