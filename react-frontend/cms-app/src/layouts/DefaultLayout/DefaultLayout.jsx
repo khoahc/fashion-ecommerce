@@ -1,8 +1,22 @@
+import PropTypes from "prop-types";
 
-const DefaultLayout = () => {
+import Navbar from '../../components/Navbar';
+import Aside from '../../components/Aside';
+import Footer from '../../components/Footer';
+
+function DefaultLayout({ children }) {
   return (
-    <div>DefaultLayout</div>
-  )
+    <div>
+      <Navbar />
+      <Aside />
+      <div>{children}</div>
+      <Footer />
+    </div>
+  );
 }
 
-export default DefaultLayout
+DefaultLayout.propTypes = {
+    children: PropTypes.node.isRequired,
+  };
+
+export default DefaultLayout;
