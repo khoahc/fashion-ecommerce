@@ -14,7 +14,7 @@ const Aside = () => {
           <li className="">
             <Link to={"/"}>
               <span className="icon">
-                <i class="mdi mdi-desktop-mac"></i>
+                <i className="mdi mdi-view-dashboard-outline"></i>
               </span>
               <span className="menu-item-label">Dashboard</span>
             </Link>
@@ -22,7 +22,7 @@ const Aside = () => {
           <li className="">
             <Link to={"/category"}>
               <span className="icon">
-                <i className="mdi mdi-desktop-mac"></i>
+                <i className="mdi mdi-hanger"></i>
               </span>
               <span className="menu-item-label">Loại sản phẩm</span>
             </Link>
@@ -30,7 +30,7 @@ const Aside = () => {
           <li className="">
             <Link to={"/product"}>
               <span className="icon">
-                <i className="mdi mdi-desktop-mac"></i>
+                <i className="mdi mdi-shopping-outline "></i>
               </span>
               <span className="menu-item-label">Sản phẩm</span>
             </Link>
@@ -38,7 +38,7 @@ const Aside = () => {
           <li className="">
             <Link to={"/order"}>
               <span className="icon">
-                <i className="mdi mdi-desktop-mac"></i>
+                <i className="mdi mdi-receipt-text-outline"></i>
               </span>
               <span className="menu-item-label">Đơn hàng</span>
             </Link>
@@ -46,7 +46,7 @@ const Aside = () => {
           <li className="">
             <Link to={"/voucher"}>
               <span className="icon">
-                <i className="mdi mdi-desktop-mac"></i>
+                <i className="mdi mdi-brightness-percent"></i>
               </span>
               <span className="menu-item-label">Voucher</span>
             </Link>
@@ -54,7 +54,7 @@ const Aside = () => {
           <li className="">
             <Link to={"/delivery"}>
               <span className="icon">
-                <i className="mdi mdi-desktop-mac"></i>
+                <i className="mdi mdi-truck-delivery"></i>
               </span>
               <span className="menu-item-label">Giao hàng</span>
             </Link>
@@ -62,7 +62,7 @@ const Aside = () => {
           <li className="">
             <Link to={"/user"}>
               <span className="icon">
-                <i className="mdi mdi-desktop-mac"></i>
+                <i className="mdi mdi-account-tie"></i>
               </span>
               <span className="menu-item-label">Nhân viên</span>
             </Link>
@@ -70,7 +70,7 @@ const Aside = () => {
           <li className="">
             <Link to={"/customer"}>
               <span className="icon">
-                <i className="mdi mdi-desktop-mac"></i>
+                <i className="mdi mdi-account-group"></i>
               </span>
               <span className="menu-item-label">Khách hàng</span>
             </Link>
@@ -78,7 +78,7 @@ const Aside = () => {
           <li className="">
             <Link to={"/statis"}>
               <span className="icon">
-                <i className="mdi mdi-desktop-mac"></i>
+                <i className="mdi mdi-chart-bar"></i>
               </span>
               <span className="menu-item-label">Thống kê</span>
             </Link>
