@@ -176,6 +176,16 @@ hr {
   margin-left: 20px;
 }
 // ----------------padding---------------
+.py-0-5 {
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+}
+
+.px-0-5 {
+  padding-left: 5px !important;
+  padding-right: 5px !important;
+}
+
 .py-1 {
   padding-top: 10px !important;
   padding-bottom: 10px !important;
@@ -249,6 +259,14 @@ hr {
   height: 50px;
 }
 
+.btn-size-6 {
+  height: 60px;
+}
+
+.btn-size-8 {
+  height: 80px;
+}
+
 //-----------------color----------------
 .color-white {
   color: #fff;
@@ -259,6 +277,10 @@ hr {
 }
 
 // -----------------border-radius---------
+.border-radius-0-5 {
+  border-radius: 5px;
+}
+
 .border-radius-1 {
   border-radius: 10px;
 }

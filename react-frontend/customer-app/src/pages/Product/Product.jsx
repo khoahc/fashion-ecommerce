@@ -1,12 +1,11 @@
 import React, { Text, useState, useEffect } from "react";
 import clsx from "clsx";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import StarRatings from "react-star-ratings";
 
 import Breadcrumb from "../../components/Breadcrumb";
 import Grid from "../../components/Grid";
 import Button from "../../components/Button";
-import productDetail1 from "../../assets/fake-data/productDetail";
 import styles from "./Product.module.scss";
 import numberWithCommas from "../../utils/numberWithCommas";
 import * as product from "../../services/product";
@@ -15,6 +14,8 @@ const Product = () => {
   const { slugProduct } = useParams();
   let navigate = useNavigate();
 
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const [productDetail, setProductDetail] = useState([]);
 
   const [count, setCount] = useState(1);
@@ -22,7 +23,11 @@ const Product = () => {
   useEffect(() => {
     // Promise.all([
     product
-      .getProductDetailBySlug(slugProduct)
+      .getProductDetailBySlug(
+        slugProduct,
+        searchParams.get("color"),
+        searchParams.get("size")
+      )
       .then((data) => {
         if (data.data.status === "OK") {
           setProductDetail(data.data.data);
@@ -35,7 +40,7 @@ const Product = () => {
         console.log(error);
         navigate("/error");
       });
-  }, []);
+  }, [searchParams]);
 
   return (
     <div className={clsx(styles.container)}>
@@ -76,9 +81,26 @@ const Product = () => {
           <div className="mb-2">
             <h3>Màu</h3>
             <div className={clsx(styles.list)}>
-              {/* {productDetail.color.map((item, index) => (
-                <p key={index}>{item.name}</p>
-              ))} */}
+              {productDetail.colors?.map((item, index) => (
+                <Button
+                  onClick={() => {
+                    setSearchParams({
+                      ...Object.fromEntries([...searchParams]),
+                      color: item.slug,
+                    });
+                  }}
+                  backgroundColor="white"
+                  color="black"
+                  border="border"
+                  radius="0-5"
+                  size="8"
+                  paddingX="0-5"
+                  paddingY="0-5"
+                  key={index}
+                >
+                  <img key={index} src={item.image} />
+                </Button>
+              ))}
             </div>
           </div>
           <hr />
@@ -86,9 +108,27 @@ const Product = () => {
           <div className="mb-2">
             <h3>Size</h3>
             <div className={clsx(styles.list)}>
-              {/* {productDetail.size.map((item, index) => (
-                <span key={index}>{item.name}</span>
-              ))} */}
+              {productDetail.sizes?.map((item, index) => (
+                <Button
+                  onClick={() => {
+                    setSearchParams({
+                      ...Object.fromEntries([...searchParams]),
+                      size: item.name,
+                    });
+                  }}
+                  backgroundColor="white"
+                  color="black"
+                  border="border"
+                  radius="1"
+                  fontWeight="3"
+                  size="5"
+                  paddingX="2"
+                  paddingY="1"
+                  key={index}
+                >
+                  {item.name}
+                </Button>
+              ))}
             </div>
           </div>
           <hr />
@@ -118,7 +158,7 @@ const Product = () => {
                 <input type="button" value="+" class="plus button is-form" />{" "} */}
                 <Button
                   onClick={() => {
-                    count > 1 && setCount(count - 1);
+                    count > 1 && setCount((count) => count - 1);
                   }}
                   backgroundColor="white"
                   color="black"
@@ -133,7 +173,7 @@ const Product = () => {
                 </Button>
                 <span className="mX-1">{count}</span>
                 <Button
-                  onClick={() => setCount(count + 1)}
+                  onClick={() => setCount((count) => count + 1)}
                   backgroundColor="white"
                   color="black"
                   border="border"
