@@ -26,7 +26,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
   Optional<List<ProductCatalogResponseDTO>> findAllProductsCatalogByCategorySlug(@Param("slugCategory") String slug, @Param("idCategory") Integer id);
 
   //find colors of product (name, slug and image attribute) by category slug and product slug
-  @Query(value = "SELECT DISTINCT new com.lizi.customer.dto.response.ProductCatalogColorResponseDTO(p_c.name, p_c.slug, img.url as main_image) \n" +
+  @Query(value = "SELECT DISTINCT new com.lizi.customer.dto.response.ProductCatalogColorResponseDTO(color.name, color.slug, img.url as main_image) \n" +
           "FROM \n" +
           "\tProduct p \n" +
           "INNER JOIN Category c\n" +
@@ -37,7 +37,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
           "ON p_o.productColor.id = p_c.id\n" +
           "INNER JOIN Image img\n" +
           "ON p_c.mainImage.id = img.id\n" +
-          "WHERE p.slug = :slugProduct ORDER BY p_c.slug ASC")
+          "INNER JOIN Color color\n" +
+          "ON p_c.color.id = color.id\n" +
+          "WHERE p.slug = :slugProduct ORDER BY color.slug ASC")
   Optional<List<ProductCatalogColorResponseDTO>> findProductCatalogColorByProductSlug( @Param("slugProduct") String slugProduct);
 
   //find product detail
@@ -65,9 +67,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                   "    ON p_o.product_color_id = p_c.id\n" +
                   "    INNER JOIN tbl_images img\n" +
                   "    ON p_c.main_image_id = img.id\n" +
-                  " --    INNER JOIN tbl_product_image_colors p_i_c\n" +
-                  "--     ON p_c.id = p_i_c.product_color_id\n" +
-                  "WHERE p.slug = :slugProduct AND (:slugColor IS NULL OR p_c.slug = :slugColor) ORDER BY p_c.slug ASC LIMIT 1", nativeQuery = true )
+                  "    INNER JOIN tbl_color color\n" +
+                  "    ON p_c.color_id = color.id\n" +
+                  "WHERE p.slug = :slugProduct AND (:slugColor IS NULL OR color.slug = :slugColor) ORDER BY color.slug ASC LIMIT 1", nativeQuery = true )
   String findMainImageForProductDetailBySlugProduct(@Param("slugProduct") String slugProduct,
                                                     @Param("slugColor") String slugColor);
 
@@ -78,13 +80,15 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                   "\tProduct p    \n" +
                   "    INNER JOIN ProductOption p_o\n" +
                   "    ON p.id = p_o.product.id\n" +
-                  "\tINNER JOIN ProductColor p_c\n" +
+                  "    INNER JOIN ProductColor p_c\n" +
                   "    ON p_o.productColor.id = p_c.id    \n" +
-                  "\tINNER JOIN ProductImageColor p_i_c\n" +
-                  "\tON p_c.id = p_i_c.productColor.id\n" +
+                  "    INNER JOIN ProductImageColor p_i_c\n" +
+                  "    ON p_c.id = p_i_c.productColor.id\n" +
                   "    INNER JOIN Image img\n" +
                   "    ON p_i_c.image.id = img.id\n" +
-                  "WHERE p.slug = :slugProduct AND (:slugColor IS NULL OR p_c.slug = :slugColor) ORDER BY p_c.slug ASC")
+                  "    INNER JOIN Color color\n" +
+                  "    ON p_c.color.id = color.id\n" +
+                  "WHERE p.slug = :slugProduct AND (:slugColor IS NULL OR color.slug = :slugColor) ORDER BY color.slug ASC")
   Optional<List<ImageResponseDTO>> findAllImagesForProductDetailBySlugProduct(@Param("slugProduct") String slugProduct,
                                                     @Param("slugColor") String slugColor);
 
