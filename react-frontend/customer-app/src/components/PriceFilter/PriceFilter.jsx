@@ -1,4 +1,5 @@
 import React from "react";
+import _ from "lodash";
 
 import numberWithCommas from "../../utils/numberWithCommas";
 import CheckBox from "../Checkbox/Checkbox";
@@ -28,9 +29,7 @@ const PriceFilter = (props) => {
                 : "Vô hạn")
             }
             onChange={(input) => props.onChange("PRICE", input.checked, item)}
-            checked={props.checkedList.some((elem) => {
-              return JSON.stringify(item) === JSON.stringify(elem);
-            })}
+            checked={props.checkedList.some((elem) => _.isEqual(item, elem))}
           />
         </div>
       ))}

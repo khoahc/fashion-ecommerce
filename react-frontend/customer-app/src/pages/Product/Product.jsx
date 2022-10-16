@@ -17,6 +17,8 @@ const Product = () => {
 
   const [productDetail, setProductDetail] = useState([]);
 
+  const [count, setCount] = useState(1);
+
   useEffect(() => {
     // Promise.all([
     product
@@ -24,7 +26,7 @@ const Product = () => {
       .then((data) => {
         if (data.data.status === "OK") {
           setProductDetail(data.data.data);
-          console.log(data.data.data)
+          console.log(data.data.data);
         } else {
           return Promise.reject(new Error(data.message));
         }
@@ -41,21 +43,19 @@ const Product = () => {
 
       <div className={clsx(styles.wrap)}>
         <div className={clsx(styles.left)}>
-          <div className="image">
+          <div>
             {/* main image */}
-            <img
-              src={productDetail.mainImage}
-              alt={productDetail.name + " image"}
-            />
+            <img src={productDetail.mainImage} alt="" />
           </div>
           <div className="">
             {/* image list */}
             <Grid col={2} gap={10}>
-              {productDetail.imageList && productDetail.imageList.map((item, index) => (
-                <div key={index}>
-                  <img src={item.path} alt="product-image" />
-                </div>
-              ))}
+              {productDetail.imageList &&
+                productDetail.imageList.map((item, index) => (
+                  <div key={index}>
+                    <img src={item.path} alt="product-image" />
+                  </div>
+                ))}
             </Grid>
           </div>
         </div>
@@ -116,9 +116,35 @@ const Product = () => {
                   inputmode="numeric"
                 />
                 <input type="button" value="+" class="plus button is-form" />{" "} */}
-                <button>-</button>
-                <span>1</span>
-                <button>+</button>
+                <Button
+                  onClick={() => {
+                    count > 1 && setCount(count - 1);
+                  }}
+                  backgroundColor="white"
+                  color="black"
+                  border="border"
+                  radius="3"
+                  fontWeight="3"
+                  size="5"
+                  paddingX="2"
+                  paddingY="1"
+                >
+                  -
+                </Button>
+                <span className="mX-1">{count}</span>
+                <Button
+                  onClick={() => setCount(count + 1)}
+                  backgroundColor="white"
+                  color="black"
+                  border="border"
+                  radius="3"
+                  fontWeight="3"
+                  size="5"
+                  paddingX="2"
+                  paddingY="1"
+                >
+                  +
+                </Button>
                 <span className={clsx(styles.countInStock)}>
                   Còn 10 sản phẩm
                 </span>
@@ -156,7 +182,7 @@ const Product = () => {
             </div>
           </div>
           <hr />
-          <div className="flex-row flex-center">
+          <div className="flex-row flex-center mb-2">
             {/* Review */}
             <div>
               <h3 className="mb-1">Đánh giá sản phẩm</h3>
@@ -181,7 +207,6 @@ const Product = () => {
         </div>
       </div>
     </div>
-    // <></>
   );
 };
 

@@ -87,7 +87,7 @@
       div.right:nth-of-type(2) {
         flex-grow: 8;
         margin-left: 20px;
-
+        min-height: 1000px;
         .listProduct {
           padding: 20px 10px 100px;
         }

@@ -234,7 +234,7 @@ const Catalog = () => {
       <img
         className={clsx(styles.banner)}
         src={category.image}
-        alt="image-category"
+        alt=""
       />
 
       <div className={clsx(styles.container)}>
@@ -337,7 +337,7 @@ const Catalog = () => {
                     </div>
                     {/* list price */}
                     <div className="mt-1 mb-2">
-                      <PriceFilter
+                      <PriceFilter                        
                         onChange={filterSelect}
                         checkedList={filter.price}
                       />

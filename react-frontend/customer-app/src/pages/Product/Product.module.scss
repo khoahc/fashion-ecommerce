@@ -12,11 +12,11 @@
     margin: auto;
 
     .left {
-      flex-grow: 2;
+      flex: 1.75;     
     }
 
     .right {
-      flex-grow: 1;
+      flex: 1;
 
       .list {
         display: flex;
