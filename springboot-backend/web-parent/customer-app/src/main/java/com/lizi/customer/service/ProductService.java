@@ -15,6 +15,6 @@ public interface ProductService {
 
   Optional<ProductDetailResponseDTO> getProductDetailBySlug(String slugProduct, String slugColor, String size);
 
-  Optional<List<SizeResponseDTO>> getAllSizesForProductDetailByProductSlug(String slug);
+//  Optional<List<SizeResponseDTO>> getAllSizesForProductDetailByProductSlug(String slug);
 
 }

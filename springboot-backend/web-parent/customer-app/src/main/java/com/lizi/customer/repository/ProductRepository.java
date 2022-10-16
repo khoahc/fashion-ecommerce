@@ -92,11 +92,25 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
   Optional<List<ImageResponseDTO>> findAllImagesForProductDetailBySlugProduct(@Param("slugProduct") String slugProduct,
                                                     @Param("slugColor") String slugColor);
 
-  //find size list for product detail
+
+  //find colors list for product detail
+  @Query(value = "SELECT DISTINCT new com.lizi.customer.dto.response.ColorProductDetailResponseDTO(color.name, color.slug, img.url) FROM Product p \n" +
+          "\tINNER JOIN ProductOption p_o\n"+
+          "\tON p.id = p_o.product.id\n"+
+          "\tINNER JOIN ProductColor p_c\n" +
+          "\tON p_o.productColor.id = p_c.id\n" +
+          "\tINNER JOIN Image img\n" +
+          "\tON p_c.mainImage.id = img.id\n" +
+          "\tINNER JOIN Color color\n" +
+          "\tON p_c.color.id = color.id\n" +
+          "WHERE p.slug = :slugProduct \n")
+  Optional<List<ColorProductDetailResponseDTO>> findAllColorsProductBySlugProduct(@Param("slugProduct") String slug);
+
+  //find sizes list for product detail
   @Query(value = "SELECT DISTINCT new com.lizi.customer.dto.response.SizeResponseDTO(p_o.size) FROM Product p \n" +
           "\tINNER JOIN ProductOption p_o\n"+
           "\tON p.id = p_o.product.id\n"+
           "\tWHERE p.slug = :slugProduct \n")
-  Optional<List<SizeResponseDTO>> findSizesProductBySlugProduct(@Param("slugProduct") String slug);
+  Optional<List<SizeResponseDTO>> findAllSizesProductBySlugProduct(@Param("slugProduct") String slug);
 
 }

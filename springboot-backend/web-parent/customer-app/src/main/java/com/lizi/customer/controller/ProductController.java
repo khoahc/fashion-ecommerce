@@ -26,9 +26,9 @@ public class ProductController {
     return new ResponseObject<>(HttpStatus.OK, "Thành công", productService.getProductDetailBySlug(slugProduct, slugColor, size));
   }
 
-  @RequestMapping(value = "/{slug}/size")
-  public ResponseObject getAllSizesForProductDetailByProductSlug(@PathVariable(name = "slug") String slug) {
-    return new ResponseObject<>(HttpStatus.OK, "Thành công", productService.getAllSizesForProductDetailByProductSlug(slug));
-  }
+//  @RequestMapping(value = "/{slug}/size")
+//  public ResponseObject getAllSizesForProductDetailByProductSlug(@PathVariable(name = "slug") String slug) {
+//    return new ResponseObject<>(HttpStatus.OK, "Thành công", productService.getAllSizesForProductDetailByProductSlug(slug));
+//  }
 
 }

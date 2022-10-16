@@ -79,6 +79,14 @@ public class ProductServiceImpl implements ProductService {
     Optional<List<ImageResponseDTO>> images = productRepository.findAllImagesForProductDetailBySlugProduct(slugProduct, slugColor);
     product.get().setImageList(images);
 
+    //set all colors for product
+    Optional<List<ColorProductDetailResponseDTO>> colors = productRepository.findAllColorsProductBySlugProduct(slugProduct);
+    product.get().setColors(colors);
+
+    //set all colors for product
+    Optional<List<SizeResponseDTO>> sizes = productRepository.findAllSizesProductBySlugProduct(slugProduct);
+    product.get().setSizes(sizes);
+
     //set rate average for product
     Double ratingAverage = productRepository.findRatingAverageBySlugProduct(slugProduct);
     if (ratingAverage != null) {
@@ -88,10 +96,10 @@ public class ProductServiceImpl implements ProductService {
     return product;
   }
 
-  @Override
-  public Optional<List<SizeResponseDTO>> getAllSizesForProductDetailByProductSlug(String slug) {
-    //set sizes for product
-    Optional<List<SizeResponseDTO>> sizes = productRepository.findSizesProductBySlugProduct(slug);
-    return sizes;
-  }
+//  @Override
+//  public Optional<List<SizeResponseDTO>> getAllSizesForProductDetailByProductSlug(String slug) {
+//    //set sizes for product
+//    Optional<List<SizeResponseDTO>> sizes = productRepository.findAllSizesProductBySlugProduct(slug);
+//    return sizes;
+//  }
 }

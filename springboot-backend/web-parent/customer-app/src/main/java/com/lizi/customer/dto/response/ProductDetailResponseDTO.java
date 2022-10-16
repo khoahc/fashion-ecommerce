@@ -18,7 +18,8 @@ public class ProductDetailResponseDTO {
   private BigDecimal promotionalPrice = null;
   private String mainImage;
   private Optional<List<ImageResponseDTO>> imageList;
-  private Optional<List<SizeResponseDTO>> colors;
+  private Optional<List<ColorProductDetailResponseDTO>> colors;
+  private Optional<List<SizeResponseDTO>> sizes;
   private String description;
   private Double rate = 0.0;
 
