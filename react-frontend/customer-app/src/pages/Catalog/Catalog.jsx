@@ -11,8 +11,8 @@ import Breadcrumb from "../../components/Breadcrumb";
 import Button from "../../components/Button";
 import CheckBox from "../../components/Checkbox";
 import InfinityList from "../../components/InfinityList";
-import catalogCategory1 from "../../assets/fake-data/catalogCategory";
 import * as catalogCategory from "../../services/catalogCategory";
+import * as colorService from "../../services/color";
 import MenuFilter from "../../components/MenuFilter";
 import ColorFilter from "../../components/ColorFilter";
 import PriceFilter from "../../components/PriceFilter/PriceFilter";
@@ -38,9 +38,12 @@ const Catalog = () => {
   };
 
   let navigate = useNavigate();
-   
+
   const [productData, setProductData] = useState([]);
+
   const [products, setProducts] = useState([]);
+
+  const [colorsCategory, setColorsCategory] = useState([]);
 
   const [category, setCategory] = useState([]);
 
@@ -73,7 +76,7 @@ const Catalog = () => {
         .getAllProductBySlugCategory(slugCategory)
         .then((data) => {
           if (data.status === "OK") {
-            setProductData(data.data); 
+            setProductData(data.data);
             setProducts(data.data);
             console.log("get All product: " + JSON.stringify(data.data));
           } else {
@@ -92,6 +95,20 @@ const Catalog = () => {
             console.log(data.data);
           } else {
             return Promise.reject(new Error(data.message));
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          navigate("/error");
+        }),
+
+      colorService
+        .getAllColorsBySlugCategoty(slugCategory)
+        .then((data) => {
+          if (data.status === "OK") {
+            setColorsCategory(data.data);
+          } else {
+            setColorsCategory([]);
           }
         })
         .catch((error) => {
@@ -198,10 +215,8 @@ const Catalog = () => {
 
     if (filter.color.length > 0) {
       temp = temp.filter((e) => {
-        const check = e.colors.find((color) => 
-          filter.color.includes(color.slug)      
-     
-        
+        const check = e.colors.find((color) =>
+          filter.color.includes(color.slug)
         );
         console.log("check color: " + JSON.stringify(check));
         return check !== undefined;
@@ -231,11 +246,7 @@ const Catalog = () => {
 
   return (
     <>
-      <img
-        className={clsx(styles.banner)}
-        src={category.image}
-        alt=""
-      />
+      <img className={clsx(styles.banner)} src={category.image} alt="" />
 
       <div className={clsx(styles.container)}>
         <Breadcrumb name={category.name} />
@@ -320,7 +331,7 @@ const Catalog = () => {
                     {/* list color */}
                     <div className="mt-1">
                       <ColorFilter
-                        colorsData={catalogCategory1.colors}
+                        colorsData={colorsCategory}
                         checkedList={filter.color}
                         onChange={filterSelect}
                       />
@@ -337,7 +348,7 @@ const Catalog = () => {
                     </div>
                     {/* list price */}
                     <div className="mt-1 mb-2">
-                      <PriceFilter                        
+                      <PriceFilter
                         onChange={filterSelect}
                         checkedList={filter.price}
                       />
