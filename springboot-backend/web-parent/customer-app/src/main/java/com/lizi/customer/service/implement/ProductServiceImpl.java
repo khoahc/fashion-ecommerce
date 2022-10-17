@@ -83,7 +83,7 @@ public class ProductServiceImpl implements ProductService {
     Optional<List<ColorProductDetailResponseDTO>> colors = productRepository.findAllColorsProductBySlugProduct(slugProduct);
     product.get().setColors(colors);
 
-    //set all colors for product
+    //set all sizes for product
     Optional<List<SizeResponseDTO>> sizes = productRepository.findAllSizesProductBySlugProduct(slugProduct);
     product.get().setSizes(sizes);
 
