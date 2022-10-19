@@ -191,10 +191,10 @@ const Product = () => {
               </div>
             </div>
             <Button
-              className={clsx(styles.btnAddCard)}
               onClick={""}
-              backgroundColor="black"
-              color="white"
+              backgroundColor="white"
+              color="black"
+              border="border"
               radius="3"
               fontWeight="3"
               size="5"
@@ -203,9 +203,8 @@ const Product = () => {
             </Button>
             <Button
               onClick={""}
-              backgroundColor="white"
-              color="black"
-              border="border"
+              backgroundColor="black"
+              color="white"
               radius="3"
               fontWeight="3"
               size="5"

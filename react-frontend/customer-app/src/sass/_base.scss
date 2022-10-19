@@ -10,7 +10,7 @@
 
 html {
   font-size: 1rem;
-  // scroll-behavior: smooth;
+  scroll-behavior: smooth;
 
   @include mobile {
     font-size: 0.75rem;
@@ -98,6 +98,10 @@ hr {
   }
 }
 
+.min-height-100vh{
+  min-height: 100vh;
+}
+
 .right {
   flex: right;
 }
@@ -134,6 +138,16 @@ hr {
   margin: 30px;
 }
 
+.mY-1 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.mY-2 {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
 .mY-10 {
   margin-top: 100px;
   margin-bottom: 100px;
@@ -142,6 +156,11 @@ hr {
 .mX-1 {
   margin-left: 10px !important;
   margin-right: 10px !important;
+}
+
+.mX-2 {
+  margin-left: 20px !important;
+  margin-right: 20px !important;
 }
 
 .mt-1 {
@@ -313,6 +332,10 @@ hr {
   font-weight: 500;
 }
 
+.font-weight-4 {
+  font-weight: 400;
+}
+
 .font-weight-3 {
   font-weight: 300;
 }
@@ -354,6 +377,11 @@ hr {
 .flex-right {
   justify-content: center;
   align-items: flex-end;
+}
+
+.flex-left {
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .flex-row {
