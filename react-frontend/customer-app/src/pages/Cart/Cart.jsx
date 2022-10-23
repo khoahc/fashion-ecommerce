@@ -7,6 +7,8 @@ import CartItem from "../../components/CartItem";
 import Button from "../../components/Button";
 import styles from "./Cart.module.scss";
 import productData from "../../assets/fake-data/products";
+import productData1 from "../../assets/fake-data/top-product";
+
 import numberWithCommas from "../../utils/numberWithCommas";
 
 const Cart = () => {
@@ -34,6 +36,7 @@ const Cart = () => {
     let value = textInput.current.value;
     value != '' ? setInputHasValue(true) : setInputHasValue(false);
   };
+  
 
   useEffect(() => {
     setCartProducts(productData.getCartItemsInfo(cartItems));
@@ -51,10 +54,13 @@ const Cart = () => {
   return (
     <div className={clsx(styles.container)}>
       <div className={clsx(styles.left)}>
-        {cartProducts.map((item, index) => (
+        <div className="uppercase">
+          <h2 className="font-weight-5 mb-1">Giỏ hàng của bạn</h2>
+          <h4 className="font-weight-4">Tổng cộng (2 sản phẩm) 3.300.000 ₫</h4>
+        </div>        
+        {productData.getAllProducts().map((item, index) => (
           <CartItem item={item} key={index} />
         ))}
-        <h1>a</h1>
       </div>
 
       <div className={clsx(styles.right)}>
