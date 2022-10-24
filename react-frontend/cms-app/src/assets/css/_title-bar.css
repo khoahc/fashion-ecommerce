@@ -3,7 +3,7 @@
 }
 
 .is-title-bar li {
-  @apply inline-block pr-3 text-2xl text-gray-500;
+  @apply inline-block pr-3 text-xl text-gray-500;
 }
 
 .is-title-bar li:not(:last-child):after {

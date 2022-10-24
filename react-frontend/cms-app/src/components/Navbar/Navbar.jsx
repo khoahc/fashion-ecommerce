@@ -1,6 +1,20 @@
 // import "./Navbar.css";
 
+import { useNavigate } from "react-router-dom";
+import useToken from "../../utils/useToken";
+
 const Navbar = () => {
+
+  const navigate = useNavigate();
+  
+  const { removeToken } = useToken();
+
+  const logout = () => {
+    removeToken();
+    navigate('.login');
+  }
+
+
   return (
     <nav id="navbar-main" className="navbar is-fixed-top">
       <div className="navbar-brand">
@@ -62,7 +76,7 @@ const Navbar = () => {
                 <span className="icon">
                   <i className="mdi mdi-logout"></i>
                 </span>
-                <span>Log Out</span>
+                <span>Đăng xuất</span>
               </a>
             </div>
           </div>
@@ -113,16 +127,15 @@ const Navbar = () => {
               </a>
             </div>
           </div>
-          <a
-            href="/#"
-            title="Log out"
+          <button onClick={logout}
+            title="Đăng xuất"
             className="navbar-item desktop-icon-only"
           >
             <span className="icon">
               <i className="mdi mdi-logout"></i>
             </span>
-            <span>Log out</span>
-          </a>
+            <span>Đăng xuất</span>
+          </button>
         </div>
       </div>
     </nav>
