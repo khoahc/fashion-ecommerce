@@ -1,0 +1,42 @@
+.footer {
+  background-color: $navbar-bg;
+  height: $footer-height;
+  display: flex;
+  justify-content: center;
+
+  .container {
+    width: 90%;
+    color: $txt-white;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: column;
+  }
+
+  .footer-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    
+    &__title {
+      margin-bottom: 50px;
+
+      h3 {
+        text-transform: uppercase;
+      }
+    }
+
+    &__item {
+      font-weight: 200;
+    }
+
+    &__social {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+
+  
+}

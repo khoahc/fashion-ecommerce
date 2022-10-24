@@ -1,0 +1,80 @@
+.navbar {
+  background-color: $navbar-bg;
+  height: $navbar-height;
+  display: flex;
+  justify-content: center;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  transition: top 0.3s;
+
+  a:hover {
+    color: $main-color;
+  }
+  
+  .container {
+    width: 90%;
+    color: $txt-white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__logo {
+    display: block;
+  }
+
+  &__menu {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    &__item {
+      margin: auto 30px;
+      text-transform: uppercase;
+      font-weight: 300;
+    }
+
+    &__item.active {
+      color: $main-color;
+    }
+  }
+
+  &__items {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 32px;
+
+    &__item {
+      margin: auto 10px;
+
+      &__search {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 0.5px groove rgb(167, 166, 166);
+        padding: 5px 10px;
+
+        input[type="search"] {
+          padding: 5px;
+          border: 0;
+          background-color: #000;
+          color: $txt-white;
+        }
+
+        input[type="search"]:focus {
+          outline: none;
+        }
+      }
+    }
+  }
+}
+
+.show {
+  top: 0;
+}
+
+.hide {
+  top: -$navbar-height;
+}
