@@ -26,21 +26,21 @@ public class CategoryController {
   @GetMapping(value = "")
   public ResponseEntity<ResponseObject> getAll() {
     return ResponseEntity.ok().body(
-        ResponseObject.builder().code(HttpStatus.OK.value()).message(Constant.SUCCESS)
+        ResponseObject.builder().status(HttpStatus.OK).message(Constant.SUCCESS)
             .data(categoryService.getAll()).build());
   }
 
   @GetMapping(value = "/{id}")
   public ResponseEntity<ResponseObject> getCategory(@PathVariable(name = "id") Long id) {
     return ResponseEntity.ok().body(
-        ResponseObject.builder().code(HttpStatus.OK.value()).message(Constant.SUCCESS)
+        ResponseObject.builder().status(HttpStatus.OK).message(Constant.SUCCESS)
             .data(categoryService.getCategory(id)).build());
   }
 
   @PostMapping(value = "")
   public ResponseEntity<ResponseObject> createCategory(@RequestBody CategoryReqDto categoryReqDto) {
     return ResponseEntity.ok().body(
-        ResponseObject.builder().code(HttpStatus.OK.value()).message(Constant.SUCCESS)
+        ResponseObject.builder().status(HttpStatus.OK).message(Constant.SUCCESS)
             .data(categoryService.createCategory(categoryReqDto)).build());
   }
 
@@ -48,7 +48,7 @@ public class CategoryController {
   public ResponseEntity<ResponseObject> updateCategory(@PathVariable(name = "id") Long id,
       @RequestBody CategoryReqDto categoryReqDto) {
     return ResponseEntity.ok().body(
-        ResponseObject.builder().code(HttpStatus.OK.value()).message(Constant.SUCCESS)
+        ResponseObject.builder().status(HttpStatus.OK).message(Constant.SUCCESS)
             .data(categoryService.updateCategory(id, categoryReqDto)).build());
   }
 
@@ -56,6 +56,6 @@ public class CategoryController {
   public ResponseEntity<ResponseObject> deleteCategory(@PathVariable(name = "id") Long id) {
     categoryService.deleteCategory(id);
     return ResponseEntity.ok().body(
-        ResponseObject.builder().code(HttpStatus.OK.value()).message(Constant.SUCCESS).build());
+        ResponseObject.builder().status(HttpStatus.OK).message(Constant.SUCCESS).build());
   }
 }

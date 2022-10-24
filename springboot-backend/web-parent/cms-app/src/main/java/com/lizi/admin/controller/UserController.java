@@ -31,33 +31,33 @@ public class UserController {
 
   @GetMapping(value = "")
   public ResponseEntity<ResponseObject> getAll() {
-    return ResponseEntity.ok().body(ResponseObject.builder().code(HttpStatus.OK.value()).message(
+    return ResponseEntity.ok().body(ResponseObject.builder().status(HttpStatus.OK).message(
         Constant.SUCCESS).data(userService.getAll()).build());
   }
 
   @GetMapping(value = "/{id}")
   public ResponseEntity<ResponseObject> getUser(@PathVariable(name = "id") Long id) {
-    return ResponseEntity.ok().body(ResponseObject.builder().code(HttpStatus.OK.value()).message(
+    return ResponseEntity.ok().body(ResponseObject.builder().status(HttpStatus.OK).message(
         Constant.SUCCESS).data(userService.getUser(id)).build());
   }
 
   @PostMapping(value = "")
   public ResponseEntity<ResponseObject> createUser(@RequestBody UserReqDto userReqDto) {
-    return ResponseEntity.ok().body(ResponseObject.builder().code(HttpStatus.OK.value()).message(
+    return ResponseEntity.ok().body(ResponseObject.builder().status(HttpStatus.OK).message(
         Constant.SUCCESS).data(userService.createUser(userReqDto)).build());
   }
 
   @PostMapping(value = "/photos")
   public ResponseEntity<ResponseObject> uploadPhoto(
       @RequestParam(name = "photo") MultipartFile multipartFile) {
-    return ResponseEntity.ok().body(ResponseObject.builder().message(Constant.SUCCESS).code(
-        HttpStatus.OK.value()).data(cloudinaryService.uploadImageUser(multipartFile)).build());
+    return ResponseEntity.ok().body(ResponseObject.builder().message(Constant.SUCCESS).status(
+        HttpStatus.OK).data(cloudinaryService.uploadImageUser(multipartFile)).build());
   }
 
   @PutMapping(value = "/{id}")
   public ResponseEntity<ResponseObject> updateUser(@PathVariable(name = "id") Long id,
       @RequestBody UserReqDto userReqDto) {
-    return ResponseEntity.ok().body(ResponseObject.builder().code(HttpStatus.OK.value()).message(
+    return ResponseEntity.ok().body(ResponseObject.builder().status(HttpStatus.OK).message(
         Constant.SUCCESS).data(userService.updateUser(id, userReqDto)).build());
   }
 
@@ -69,7 +69,7 @@ public class UserController {
   @DeleteMapping(value = "/{id}")
   public ResponseEntity<ResponseObject> deleteUser(@PathVariable(name = "id") Long id) {
     userService.deleteUser(id);
-    return ResponseEntity.ok().body(ResponseObject.builder().code(HttpStatus.OK.value()).message(
+    return ResponseEntity.ok().body(ResponseObject.builder().status(HttpStatus.OK).message(
         Constant.SUCCESS).build());
   }
 

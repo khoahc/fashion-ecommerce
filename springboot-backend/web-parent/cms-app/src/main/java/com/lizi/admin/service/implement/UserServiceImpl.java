@@ -2,8 +2,6 @@ package com.lizi.admin.service.implement;
 
 import com.lizi.admin.dto.user.UserReqDto;
 import com.lizi.admin.dto.user.UserResDto;
-import com.lizi.admin.exception.ResourceAlreadyExistsException;
-import com.lizi.admin.exception.ResourceNotFoundException;
 import com.lizi.admin.mapper.UserMapper;
 import com.lizi.admin.repository.ImageRepository;
 import com.lizi.admin.repository.RoleRepository;
@@ -12,6 +10,8 @@ import com.lizi.admin.service.UserService;
 import com.lizi.common.entity.Image;
 import com.lizi.common.entity.Role;
 import com.lizi.common.entity.User;
+import com.lizi.common.exception.ResourceAlreadyExistsException;
+import com.lizi.common.exception.ResourceNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
