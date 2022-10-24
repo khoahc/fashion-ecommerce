@@ -23,7 +23,7 @@ public class ItemId implements Serializable {
 
   @ManyToOne(optional = false)
   @JoinColumn(name = "product_option_id", nullable = false)
-  private Customer productOption;
+  private ProductOption productOption;
 
   @Override
   public boolean equals(Object o) {
