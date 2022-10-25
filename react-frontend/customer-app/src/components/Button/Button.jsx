@@ -25,11 +25,18 @@ const Button = (props) => {
 
   const custom = props.custom ? props.custom : "";
 
+  const active = props.active === true ? "active" : null;
   return (
     <button
       className={`btn ${paddingX} ${paddingY} ${bg} ${color} 
-            ${fontWeight} ${size} ${animate} ${border} ${radius} ${custom}`}
-      onClick={props.onClick ? () => props.onClick() : null}
+            ${fontWeight} ${size} ${animate} ${border} ${radius} ${custom} ${active}`}
+      onClick={
+        props.onClick
+          ? () => {
+              props.onClick();
+            }
+          : null
+      }
     >
       <span className="">{props.children}</span>
       {props.icon ? (

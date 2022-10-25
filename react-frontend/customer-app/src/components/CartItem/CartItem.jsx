@@ -25,12 +25,14 @@ const CartItem = (props) => {
 
   const [selectedOption, setSelectedOption] = useState([]);
   const [item, setItem] = useState(props.item);
-  const [quantity, setQuantity] = useState(props.item.quantity);
+  const [count, setCount] = useState(props.item.count);
 
   useEffect(() => {
     setItem(props.item);
-    setQuantity(props.item.quantity);
+    setCount(props.item.count);
   }, [props.item]);
+
+  // const handleSelectCount = (e)
 
   // const updateQuantity = (opt) => {
   //     if (opt === '+') {
@@ -53,50 +55,32 @@ const CartItem = (props) => {
   return (
     <div className={clsx(styles.container)} ref={itemRef}>
       <div className={clsx(styles.image)}>
-        <img src={item.image01} alt="" />
+        <img src={item.image} alt="" />        
       </div>
 
       <div className={clsx(styles.info)}>
         <div className="font-weight-5 mb-2">
-          <Link to={`/p/${item.slug}`}>{`${item.title} - ${item.colors}`}</Link>
+          <Link to={`/p/${item.slugProduct}/?color=${item.slugColor}&size=${item.size}`}>{`${item.name} - ${item.color}`}</Link>
         </div>
         <div className="font-weight-3 mb-3">
-          {numberWithCommas(item.price) + " đ"}
+          {numberWithCommas(Number(item.price)) + " đ"}
         </div>
 
         <div className="flex-row flex-gap-1">
           {/* SIZE */}
           <div className="flex-row flex-center">
-            <h4 className="font-weight-4 mr-1">Size</h4>
-            <div style={{ maxWidth: "100px" }}>
-              <Select
-                isSearchable={false}
-                placeholder={"Số lượng"}
-                onChange={setSelectedOption}
-                defaultValue={{ value: "5", label: "5" }}
-                options={optionQuantity}
-                theme={(theme) => ({
-                  ...theme,
-                  borderRadius: 0,
-                  colors: {
-                    ...theme.colors,
-                    primary25: "orange",
-                    primary: "black",
-                  },
-                })}
-              />
-            </div>
+            <h4 className="font-weight-4 mr-1">Size: {item.size}</h4>            
           </div>
 
           {/* QUANTITY */}
           <div className="flex-row flex-center">
             <h4 className="font-weight-4 mr-1">Số lượng</h4>
             <div style={{ maxWidth: "80px" }}>
-              <Select
+              <Select                
                 isSearchable={false}
                 placeholder={"Số lượng"}
-                onChange={setSelectedOption}
-                defaultValue={{ value: "5", label: "5" }}
+                onChange={""}
+                defaultValue={{ value: [count], label: [count] }}
                 options={optionQuantity}
                 theme={(theme) => ({
                   ...theme,

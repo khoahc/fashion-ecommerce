@@ -3,10 +3,13 @@
   margin: 50px 0;
   padding: 20px 0;
   justify-content: space-between;
-  align-items: stretch;
+  justify-items: stretch;
   border-radius: 10px;
   border: 0.5px solid #999;
-
+  
+  .info {
+    width: 400px;
+  }
   .image {
     width: 200px;
     height: 200px;

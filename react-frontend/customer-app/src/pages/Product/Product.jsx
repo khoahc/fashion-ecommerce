@@ -2,7 +2,11 @@ import React, { Text, useState, useEffect } from "react";
 import clsx from "clsx";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import StarRatings from "react-star-ratings";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useDispatch } from "react-redux";
 
+import { addItem } from "../../redux/shopping-cart/cartItemsSlide";
 import Breadcrumb from "../../components/Breadcrumb";
 import Grid from "../../components/Grid";
 import Button from "../../components/Button";
@@ -13,12 +17,83 @@ import * as product from "../../services/product";
 const Product = () => {
   const { slugProduct } = useParams();
   let navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [searchParams, setSearchParams] = useSearchParams();
-
   const [productDetail, setProductDetail] = useState([]);
 
+  searchParams.get("size") != null &&
+    searchParams.set("size", searchParams.get("size").toUpperCase());
+
+  const [color, setColor] = useState(searchParams.get("color"));
+  const [size, setSize] = useState(searchParams.get("size"));
+
   const [count, setCount] = useState(1);
+
+  const notify = (type, message) => {
+    type === 1
+      ? toast.success(message, {
+          position: "bottom-left",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        })
+      : toast.warn(message, {
+          position: "bottom-left",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+  };
+
+  const check = () => {
+    if (
+      color === null ||
+      productDetail.colors.filter((item) => item.slug === color).length < 1
+    ) {
+      notify(0, "Vui lòng chọn màu sắc!");
+      return false;
+    }
+
+    if (
+      size === null ||
+      productDetail.sizes.filter((item) => item.name === size).length < 1
+    ) {
+      notify(0, "Vui lòng chọn kích cỡ!");
+      return false;
+    }
+
+    return true;
+  };
+
+  const addToCart = () => {
+    if (check()) {
+      let newItem = {
+        name: productDetail.name,
+        slug: productDetail.slug,
+        color: color,
+        size: size,
+        count: count,
+      };
+      if (dispatch(addItem(newItem))) {
+        notify(1, "Thêm vào giỏ hàng thành công!");
+      } else {
+        notify(0, "Thêm vào giỏ hàng thất bại");
+      }
+    }
+  };
+
+  const handleAddItemIntoCart = () => {
+    addToCart();
+  };
 
   useEffect(() => {
     // Promise.all([
@@ -31,7 +106,6 @@ const Product = () => {
       .then((data) => {
         if (data.data.status === "OK") {
           setProductDetail(data.data.data);
-          console.log(data.data.data);
         } else {
           return Promise.reject(new Error(data.message));
         }
@@ -88,17 +162,25 @@ const Product = () => {
                       ...Object.fromEntries([...searchParams]),
                       color: item.slug,
                     });
+                    setColor(item.slug);
                   }}
+                  active={
+                    item.slug === searchParams.get("color") ? true : false
+                  }
                   backgroundColor="white"
                   color="black"
                   border="border"
                   radius="0-5"
                   size="8"
-                  paddingX="0-5"
-                  paddingY="0-5"
+                  paddingX="0-1"
+                  paddingY="0-1"
                   key={index}
                 >
-                  <img key={index} src={item.image} />
+                  <img
+                    className="border-radius-0-5"
+                    key={index}
+                    src={item.image}
+                  />
                 </Button>
               ))}
             </div>
@@ -110,12 +192,15 @@ const Product = () => {
             <div className={clsx(styles.list)}>
               {productDetail.sizes?.map((item, index) => (
                 <Button
+                  key={index}
                   onClick={() => {
                     setSearchParams({
                       ...Object.fromEntries([...searchParams]),
                       size: item.name,
                     });
+                    setSize(item.name);
                   }}
+                  active={item.name === searchParams.get("size") ? true : false}
                   backgroundColor="white"
                   color="black"
                   border="border"
@@ -124,7 +209,6 @@ const Product = () => {
                   size="5"
                   paddingX="2"
                   paddingY="1"
-                  key={index}
                 >
                   {item.name}
                 </Button>
@@ -191,7 +275,7 @@ const Product = () => {
               </div>
             </div>
             <Button
-              onClick={""}
+              onClick={handleAddItemIntoCart}
               backgroundColor="white"
               color="black"
               border="border"
@@ -201,6 +285,7 @@ const Product = () => {
             >
               Thêm vào giỏ
             </Button>
+
             <Button
               onClick={""}
               backgroundColor="black"
@@ -211,6 +296,19 @@ const Product = () => {
             >
               Mua ngay
             </Button>
+
+            <ToastContainer
+              position="bottom-right"
+              autoClose={2000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="light"
+            />
           </div>
           <hr />
           <div className="mb-2">
