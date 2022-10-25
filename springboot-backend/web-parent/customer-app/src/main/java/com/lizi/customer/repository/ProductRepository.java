@@ -1,5 +1,6 @@
 package com.lizi.customer.repository;
 
+import com.lizi.common.entity.CartItem;
 import com.lizi.common.entity.Product;
 import com.lizi.customer.dto.response.*;
 import org.hibernate.engine.jdbc.Size;
