@@ -78,8 +78,8 @@ const Product = () => {
     if (check()) {
       let newItem = {
         name: productDetail.name,
-        slug: productDetail.slug,
-        color: color,
+        slugProduct: productDetail.slug,
+        slugColor: color,
         size: size,
         count: count,
       };
@@ -220,26 +220,7 @@ const Product = () => {
           <div className="flex-column flex-gap-1 mb-2">
             <div>
               <h3>Chọn số lượng</h3>
-              <div className="mt-1">
-                {/* <input type="button" value="-" class="minus button is-form" />{" "}
-                <label class="screen-reader-text" for="quantity_633da3ac2a4d0">
-                  Sơ Mi CLassic - Lụa Ngoc Trai - AN 052 126 số lượng
-                </label>
-                <input
-                  type="number"
-                  id="quantity_633da3ac2a4d0"
-                  class="input-text qty text"
-                  step="1"
-                  min="1"
-                  max="28"
-                  name="quantity"
-                  value="1"
-                  title="SL"
-                  size="4"
-                  placeholder=""
-                  inputmode="numeric"
-                />
-                <input type="button" value="+" class="plus button is-form" />{" "} */}
+              <div className="mt-1">                
                 <Button
                   onClick={() => {
                     count > 1 && setCount((count) => count - 1);

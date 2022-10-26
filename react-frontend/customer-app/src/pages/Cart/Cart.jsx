@@ -6,7 +6,6 @@ import { Link, useNavigate } from "react-router-dom";
 import CartItem from "../../components/CartItem";
 import Button from "../../components/Button";
 import styles from "./Cart.module.scss";
-import productData from "../../assets/fake-data/products";
 import * as productOption from "../../services/productOption";
 
 import numberWithCommas from "../../utils/numberWithCommas";
@@ -33,15 +32,15 @@ const Cart = () => {
   //handle onchange (show, hide) coupon input
   const handleOnChangeInput = () => {
     let value = textInput.current.value;
-    value != "" ? setInputHasValue(true) : setInputHasValue(false);
+    value !== "" ? setInputHasValue(true) : setInputHasValue(false);
   };
 
   const setCount = (cartItem) => {
     let cart = cartItems.filter(
       (item) =>
-        cartItem.slugProduct === item.slug &&
+        cartItem.slugProduct === item.slugProduct &&
         cartItem.size === item.size &&
-        cartItem.slugColor === item.color
+        cartItem.slugColor === item.slugColor
     );
 
     return {
@@ -59,9 +58,9 @@ const Cart = () => {
             data.data.data
               .filter(
                 (item) =>
-                  cartItems.find(({ slug }) => item.slugProduct === slug) &&
+                  cartItems.find(({ slugProduct }) => item.slugProduct === slugProduct) &&
                   cartItems.find(({ size }) => item.size === size) &&
-                  cartItems.find(({ color }) => item.slugColor === color)
+                  cartItems.find(({ slugColor }) => item.slugColor === slugColor)
               )
               .map((cart) => setCount(cart))
           );
@@ -82,8 +81,6 @@ const Cart = () => {
         0
       )
     );
-    console.log(cartProducts);
-    console.log(totalPrice);
     setTotalProducts(() =>
       cartProducts.reduce((total, item) => total + Number(item.count), 0)
     );

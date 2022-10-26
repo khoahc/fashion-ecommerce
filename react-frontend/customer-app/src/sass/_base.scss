@@ -280,6 +280,10 @@ hr {
   height: 30px;
 }
 
+.btn-size-3-5 {
+  height: 35px;
+}
+
 .btn-size-4 {
   height: 40px;
 }
@@ -381,6 +385,10 @@ hr {
 
 .flex-center {
   justify-content: space-between;
+  align-items: center;
+}
+
+.flex-center-align-items {
   align-items: center;
 }
 

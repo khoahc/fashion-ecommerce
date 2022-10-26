@@ -17,26 +17,26 @@ export const cartItemsSlice = createSlice({
       const newItem = action.payload;
       const duplicate = state.value.filter(
         (e) =>
-          e.slug === newItem.slug &&
-          e.color === newItem.color &&
+          e.slugProduct === newItem.slugProduct &&
+          e.slugColor === newItem.slugColor &&
           e.size === newItem.size
       );
       if (duplicate.length > 0) {
         state.value = state.value.filter(
           (e) =>
-            e.slug !== newItem.slug ||
-            e.color !== newItem.color ||
+            e.slugProduct !== newItem.slugProduct ||
+            e.slugColor !== newItem.slugColor ||
             e.size !== newItem.size
         );
         state.value = [
           ...state.value,
           {
             id: duplicate[0].id,
-            slug: newItem.slug,
-            color: newItem.color,
+            slugProduct: newItem.slugProduct,
+            slugColor: newItem.slugColor,
             size: newItem.size,
             price: newItem.price,
-            count: newItem.count + duplicate[0].count,
+            count: Number(newItem.count) + Number(duplicate[0].count),
           },
         ];
       } else {
@@ -59,26 +59,30 @@ export const cartItemsSlice = createSlice({
       );
     },
     updateItem: (state, action) => {
+      console.log("udate");
       const newItem = action.payload;
+      console.log(newItem);
       const item = state.value.filter(
         (e) =>
-          e.slug === newItem.slug &&
-          e.color === newItem.color &&
+          e.slugProduct === newItem.slugProduct &&
+          e.slugColor === newItem.slugColor &&
           e.size === newItem.size
       );
+      console.log(JSON.stringify(item));
       if (item.length > 0) {
         state.value = state.value.filter(
           (e) =>
-            e.slug !== newItem.slug ||
-            e.color !== newItem.color ||
+            e.slugProduct !== newItem.slugProduct ||
+            e.slugColor !== newItem.slugColor ||
             e.size !== newItem.size
         );
+        console.log(newItem);
         state.value = [
           ...state.value,
           {
             id: item[0].id,
-            slug: newItem.slug,
-            color: newItem.color,
+            slugProduct: newItem.slugProduct,
+            slugColor: newItem.slugColor,
             size: newItem.size,
             price: newItem.price,
             count: newItem.count,
@@ -96,7 +100,7 @@ export const cartItemsSlice = createSlice({
       const item = action.payload;
       state.value = state.value.filter(
         (e) =>
-          e.slug !== item.slug || e.color !== item.color || e.size !== item.size
+          e.slugProduct !== item.slugProduct || e.slugColor !== item.slugColor || e.size !== item.size
       );
       localStorage.setItem(
         "cartItems",
