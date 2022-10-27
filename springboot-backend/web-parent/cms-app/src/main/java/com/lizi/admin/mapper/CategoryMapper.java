@@ -22,10 +22,11 @@ public interface CategoryMapper {
 
   @Mapping(source = "enabled", target = "enabled")
   @Mapping(source = "image.url", target = "image")
+  @Mapping(source = "parent", target = "parent")
+  @Mapping(source = "createTime", target = "createTime")
+  @Mapping(source = "updateTime", target = "updateTime")
   CategoryResDto categoryToDto(Category category);
 
-  @Mapping(source = "enabled", target = "enabled")
-  @Mapping(source = "image.url", target = "image")
   List<CategoryResDto> categoriesToDtos(List<Category> categories);
 
   @Named("idImageToImage")

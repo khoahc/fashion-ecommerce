@@ -6,8 +6,10 @@ import com.lizi.admin.mapper.CategoryMapper;
 import com.lizi.admin.repository.CategoryRepository;
 import com.lizi.admin.repository.ImageRepository;
 import com.lizi.admin.service.CategoryService;
+import com.lizi.admin.util.Util;
 import com.lizi.common.entity.Category;
 import com.lizi.common.entity.Image;
+import com.lizi.common.exception.ResourceAlreadyExistsException;
 import com.lizi.common.exception.ResourceNotFoundException;
 import java.util.List;
 import java.util.Optional;
@@ -54,12 +56,17 @@ public class CategoryServiceImpl implements CategoryService {
     Category newCategory = CategoryMapper.INSTANCE.dtoToCategory(categoryReqDto);
     newCategory.setImage(image);
     newCategory.setParent(parent);
+    newCategory.setSlug(Util.toSlug(newCategory.getName()));
 
     return CategoryMapper.INSTANCE.categoryToDto(categoryRepo.save(newCategory));
   }
 
   @Override
   public CategoryResDto updateCategory(Long id, CategoryReqDto categoryReqDto) {
+    categoryRepo.findByName(categoryReqDto.getName()).map(c -> {
+      throw new ResourceAlreadyExistsException("category", "name", categoryReqDto.getName());
+    });
+
     Image image = null;
     if (categoryReqDto.getImageId() != null) {
       image = imageRepo.findById(categoryReqDto.getImageId()).orElseThrow(

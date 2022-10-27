@@ -1,11 +1,7 @@
 package com.lizi.admin.dto.category;
 
-import com.lizi.common.entity.Category;
-import com.lizi.common.entity.Image;
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,6 +17,14 @@ public class CategoryResDto {
 
   private Long id;
   private String name;
+  private CategoryResDto parent;
+  private String allParentIds;
   private boolean enabled;
   private String image;
+
+  @JsonFormat(pattern="dd-MM-yyy HH:mm:ss")
+  private Date createTime;
+
+  @JsonFormat(pattern="dd-MM-yyy HH:mm:ss")
+  private Date updateTime;
 }
