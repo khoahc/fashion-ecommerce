@@ -16,14 +16,9 @@ const categoryApi = {
         return await axiosClient.get(url);
     },
 
-    updateCategory: async () => {
-        const config = {
-            headers: {
-                Authorization: localStorage.getItem('jwt'),
-            },
-        };
-        const url = `/api/v1/categories`;
-        return await axiosClient.get(url, config);
+    updateCategory: async (id, requestOption) => {
+        const url = `/api/v1/categories/${id}`;
+        return await axiosClient.put(url, requestOption);
     },
 
     deleteCategory: async () => {

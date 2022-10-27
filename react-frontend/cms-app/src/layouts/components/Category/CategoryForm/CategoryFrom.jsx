@@ -1,19 +1,21 @@
 import { useEffect, useState } from "react";
 import categoryApi from "../../../../services/axios/categoryApi";
+import { useNavigate } from 'react-router-dom';
 
 const { getAllCategories } = categoryApi;
 
-const CategoryFrom = ({ category }) => {
+const CategoryFrom = ({ categoryDataForm, setCategoryDataForm, onSubmitHandle }) => {
   const [selectedFile, setSelectedFile] = useState();
   const [preview, setPreview] = useState("");
+
   const [listCategory, setListCategory] = useState([]);
+  const navigate = useNavigate();
 
   const getData = async () => {
     const resp = await getAllCategories();
-    console.log(resp);
     setListCategory(resp.data);
-  }
-  
+  };
+
   useEffect(() => {
     getData();
   }, []);
@@ -44,53 +46,75 @@ const CategoryFrom = ({ category }) => {
     setSelectedFile(e.target.files[0]);
   };
 
+  const onClickCancelBtn = e => {
+    navigate('/category');
+  }
+
   return (
-    <section class="section main-section">
-      <div class="card mb-6">
-        <div class="card-content">
-          <form method="get">
-            <div class="field">
-              <div class="field-body">
-                <div class="field">
-                  <div class="control icons-left">
+    <section className="section main-section">
+      <div className="card mb-6">
+        <div className="card-content">
+          <form onSubmit={onSubmitHandle}>
+            <div className="field">
+              <div className="field-body">
+                <div className="field">
+                  <div className="control">
                     <input
-                      class="input"
+                      className="input"
                       type="text"
                       placeholder="Tên loại sản phẩm"
-                      value={category && category.name}
+                      value={categoryDataForm.name}
+                      onChange={(e) =>
+                        setCategoryDataForm({
+                          ...categoryDataForm,
+                          name: e.target.value,
+                        })
+                      }
                     />
-                    <span class="icon left">
-                      <i class="mdi mdi-account"></i>
-                    </span>
                   </div>
                 </div>
-                <div class="field">
-                  <div class="control">
-                    <div class="select">
-                      <select>
-                        <option value="" selected>
-                          Loại sản phẩm cha
-                        </option>
-                        { listCategory.map(category => (
-                          <option value={category.id}>{category.name}</option>
+                <div className="field">
+                  <div className="control">
+                    <div className="select">
+                      <select
+                        value={categoryDataForm.parentId}
+                        onChange={(e) =>
+                          setCategoryDataForm({
+                            ...categoryDataForm,
+                            parentId: e.target.value,
+                          })
+                        }
+                      >
+                        <option value={null}>Loại sản phẩm cha</option>
+                        {listCategory.map((c) => (
+                          <option value={c.id}>{c.name}</option>
                         ))}
                       </select>
                     </div>
                   </div>
                 </div>
-                <div class="field">
-                  <div class="field-body">
-                    <div class="field">
-                      <label class="switch">
-                        <input type="checkbox" value="true"></input>
-                        <span class="check"></span>
-                        <span class="control-label">Trạng thái</span>
+                <div className="field">
+                  <div className="field-body">
+                    <div className="field">
+                      <label className="switch">
+                        <input
+                          type="checkbox"
+                          defaultChecked={categoryDataForm.enabled}
+                          onClick={(e) =>
+                            setCategoryDataForm({
+                              ...categoryDataForm,
+                              enabled: e.target.checked,
+                            })
+                          }
+                        />
+                        <span className="check"></span>
+                        <span className="control-label">Trạng thái</span>
                       </label>
                     </div>
                   </div>
                 </div>
-                <div class="field">
-                  <div class="field-body">
+                <div className="field">
+                  <div className="field-body">
                     <div className="max-h-52 rounded-full flex items-center justify-center">
                       {selectedFile && (
                         <img
@@ -105,7 +129,7 @@ const CategoryFrom = ({ category }) => {
                         />
                       )}
                     </div>
-                    <div class="field file">
+                    <div className="field file">
                       <input
                         type="file"
                         onChange={onSelectFile}
@@ -117,14 +141,14 @@ const CategoryFrom = ({ category }) => {
               </div>
             </div>
 
-            <div class="field grouped mt-10">
-              <div class="control">
-                <button type="submit" class="button green">
+            <div className="field grouped mt-10">
+              <div className="control">
+                <button type="submit" className="button green">
                   Lưu
                 </button>
               </div>
-              <div class="control">
-                <button type="reset" class="button red">
+              <div className="control">
+                <button type="reset" className="button red" onClick={onClickCancelBtn}>
                   Hủy
                 </button>
               </div>

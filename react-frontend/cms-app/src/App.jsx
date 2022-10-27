@@ -1,13 +1,14 @@
 import { Fragment } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import "./App.css";
+import 'react-toastify/dist/ReactToastify.css';
 import DefaultLayout from "./layouts/DefaultLayout/DefaultLayout";
 // import Login from "./pages/Login";
 import { publicRoutes } from "./routes/routes";
 // import useToken from "./utils/useToken";
 
 function App() {
-
   // const { token, setToken } = useToken();
 
   // if (!token) {
@@ -16,32 +17,33 @@ function App() {
 
   return (
     <Router>
-        <div className="App">
+      <div className="App">
+      <ToastContainer />
         <Routes>
           {publicRoutes.map((route, index) => {
-              const Page = route.element;
-              let Layout = DefaultLayout;
+            const Page = route.element;
+            let Layout = DefaultLayout;
 
-              if (route.layout) {
-                Layout = route.layout;
-              } else if (route.layout === null) {
-                Layout = Fragment;
-              }
+            if (route.layout) {
+              Layout = route.layout;
+            } else if (route.layout === null) {
+              Layout = Fragment;
+            }
 
-              return (
-                <Route
-                  key={index}
-                  path={route.path}
-                  element={
-                    <Layout>
-                      <Page />
-                    </Layout>
-                  }
-                />
-              );
-            })}
-          </Routes>
-        </div>
+            return (
+              <Route
+                key={index}
+                path={route.path}
+                element={
+                  <Layout>
+                    <Page />
+                  </Layout>
+                }
+              />
+            );
+          })}
+        </Routes>
+      </div>
     </Router>
   );
 }

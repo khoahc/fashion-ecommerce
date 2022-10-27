@@ -1,55 +1,36 @@
 import { Link } from "react-router-dom";
+import EmptyBodyTable from "../../../../components/EmptyBodyTable/EmptyBodyTable";
 
-const CategoryTable = (props) => {
+const CategoryTable = ({ list }) => {
   return (
-    <div className="card has-table">
-      <div className="card-content">
-        <table>
-          <thead>
-            <tr>
-              <th className="checkbox-cell">
-                <label className="checkbox">
-                  <input type="checkbox"></input>
-                  <span className="check"></span>
-                </label>
-              </th>
-              <th className="image-cell"></th>
-              <th>Tên</th>
-              <th>Tất cả loại sản phẩm cha</th>
-              <th>Trạng thái</th>
-              <th>Tạo ngày</th>
-              <th>Cập nhật ngày</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <CategoryTableContent {...props} />
-          </tbody>
-        </table>
-        <div class="table-pagination">
-          <div class="flex items-center justify-between">
-            <div class="buttons">
-              <button type="button" class="button active">
-                1
-              </button>
-              <button type="button" class="button">
-                2
-              </button>
-              <button type="button" class="button">
-                3
-              </button>
-            </div>
-            <small>Page 1 of 3</small>
-          </div>
-        </div>
-      </div>
-    </div>
+    <table>
+      <thead>
+        <tr>
+          <th className="checkbox-cell">
+            <label className="checkbox">
+              <input type="checkbox"></input>
+              <span className="check"></span>
+            </label>
+          </th>
+          <th className="image-cell"></th>
+          <th>Tên</th>
+          <th>Tất cả loại sản phẩm cha</th>
+          <th>Trạng thái</th>
+          <th>Tạo ngày</th>
+          <th>Cập nhật ngày</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <CategoryTableContent list={list} />
+      </tbody>
+    </table>
   );
 };
 
-const CategoryTableContent = (props) => {
-  if (props.listCategory) {
-    return props.listCategory.map((category) => {
+const CategoryTableContent = ({ list }) => {
+  if (list && list.length !== 0) {
+    return list.map((category) => {
       return (
         <tr>
           <td className="checkbox-cell">
@@ -111,23 +92,8 @@ const CategoryTableContent = (props) => {
       );
     });
   } else {
-    return <EmptyCategoryTableContent />;
+    return <EmptyBodyTable colSpan={8} />;
   }
-};
-
-const EmptyCategoryTableContent = () => {
-  return (
-    <div class="card empty">
-      <div class="card-content">
-        <div>
-          <span class="icon large">
-            <i class="mdi mdi-emoticon-sad mdi-48px"></i>
-          </span>
-        </div>
-        <p>Nothing's here…</p>
-      </div>
-    </div>
-  );
 };
 
 export default CategoryTable;

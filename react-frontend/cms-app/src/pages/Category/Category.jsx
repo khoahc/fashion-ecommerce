@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Pagination from "../../components/Pagination";
 import Titlebar from "../../components/Titlebar";
 import CategoryTable from "../../layouts/components/Category/CategoryTable";
 import categoryApi from "../../services/axios/categoryApi";
@@ -20,8 +21,8 @@ const Category = () => {
     const resp = await getAllCategories();
     console.log(resp);
     setListCategory(resp.data);
-  }
-  
+  };
+
   useEffect(() => {
     getData();
   }, []);
@@ -43,7 +44,12 @@ const Category = () => {
       </section>
 
       <section className="section main-section">
-        <CategoryTable listCategory={listCategory} />
+        <div className="card has-table">
+          <div className="card-content">
+            <CategoryTable list={listCategory} />
+            <Pagination />
+          </div>
+        </div>
       </section>
     </div>
   );

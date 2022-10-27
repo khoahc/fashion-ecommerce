@@ -25,7 +25,7 @@ const Navbar = () => {
         </a>
         <div className="navbar-item">
           <div className="control">
-            <input placeholder="Search everywhere..." className="input"></input>
+            <input placeholder="Tìm kiếm..." className="input"></input>
           </div>
         </div>
       </div>
