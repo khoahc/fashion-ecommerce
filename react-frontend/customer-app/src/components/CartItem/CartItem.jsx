@@ -1,9 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import Select from "react-select";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { orange, brown } from "@mui/material/colors";
+import { Checkbox, FormControlLabel } from "@mui/material";
+import { IoIosAdd, IoIosRemove } from "react-icons/io";
 
 import {
   updateItem,
@@ -17,6 +19,7 @@ const CartItem = (props) => {
   const dispatch = useDispatch();
 
   const itemRef = useRef(null);
+  const checkedRef = useRef();
 
   const [item, setItem] = useState(props.item);
   const [count, setCount] = useState(props.item.count);
@@ -27,7 +30,6 @@ const CartItem = (props) => {
   }, [props.item]);
 
   const handleChangeCount = (opt) => {
-    console.log(opt);
     if (opt === "down") {
       count > 1 && updateCount(count - 1);
     } else if (opt === "up") {
@@ -43,10 +45,66 @@ const CartItem = (props) => {
     dispatch(updateItem({ ...item, count: count }));
   };
 
+  // choose checkbox
+
+  useEffect(() => {
+    dispatch(
+      updateItem({ ...item, enabled: checkedRef.current.children[0].checked })
+    );
+    console.log(JSON.stringify(item) + " check all");
+  }, [props.checkList[props.id].checked]);
+
+  const handleChooseCartItem = (event) => {
+    // props.onChangeChoose(() => {
+    //   let newCheckList = props.checkList.filter(
+    //     (item) => item.key !== props.id
+    //   );
+
+    //   newCheckList = [
+    //     ...newCheckList,
+    //     { key: props.id, checked: event.target.checked },
+    //   ];
+
+    //   console.log(JSON.stringify(newCheckList) + " new");
+    //   return newCheckList.sort((a, b) =>
+    //     a.key > b.key ? 1 : a.key < b.key ? -1 : 0
+    //   );
+
+    //   // dispatch(updateItem({ ...item, enabled: !item.enabled }));
+    // });
+
+    dispatch(updateItem({ ...item, enabled: !item.enabled }));
+
+    console.log(JSON.stringify(item));
+  };
+
   return (
     <div className={clsx(styles.container)} ref={itemRef}>
+      {/* checkbox */}
+      <div className="m-autoY ml-2">        
+        <FormControlLabel 
+          control={
+            <Checkbox
+              ref={checkedRef}
+              checked={item.enabled || props.checkList[props.id].checked}
+              onChange={handleChooseCartItem}
+              sx={{
+                color: brown[200],
+                "&.Mui-checked": {
+                  color: orange[700],
+                },
+              }}
+            />
+          }
+        />
+      </div>
+
       <div className={clsx(styles.image)}>
-        <img src={item.image} alt="" />
+        <Link
+          to={`/p/${item.slugProduct}/?color=${item.slugColor}&size=${item.size}`}
+        >
+          <img src={item.image} alt="" />
+        </Link>
       </div>
 
       <div className={clsx(styles.info)}>
@@ -79,7 +137,7 @@ const CartItem = (props) => {
               paddingX="1"
               paddingY="1"
             >
-              -
+              <IoIosRemove />
             </Button>
             <span className="mX-1">{count}</span>
             <Button
@@ -93,7 +151,7 @@ const CartItem = (props) => {
               paddingX="1"
               paddingY="1"
             >
-              +
+              <IoIosAdd />
             </Button>
 
             {/* <Select

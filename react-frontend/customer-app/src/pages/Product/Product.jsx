@@ -1,4 +1,4 @@
-import React, { Text, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import clsx from "clsx";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import StarRatings from "react-star-ratings";
@@ -82,6 +82,7 @@ const Product = () => {
         slugColor: color,
         size: size,
         count: count,
+        enabled: false
       };
       if (dispatch(addItem(newItem))) {
         notify(1, "Thêm vào giỏ hàng thành công!");

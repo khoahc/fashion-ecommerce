@@ -37,6 +37,7 @@ export const cartItemsSlice = createSlice({
             size: newItem.size,
             price: newItem.price,
             count: Number(newItem.count) + Number(duplicate[0].count),
+            enabled: duplicate[0].enabled
           },
         ];
       } else {
@@ -59,16 +60,13 @@ export const cartItemsSlice = createSlice({
       );
     },
     updateItem: (state, action) => {
-      console.log("udate");
       const newItem = action.payload;
-      console.log(newItem);
       const item = state.value.filter(
         (e) =>
           e.slugProduct === newItem.slugProduct &&
           e.slugColor === newItem.slugColor &&
           e.size === newItem.size
       );
-      console.log(JSON.stringify(item));
       if (item.length > 0) {
         state.value = state.value.filter(
           (e) =>
@@ -76,7 +74,6 @@ export const cartItemsSlice = createSlice({
             e.slugColor !== newItem.slugColor ||
             e.size !== newItem.size
         );
-        console.log(newItem);
         state.value = [
           ...state.value,
           {
@@ -86,6 +83,7 @@ export const cartItemsSlice = createSlice({
             size: newItem.size,
             price: newItem.price,
             count: newItem.count,
+            enabled: newItem.enabled
           },
         ];
       }

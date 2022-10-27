@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useCallback, useRef } from "react";
 import clsx from "clsx";
 import { useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { FormControlLabel, Checkbox } from "@mui/material";
+import { orange, brown } from "@mui/material/colors";
 
 import CartItem from "../../components/CartItem";
 import Button from "../../components/Button";
@@ -9,7 +11,6 @@ import styles from "./Cart.module.scss";
 import * as productOption from "../../services/productOption";
 
 import numberWithCommas from "../../utils/numberWithCommas";
-import { set } from "../../redux/product-modal/productModalSlice";
 
 const Cart = () => {
   let navigate = useNavigate();
@@ -29,6 +30,58 @@ const Cart = () => {
 
   const [totalPrice, setTotalPrice] = useState(0);
 
+  const [isCheckedChooseAll, setIsCheckedChooseAll] = useState(false);
+
+  const initialCheckList = () => {
+    let arr = [];
+    cartItems.forEach((item, index) => {
+      arr.push({ key: index, checked: false });
+    });
+    return arr;
+  };
+
+  const [checkedList, setCheckedList] = useState(initialCheckList);
+
+  const handleChangeChooseAll = (event) => {
+    setIsCheckedChooseAll(() => !isCheckedChooseAll);
+
+    if (!isCheckedChooseAll === true) {
+      setCartProducts(cartProducts.map((cart) => setEnabled(cart, true)));
+    } else {
+      setCartProducts(cartProducts.map((cart) => setEnabled(cart, false)));
+    }
+
+    console.log(JSON.stringify(checkedList) + "da");
+  };
+
+  // // when checkedList change, if 'checked' has the same value in checkList, set setIsCheckedChooseAll
+  // useEffect(() => {
+  //   let checkAll = false;
+
+  //   for (let i = 0; i < checkedList.length - 1; i++) {
+  //     console.log(JSON.stringify(checkedList) + "11111111");
+  //     if (checkedList.at(i).checked !== checkedList.at(i++).checked) {
+  //       checkAll = false;
+  //       break;
+  //     }
+  //     checkAll = true;
+  //   }
+
+  //   checkAll && setIsCheckedChooseAll(checkedList.at(0).checked);
+  // }, [checkedList]);
+
+  useEffect(() => {
+    //set value all of checkedList to 'event.target.checked'
+    setCheckedList(() => {
+      let newCheckedList = [];
+      checkedList.forEach((item, index) => {
+        item = { key: item.key, checked: isCheckedChooseAll };
+        newCheckedList.push(item);
+      });
+      return newCheckedList;
+    });
+  }, [isCheckedChooseAll]);
+
   //handle onchange (show, hide) coupon input
   const handleOnChangeInput = () => {
     let value = textInput.current.value;
@@ -42,10 +95,24 @@ const Cart = () => {
         cartItem.size === item.size &&
         cartItem.slugColor === item.slugColor
     );
-
     return {
       ...cartItem,
-      count: cart[0].count,
+      count: cart.at(0).count,
+      enabled: cart.at(0).enabled,
+    }
+  };
+
+  // !enabled
+  const setEnabled = (cartItem, isEnabled) => {
+    let cart = cartItems.filter(
+      (item) =>
+        cartItem.slugProduct === item.slugProduct &&
+        cartItem.size === item.size &&
+        cartItem.slugColor === item.slugColor
+    );
+    return {
+      ...cartItem,
+      enabled: isEnabled,
     };
   };
 
@@ -58,12 +125,17 @@ const Cart = () => {
             data.data.data
               .filter(
                 (item) =>
-                  cartItems.find(({ slugProduct }) => item.slugProduct === slugProduct) &&
+                  cartItems.find(
+                    ({ slugProduct }) => item.slugProduct === slugProduct
+                  ) &&
                   cartItems.find(({ size }) => item.size === size) &&
-                  cartItems.find(({ slugColor }) => item.slugColor === slugColor)
+                  cartItems.find(
+                    ({ slugColor }) => item.slugColor === slugColor
+                  )
               )
               .map((cart) => setCount(cart))
           );
+          console.log(cartProducts + " api");
         } else {
           return Promise.reject(new Error(data.message));
         }
@@ -77,12 +149,22 @@ const Cart = () => {
   const updateTotal = useCallback(() => {
     setTotalPrice(() =>
       cartProducts.reduce(
-        (total, item) => total + Number(item.count) * Number(item.price),
+        (total, item) =>
+          item.enabled
+            ? total + Number(item.count) * Number(item.price)
+            : total + 0,
         0
       )
     );
+
+    console.log(JSON.stringify(cartProducts) + " dasda");
+
     setTotalProducts(() =>
-      cartProducts.reduce((total, item) => total + Number(item.count), 0)
+      cartProducts.reduce(
+        (total, item) =>
+          item.enabled ? total + Number(item.count) : total + 0,
+        0
+      )
     );
   });
 
@@ -100,8 +182,15 @@ const Cart = () => {
             {numberWithCommas(Number(totalPrice))} ₫
           </h4>
         </div>
+        {/* list cart */}
         {cartProducts.map((item, index) => (
-          <CartItem item={item} key={index} />
+          <CartItem
+            item={item}
+            id={index}
+            key={index}
+            checkList={checkedList}
+            // onChangeChoose={setCheckedList}
+          />
         ))}
       </div>
 
@@ -123,6 +212,23 @@ const Cart = () => {
 
         <div className="mY-2 mX-1">
           <p>Bạn đang có {totalProducts} sản phẩm trong giỏ hàng</p>
+
+          <FormControlLabel
+            label="Chọn tất cả"
+            control={
+              <Checkbox
+                checked={isCheckedChooseAll}
+                onChange={handleChangeChooseAll}
+                sx={{
+                  color: brown[200],
+                  "&.Mui-checked": {
+                    color: orange[700],
+                  },
+                }}
+              />
+            }
+          />
+
           <h2 className="uppercase mt-2">Tóm tắt đơn hàng</h2>
         </div>
         <div className="mY-1 mX-2">
