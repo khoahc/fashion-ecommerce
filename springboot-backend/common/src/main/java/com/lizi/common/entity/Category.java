@@ -40,7 +40,7 @@ public class Category {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(length = 128, nullable = false, unique = true)
+  @Column(length = 128, nullable = false)
   private String name;
 
   @Column(length = 256, nullable = false, unique = true)
