@@ -16,6 +16,7 @@ public class ProductDetailResponseDTO {
   private String slug;
   private BigDecimal price;
   private BigDecimal promotionalPrice = null;
+  private Integer quantity = null;
   private String mainImage;
   private Optional<List<ImageResponseDTO>> imageList;
   private Optional<List<ColorProductDetailResponseDTO>> colors;

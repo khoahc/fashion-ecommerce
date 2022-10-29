@@ -83,9 +83,22 @@ public class ProductServiceImpl implements ProductService {
     Optional<List<ColorProductDetailResponseDTO>> colors = productRepository.findAllColorsProductBySlugProduct(slugProduct);
     product.get().setColors(colors);
 
-    //set all sizes for product
-    Optional<List<SizeResponseDTO>> sizes = productRepository.findAllSizesProductBySlugProduct(slugProduct);
+    //we will set all sizes for this product if slugColor is empty else we will get all sizes of the product's that color
+    //we will set null for quantity of this product if slugColor or size is empty 
+    Optional<List<SizeResponseDTO>> sizes;
+    Integer quantity;
+    if(slugColor.isEmpty()) {
+      sizes = productRepository.findAllSizesProductBySlugProduct(slugProduct);
+    } else {
+      sizes = productRepository.findAllSizesProductBySlugProductAndSlugColor(slugProduct, slugColor);
+
+      if(!size.isEmpty()) {
+        quantity = productRepository.findQuantityProductBySlugProductSlugColorAndSize(slugProduct, slugColor, size);
+        product.get().setQuantity(quantity);
+      }
+    }
     product.get().setSizes(sizes);
+
 
     //set rate average for product
     Double ratingAverage = productRepository.findRatingAverageBySlugProduct(slugProduct);
