@@ -37,6 +37,7 @@ const Button = (props) => {
             }
           : null
       }
+      disabled={props.disabled}
     >
       <span className="">{props.children}</span>
       {props.icon ? (

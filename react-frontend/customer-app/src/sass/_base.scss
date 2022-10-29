@@ -236,7 +236,6 @@ hr {
 
 // ----------------button---------------
 .btn {
-  color: $txt-main-color;
   font-size: 1rem;
   font-weight: 600;
   border-style: none;
@@ -259,11 +258,11 @@ hr {
   background-color: #000;
 }
 
-.btn-bg-black:hover {
+.btn-bg-black:hover:enabled {
   background-color: #666;
 }
 
-.btn-bg-white.active {
+.btn-bg-white.active:enabled {
   background-color: #000;
   color: #fff;
 }
@@ -276,7 +275,7 @@ hr {
   background-color: #fff;
 }
 
-.btn-bg-white:hover {
+.btn-bg-white:hover:enabled {
   border: 1px solid #000;
 }
 

@@ -5,6 +5,7 @@ import StarRatings from "react-star-ratings";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch } from "react-redux";
+import { IoIosAdd, IoIosRemove } from "react-icons/io";
 
 import { addItem } from "../../redux/shopping-cart/cartItemsSlide";
 import Breadcrumb from "../../components/Breadcrumb";
@@ -82,7 +83,7 @@ const Product = () => {
         slugColor: color,
         size: size,
         count: count,
-        enabled: false
+        enabled: false,
       };
       if (dispatch(addItem(newItem))) {
         notify(1, "Thêm vào giỏ hàng thành công!");
@@ -187,6 +188,7 @@ const Product = () => {
             </div>
           </div>
           <hr />
+
           {/* size */}
           <div className="mb-2">
             <h3>Size</h3>
@@ -221,39 +223,50 @@ const Product = () => {
           <div className="flex-column flex-gap-1 mb-2">
             <div>
               <h3>Chọn số lượng</h3>
-              <div className="mt-1">                
+              <div className="mt-1">
                 <Button
                   onClick={() => {
                     count > 1 && setCount((count) => count - 1);
                   }}
+                  disabled={productDetail.quantity > 0 ? false : true}
                   backgroundColor="white"
-                  color="black"
                   border="border"
-                  radius="3"
+                  radius="5"
                   fontWeight="3"
                   size="5"
                   paddingX="2"
                   paddingY="1"
                 >
-                  -
+                  <IoIosRemove />
                 </Button>
                 <span className="mX-1">{count}</span>
                 <Button
-                  onClick={() => setCount((count) => count + 1)}
+                  onClick={() =>
+                    count < productDetail.quantity &&
+                    setCount((count) => count + 1)
+                  }
+                  disabled={productDetail.quantity > 0 ? false : true}
                   backgroundColor="white"
-                  color="black"
                   border="border"
-                  radius="3"
+                  radius="5"
                   fontWeight="3"
                   size="5"
                   paddingX="2"
                   paddingY="1"
                 >
-                  +
+                  <IoIosAdd />
                 </Button>
-                <span className={clsx(styles.countInStock)}>
-                  Còn 10 sản phẩm
-                </span>
+
+                {/* isStock */}
+                {productDetail.quantity > 0 ? (
+                  <span className={clsx(styles.countInStock)}>
+                    Còn {productDetail.quantity} sản phẩm
+                  </span>
+                ) : productDetail.quantity === 0 ? (
+                  <span className={clsx(styles.countInStock)}>Hết hàng</span>
+                ) : (
+                  ""
+                )}
               </div>
             </div>
             <Button
