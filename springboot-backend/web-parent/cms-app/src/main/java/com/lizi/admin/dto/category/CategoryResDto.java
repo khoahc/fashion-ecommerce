@@ -18,9 +18,10 @@ public class CategoryResDto {
   private Long id;
   private String name;
   private CategoryResDto parent;
-  private String allParentIds;
+  private String allParentNames;
   private boolean enabled;
   private String image;
+  private String slug;
 
   @JsonFormat(pattern="dd-MM-yyy HH:mm:ss")
   private Date createTime;

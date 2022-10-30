@@ -33,7 +33,7 @@ public class CloudinaryServiceImpl implements CloudinaryService {
   @Value("${cloudinary.folder}")
   private String rootFolder;
 
-  private float maxFileSize = 10.0f;
+  private float maxFileSize = 50.0f;
 
   private Map uploadCloudinary(MultipartFile file, Map option) {
     try {

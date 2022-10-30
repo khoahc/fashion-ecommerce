@@ -9,10 +9,8 @@ import com.lizi.admin.service.CategoryService;
 import com.lizi.admin.util.Util;
 import com.lizi.common.entity.Category;
 import com.lizi.common.entity.Image;
-import com.lizi.common.exception.ResourceAlreadyExistsException;
 import com.lizi.common.exception.ResourceNotFoundException;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,39 +38,38 @@ public class CategoryServiceImpl implements CategoryService {
 
   @Override
   public CategoryResDto createCategory(CategoryReqDto categoryReqDto) {
-    Image image = null;
-    if (categoryReqDto.getImageId() != null) {
-      image = imageRepo.findById(categoryReqDto.getImageId()).orElseThrow(
-          () -> new ResourceNotFoundException("image", "id", categoryReqDto.getImageId()));
-    }
-
+    // get parent category
     Category parent = null;
     if (categoryReqDto.getParentId() != null) {
       parent = categoryRepo.findById(categoryReqDto.getParentId()).orElseThrow(
           () -> new ResourceNotFoundException("category parent", "id",
               categoryReqDto.getParentId()));
+    }
+
+    // get image
+    Image image = null;
+    if (categoryReqDto.getImageUrl() != null) {
+      image = imageRepo.findImageByUrl(categoryReqDto.getImageUrl()).orElseThrow(
+          () -> new ResourceNotFoundException("image", "url", categoryReqDto.getImageUrl()));
     }
 
     Category newCategory = CategoryMapper.INSTANCE.dtoToCategory(categoryReqDto);
     newCategory.setImage(image);
     newCategory.setParent(parent);
     newCategory.setSlug(Util.toSlug(newCategory.getName()));
+    newCategory.setSlug(generateSlugCategory(newCategory));
+    newCategory.setAllParentIds(generateAllParentIds(parent));
 
     return CategoryMapper.INSTANCE.categoryToDto(categoryRepo.save(newCategory));
   }
 
   @Override
   public CategoryResDto updateCategory(Long id, CategoryReqDto categoryReqDto) {
-    categoryRepo.findByName(categoryReqDto.getName()).map(c -> {
-      throw new ResourceAlreadyExistsException("category", "name", categoryReqDto.getName());
-    });
+    // get category
+    Category category = categoryRepo.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("category", "id", id));
 
-    Image image = null;
-    if (categoryReqDto.getImageId() != null) {
-      image = imageRepo.findById(categoryReqDto.getImageId()).orElseThrow(
-          () -> new ResourceNotFoundException("image", "id", categoryReqDto.getImageId()));
-    }
-
+    // get parent category
     Category parent = null;
     if (categoryReqDto.getParentId() != null) {
       parent = categoryRepo.findById(categoryReqDto.getParentId()).orElseThrow(
@@ -80,13 +77,19 @@ public class CategoryServiceImpl implements CategoryService {
               categoryReqDto.getParentId()));
     }
 
-    Category category = categoryRepo.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("category", "id", id));
+    // get image
+    Image image = null;
+    if (categoryReqDto.getImageUrl() != null) {
+      image = imageRepo.findImageByUrl(categoryReqDto.getImageUrl()).orElseThrow(
+          () -> new ResourceNotFoundException("image", "url", categoryReqDto.getImageUrl()));
+    }
 
     category.setName(categoryReqDto.getName());
     category.setImage(image);
     category.setParent(parent);
     category.setEnabled(categoryReqDto.isEnabled());
+    category.setSlug(generateSlugCategory(category));
+    category.setAllParentIds(generateAllParentIds(parent));
 
     return CategoryMapper.INSTANCE.categoryToDto(categoryRepo.save(category));
   }
@@ -94,5 +97,33 @@ public class CategoryServiceImpl implements CategoryService {
   @Override
   public void deleteCategory(Long id) {
     categoryRepo.deleteById(id);
+  }
+
+  private String generateAllParentIds(Category parent) {
+    if (parent == null) {
+      return null;
+    }
+
+    StringBuilder builder = new StringBuilder();
+    Category temp = parent;
+    do {
+      builder.append("-").append(temp.getId());
+      temp = temp.getParent();
+    } while (temp != null);
+
+    return builder.append("-").toString();
+  }
+
+  private String generateSlugCategory(Category category) {
+    StringBuilder builder = new StringBuilder();
+    builder.append(Util.toSlug(category.getName()));
+
+    Category temp = category.getParent();
+    while (temp != null) {
+      builder.append("--").append(temp.getSlug());
+      temp = temp.getParent();
+    }
+
+    return builder.toString();
   }
 }

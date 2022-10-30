@@ -23,6 +23,7 @@ public interface CategoryMapper {
   @Mapping(source = "enabled", target = "enabled")
   @Mapping(source = "image.url", target = "image")
   @Mapping(source = "parent", target = "parent")
+  @Mapping(source = "parent", target = "allParentNames", qualifiedByName = "allParentNames")
   @Mapping(source = "createTime", target = "createTime")
   @Mapping(source = "updateTime", target = "updateTime")
   CategoryResDto categoryToDto(Category category);
@@ -39,5 +40,20 @@ public interface CategoryMapper {
   public static Category idParentToParent(Long id) {
     if (id == null) return null;
     return Category.builder().id(id).build();
+  }
+
+  @Named("allParentNames")
+  public static String allParentNames(Category parent) {
+    if (parent == null) return "";
+    StringBuilder builder = new StringBuilder();
+    builder.append(parent.getName());
+
+    Category temp = parent.getParent();
+    while (temp != null) {
+      builder.append(" - ").append(temp.getName());
+      temp = temp.getParent();
+    }
+
+    return builder.toString();
   }
 }
