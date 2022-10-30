@@ -45,7 +45,7 @@ const CategoryTableContent = ({ list }) => {
             </div>
           </td>
           <td data-label="Name">{category.name}</td>
-          <td data-label="allParentIds">{category.allParentIds}</td>
+          <td data-label="allParentIds">{category.allParentNames}</td>
           <td data-label="Status">
             {category.enabled ? (
               <span className="icon text-green-600 text-2xl">

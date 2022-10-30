@@ -14,6 +14,9 @@ import Delivery from '../pages/Delivery';
 import User from '../pages/User';
 import Customer from '../pages/Customer';
 import Statis from '../pages/Statis';
+import AddProduct from '../pages/Product/AddProduct';
+import ProductDetail from '../pages/Product/ProductDetail';
+import Login from '../pages/Login/Login';
 
 // Public routes
 const publicRoutes = [
@@ -24,12 +27,17 @@ const publicRoutes = [
     { path: config.routes.CategoryDetail, element: CategoryDetail },
 
     { path: config.routes.product, element: Product },
+    { path: config.routes.addProduct, element: AddProduct },
+    { path: config.routes.productDetail, element: ProductDetail },
+
     { path: config.routes.order, element: Order },
     { path: config.routes.voucher, element: Voucher },
     { path: config.routes.delivery, element: Delivery },
     { path: config.routes.user, element: User },
     { path: config.routes.customer, element: Customer },
     { path: config.routes.statis, element: Statis },
+
+    // { path: config.routes.login, element: Login },
 ];
 
 const privateRoutes = [];

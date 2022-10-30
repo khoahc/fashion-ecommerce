@@ -1,4 +1,4 @@
-import axiosClient from "./axiosClient";
+import { axiosClient, axiosClientMultipart } from "./axiosClient";
 
 const categoryApi = {
     getAllCategories: async () => {
@@ -23,6 +23,11 @@ const categoryApi = {
 
     deleteCategory: async () => {
 
+    },
+
+    uploadImageCategory: async (requestOption) => {
+        const url = `/api/v1/categories/image`;
+        return await axiosClientMultipart.post(url, requestOption);
     },
 };
 

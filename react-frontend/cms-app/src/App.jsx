@@ -4,12 +4,12 @@ import { ToastContainer } from "react-toastify";
 import "./App.css";
 import 'react-toastify/dist/ReactToastify.css';
 import DefaultLayout from "./layouts/DefaultLayout/DefaultLayout";
-// import Login from "./pages/Login";
 import { publicRoutes } from "./routes/routes";
-// import useToken from "./utils/useToken";
+import Login from "./pages/Login";
+import useToken from "./utils/useToken";
 
 function App() {
-  // const { token, setToken } = useToken();
+  const { token, setToken } = useToken();
 
   // if (!token) {
   //   return <Login setToken={setToken} />;
@@ -20,6 +20,8 @@ function App() {
       <div className="App">
       <ToastContainer />
         <Routes>
+          <Route path={"/login"} element={<Login setToken={setToken} />} />
+
           {publicRoutes.map((route, index) => {
             const Page = route.element;
             let Layout = DefaultLayout;

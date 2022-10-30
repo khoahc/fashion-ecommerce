@@ -4,9 +4,8 @@ import { useNavigate } from 'react-router-dom';
 
 const { getAllCategories } = categoryApi;
 
-const CategoryFrom = ({ categoryDataForm, setCategoryDataForm, onSubmitHandle }) => {
-  const [selectedFile, setSelectedFile] = useState();
-  const [preview, setPreview] = useState("");
+const CategoryFrom = ({ categoryDataForm, setCategoryDataForm, onSubmitHandle, selectedFile, setSelectedFile }) => {
+  const [preview, setPreview] = useState();
 
   const [listCategory, setListCategory] = useState([]);
   const navigate = useNavigate();
@@ -28,17 +27,10 @@ const CategoryFrom = ({ categoryDataForm, setCategoryDataForm, onSubmitHandle })
 
     const objectUrl = URL.createObjectURL(selectedFile);
     setPreview(objectUrl);
-    const readerCoverImage = new FileReader();
-    readerCoverImage.readAsDataURL(selectedFile);
-    readerCoverImage.onloadend = () => {
-      //setCoverImage(String(readerCoverImage.result));
-    };
-
-    // free memory when ever this component is unmounted
-    return () => URL.revokeObjectURL(objectUrl);
-  }, [selectedFile]);
+  }, [selectedFile, categoryDataForm.imageUrl]);
 
   const onSelectFile = (e) => {
+    console.log("select file")
     if (!e.target.files || e.target.files.length === 0) {
       setSelectedFile(undefined);
       return;
@@ -87,7 +79,7 @@ const CategoryFrom = ({ categoryDataForm, setCategoryDataForm, onSubmitHandle })
                       >
                         <option value={null}>Loại sản phẩm cha</option>
                         {listCategory.map((c) => (
-                          <option value={c.id}>{c.name}</option>
+                          <option value={c.id}>{c.name + (c.parent ? ' - ' + c.allParentNames : '')}</option>
                         ))}
                       </select>
                     </div>
@@ -119,7 +111,6 @@ const CategoryFrom = ({ categoryDataForm, setCategoryDataForm, onSubmitHandle })
                       {selectedFile && (
                         <img
                           style={{
-                            width: 200,
                             height: 300,
                             objectFit: "contain",
                           }}

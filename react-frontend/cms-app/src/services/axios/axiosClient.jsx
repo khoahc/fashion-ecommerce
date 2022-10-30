@@ -9,7 +9,7 @@ const axiosClient = axios.create({
   baseURL: baseURL,
   headers: {
     'Content-Type': 'application/json',
-    Authorization: token,
+    'Authorization': token,
   },
 });
 
@@ -27,4 +27,26 @@ axiosClient.interceptors.response.use(
   },
 );
 
-export default axiosClient;
+const axiosClientMultipart = axios.create({
+  baseURL: baseURL,
+  headers: {
+    'Content-Type': 'multipart/form-data',
+    Authorization: token,
+  },
+});
+
+axiosClientMultipart.interceptors.response.use(
+  (response) => {
+    if (response && response.data) {
+      return response.data;
+    }
+
+    return response;
+  },
+  (error) => {
+    // Handle errors
+    throw error;
+  },
+);
+
+export { axiosClient, axiosClientMultipart };

@@ -6,6 +6,8 @@ const routes = {
     CategoryDetail: '/category/:categoryId',
 
     product: '/product',
+    addProduct: '/product/new',
+    productDetail: '/product/:productId',
 
     order: '/order',
     voucher: '/voucher',
@@ -13,6 +15,8 @@ const routes = {
     user: '/user',
     customer: '/customer',
     statis: '/statis',
+
+    login: '/login',
   };
   
   export default routes;

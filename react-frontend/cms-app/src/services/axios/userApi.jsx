@@ -1,4 +1,4 @@
-import axiosClient from "./axiosClient";
+import { axiosClient } from './axiosClient';
 
 const userApi = {
     loginWithEmail: async (requestOption) => {
@@ -14,14 +14,10 @@ const userApi = {
       const url = `account/forgot-password`;
       return await axiosClient.post(url, requestOption);
     },
+
     getInfo: async () => {
-      const config = {
-        headers: {
-          Authorization: localStorage.getItem('jwt'),
-        },
-      };
-      const url = `account/get-info`;
-      return await axiosClient.get(url, config);
+      const url = `/api/v1/my`;
+      return await axiosClient.get(url);
     },
   };
   

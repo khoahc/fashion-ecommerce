@@ -9,8 +9,10 @@ function DefaultLayout({ children }) {
     <div>
       <Navbar />
       <Aside />
-      <div>{children}</div>
-      <Footer />
+      <div className="container">
+        {children}
+        <Footer />
+      </div>
     </div>
   );
 }

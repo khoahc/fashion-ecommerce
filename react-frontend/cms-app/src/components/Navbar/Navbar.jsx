@@ -1,19 +1,35 @@
 // import "./Navbar.css";
 
+import { useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import userApi from "../../services/axios/userApi";
 import useToken from "../../utils/useToken";
 
-const Navbar = () => {
+const { getInfo } = userApi;
 
+const Navbar = () => {
+  const [firstName, setFirstName] = useState("");
   const navigate = useNavigate();
   
   const { removeToken } = useToken();
 
   const logout = () => {
     removeToken();
-    navigate('.login');
+    navigate('/login');
   }
 
+  useEffect(() => {
+    const getData = async () => {
+      getInfo().then(resp => {
+        return resp.data;
+      }).then(data => {
+        setFirstName(data.firstName);
+      })
+    };
+
+    getData();
+  })
 
   return (
     <nav id="navbar-main" className="navbar is-fixed-top">
@@ -90,7 +106,7 @@ const Navbar = () => {
                 ></img>
               </div>
               <div className="is-user-name">
-                <span>John Doe</span>
+                <span>{firstName}</span>
               </div>
               <span className="icon">
                 <i className="mdi mdi-chevron-down"></i>

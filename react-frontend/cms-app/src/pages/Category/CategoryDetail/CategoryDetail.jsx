@@ -5,11 +5,12 @@ import Titlebar from "../../../components/Titlebar";
 import CategoryForm from "../../../layouts/components/Category/CategoryForm";
 import categoryApi from "../../../services/axios/categoryApi";
 
-const { getCategoryDetails, updateCategory } = categoryApi;
+const { getCategoryDetails, updateCategory, uploadImageCategory } = categoryApi;
 
 const CategoryDetail = () => {
   const { categoryId } = useParams();
   const [categoryDataForm, setCategoryDataForm] = useState({});
+  const [selectedFile, setSelectedFile] = useState();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,7 +21,9 @@ const CategoryDetail = () => {
         name: data.name,
         parentId: data.parent ? data.parent.id : null,
         enabled: data.enabled,
+        imageUrl: data.image,
       });
+      setSelectedFile(data.image);
     };
 
     getData();
@@ -61,11 +64,12 @@ const CategoryDetail = () => {
       <Titlebar listTile={listTitle} />
 
       <section className="section main-section">
-        <CategoryForm
+        {categoryDataForm.imageUrl && <CategoryForm
           categoryDataForm={categoryDataForm}
           setCategoryDataForm={setCategoryDataForm}
           onSubmitHandle={onSubmitHandle}
-        />
+        />}
+        
       </section>
     </div>
   );

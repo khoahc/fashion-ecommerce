@@ -1,9 +1,13 @@
 body {
-  @apply bg-gray-50 text-base pt-14 lg:pl-60;
+  @apply bg-gray-50 text-base;
 }
 
 #app {
   @apply w-screen transition-all lg:w-auto;
+}
+
+.container {
+  @apply lg:pl-60 pt-14;
 }
 
 .main-section {
