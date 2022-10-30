@@ -18,6 +18,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,7 +35,7 @@ public class UserServiceImpl implements UserService {
   private RoleRepository roleRepo;
 
   @Autowired
-  private BCryptPasswordEncoder passwordEncoder;
+  private PasswordEncoder passwordEncoder;
 
   @Override
   public List<UserResDto> getAll() {
@@ -45,6 +46,13 @@ public class UserServiceImpl implements UserService {
   public UserResDto getUser(Long id) {
     return UserMapper.INSTANCE.userToDto(
         userRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("user", "id", id)));
+  }
+
+  @Override
+  public UserResDto getUser(String email) {
+    return UserMapper.INSTANCE.userToDto(
+        userRepo.findByEmail(email)
+            .orElseThrow(() -> new ResourceNotFoundException("user", "email", email)));
   }
 
   @Override

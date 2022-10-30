@@ -10,6 +10,8 @@ public interface UserService {
 
   UserResDto getUser(Long id);
 
+  UserResDto getUser(String email);
+
   UserResDto createUser(UserReqDto userReqDto);
 
   UserResDto updateUser(Long id, UserReqDto userReqDto);
