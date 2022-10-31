@@ -24,7 +24,6 @@ public class ProductReqDto {
   private boolean enabled;
   private BigDecimal cost;
   private BigDecimal price;
-  private long numberOfOrder;
   private Long mainImageId;
   private Long categoryId;
   private Set<Long> vouchersId;

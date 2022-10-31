@@ -1,5 +1,6 @@
 package com.lizi.admin.dto.product;
 
+import com.lizi.admin.dto.category.CategoryResDto;
 import com.lizi.common.entity.Category;
 import com.lizi.common.entity.Image;
 import com.lizi.common.entity.ProductOption;
@@ -43,7 +44,7 @@ public class ProductResDto {
   private BigDecimal price;
   private long numberOfOrder;
   private String mainImage;
-  private Category category;
+  private CategoryResDto category;
   private Set<Voucher> vouchers;
 
   private Date createTime;

@@ -14,6 +14,6 @@ public class GlobalExceptionHandler {
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
   protected ResponseObject handleException(RuntimeException e) {
-    return ResponseObject.builder().code(HttpStatus.BAD_REQUEST.value()).message(e.getMessage()).build();
+    return ResponseObject.builder().status(HttpStatus.BAD_REQUEST).message(e.getMessage()).build();
   }
 }
