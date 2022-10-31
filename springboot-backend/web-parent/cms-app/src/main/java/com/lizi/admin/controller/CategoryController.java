@@ -38,6 +38,13 @@ public class CategoryController {
             .data(categoryService.getAll()).build());
   }
 
+  @GetMapping(value = "/level-3")
+  public ResponseEntity<ResponseObject> getAllLevel3Category() {
+    return ResponseEntity.ok().body(
+        ResponseObject.builder().status(HttpStatus.OK).message(Constant.SUCCESS)
+            .data(categoryService.getAllLevel3Category()).build());
+  }
+
   @GetMapping(value = "/{id}")
   public ResponseEntity<ResponseObject> getCategory(@PathVariable(name = "id") Long id) {
     return ResponseEntity.ok().body(
@@ -73,4 +80,5 @@ public class CategoryController {
     return ResponseEntity.ok().body(ResponseObject.builder().message(Constant.SUCCESS).status(
         HttpStatus.OK).data(cloudinaryService.uploadImageCategory(multipartFile)).build());
   }
+
 }
