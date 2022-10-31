@@ -26,9 +26,11 @@ const Button = (props) => {
   const custom = props.custom ? props.custom : "";
 
   const active = props.active === true ? "active" : null;
+
+  const width = props.width ? "w-" + props.width : null
   return (
     <button
-      className={`btn ${paddingX} ${paddingY} ${bg} ${color} 
+      className={`btn ${paddingX} ${paddingY} ${bg} ${color} ${width}
             ${fontWeight} ${size} ${animate} ${border} ${radius} ${custom} ${active}`}
       onClick={
         props.onClick
@@ -37,6 +39,7 @@ const Button = (props) => {
             }
           : null
       }
+      type={props.type ? props.type : "button"}
       disabled={props.disabled}
     >
       <span className="">{props.children}</span>

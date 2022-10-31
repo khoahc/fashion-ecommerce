@@ -18,7 +18,7 @@
   }
 
   .left {
-    padding-right: 30px;
+    padding-right: 20px;
     flex: 2;
     border-right: 1px solid #999;
 
@@ -28,6 +28,7 @@
       grid-template-areas:
         "lastName firstName firstName"
         "phonenumber phonenumber phonenumber"
+        "email email email"
         "tinh  huyen  xa"
         "address address address";
       gap: 10px;
@@ -55,25 +56,29 @@
     }
 
     .item4 {
-      grid-area: tinh;
+      grid-area: email;
     }
 
     .item5 {
-      grid-area: huyen;
+      grid-area: tinh;
     }
 
     .item6 {
-      grid-area: xa;
+      grid-area: huyen;
     }
 
     .item7 {
+      grid-area: xa;
+    }
+
+    .item8 {
       grid-area: address;
     }
   }
 
   .right {
     flex: 1.25;
-    padding-left: 30px;
+    padding-left: 20px;
     position: sticky;
     position: -webkit-sticky;
     overflow: auto;
