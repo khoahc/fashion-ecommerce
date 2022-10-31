@@ -7,7 +7,7 @@ const routes = {
   search: '/search',
   login: '/login',
   register: '/register',
-
+  checkout: '/checkout'
 };
 
 export default routes;

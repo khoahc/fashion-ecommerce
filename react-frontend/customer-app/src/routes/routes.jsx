@@ -11,13 +11,14 @@ import Product from '../pages/Product';
 import Search from '../pages/Search';
 import Cart from '../pages/Cart/Cart';
 import Page404 from '../pages/Page404';
+import Checkout from '../pages/Checkout/Checkout';
 
 // Public routes
 const publicRoutes = [
     { path: config.routes.home, element: Home },
     { path: config.routes.cart, element: Cart, layout: NoHeaderLayout },
     { path: config.routes.category, element: Catalog, layout: NoHeaderLayout},
-    //{ path: config.routes.product, element: Product, layout: HeaderOnly },
+    { path: config.routes.checkout, element: Checkout, layout: NoHeaderLayout },
     { path: config.routes.product, element: Product, layout: NoHeaderLayout},
     { path: config.routes.search, element: Search, layout: null },
     { path: "/*", element: Page404, layout: NoHeaderLayout },

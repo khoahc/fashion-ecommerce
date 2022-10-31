@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback, useRef } from "react";
 import clsx from "clsx";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { FormControlLabel, Checkbox } from "@mui/material";
 import { orange, brown } from "@mui/material/colors";
 
@@ -25,6 +25,8 @@ const Cart = () => {
   const [inputHasValue, setInputHasValue] = useState(false);
 
   const [cartProducts, setCartProducts] = useState([]);
+
+  const [cartProductsChose, setCartProductsChose] = useState([]);
 
   const [totalProducts, setTotalProducts] = useState(0);
 
@@ -99,7 +101,7 @@ const Cart = () => {
       ...cartItem,
       count: cart.at(0).count,
       enabled: cart.at(0).enabled,
-    }
+    };
   };
 
   // !enabled
@@ -146,6 +148,10 @@ const Cart = () => {
       });
   }, [cartItems]);
 
+  useEffect(() => {
+    setCartProductsChose(cartProducts.filter((item) => item.enabled));
+  }, [cartProducts]);
+
   const updateTotal = useCallback(() => {
     setTotalPrice(() =>
       cartProducts.reduce(
@@ -156,8 +162,6 @@ const Cart = () => {
         0
       )
     );
-
-    console.log(JSON.stringify(cartProducts) + " dasda");
 
     setTotalProducts(() =>
       cartProducts.reduce(
@@ -236,17 +240,19 @@ const Cart = () => {
             <span className="uppercase">{Number(totalProducts)} sản phẩm</span>{" "}
             <span>{numberWithCommas(Number(totalPrice))} đ</span>
           </div>
-          <div className="mY-1 flex-row flex-center font-weight-4">
+          {/* <div className="mY-1 flex-row flex-center font-weight-4">
             <span className="uppercase">Phí ship</span> <span>0 đ</span>
-          </div>
+          </div> */}
           <div className="mY-1 flex-row flex-center font-weight-bold">
             <span className="uppercase">Tổng</span>{" "}
             <span>{numberWithCommas(Number(totalPrice))} đ</span>
           </div>
+
+          <p>Dụng mã giảm giá trong bước tiếp theo.</p>
         </div>
 
         <div className="flex-column flex-gap-1 py-2">
-          <div className={clsx(styles.couponInput)}>
+          {/* <div className={clsx(styles.couponInput)}>
             <input
               ref={textInput}
               onChange={handleOnChangeInput}
@@ -271,9 +277,12 @@ const Cart = () => {
             >
               Áp dụng
             </Button>
-          )}
+          )} */}
+        
           <Button
-            onClick={""}
+            onClick={() => {
+              navigate("/checkout", { state: cartProductsChose });
+            }}
             backgroundColor="black"
             color="white"
             radius="3"

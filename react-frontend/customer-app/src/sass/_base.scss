@@ -204,6 +204,10 @@ hr {
 }
 
 // ----------------padding---------------
+.py-auto {
+  padding: auto 0px;
+}
+
 .py-0-1 {
   padding-top: 1.2px !important;
   padding-bottom: 1.2px !important;
@@ -356,6 +360,12 @@ hr {
 .font-weight-3 {
   font-weight: 300;
 }
+//------------------font-spacing----------
+.font-spacing-1 {
+  letter-spacing: 1px;
+}
+
+
 // -----------------font-size--------
 .font-size-1 {
   font-weight: 700;
