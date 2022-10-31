@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import categoryApi from "../../../../services/axios/categoryApi";
-import { useNavigate } from 'react-router-dom';
+import BackButton from "../../../../components/BackButton/BackButton";
 
 const { getAllCategories } = categoryApi;
 
@@ -8,7 +8,6 @@ const CategoryFrom = ({ categoryDataForm, setCategoryDataForm, onSubmitHandle, s
   const [preview, setPreview] = useState();
 
   const [listCategory, setListCategory] = useState([]);
-  const navigate = useNavigate();
 
   const getData = async () => {
     const resp = await getAllCategories();
@@ -37,10 +36,6 @@ const CategoryFrom = ({ categoryDataForm, setCategoryDataForm, onSubmitHandle, s
     }
     setSelectedFile(e.target.files[0]);
   };
-
-  const onClickCancelBtn = e => {
-    navigate('/category');
-  }
 
   return (
     <section className="section main-section">
@@ -139,9 +134,7 @@ const CategoryFrom = ({ categoryDataForm, setCategoryDataForm, onSubmitHandle, s
                 </button>
               </div>
               <div className="control">
-                <button type="reset" className="button red" onClick={onClickCancelBtn}>
-                  Hủy
-                </button>
+                <BackButton text={"Hủy"} />
               </div>
             </div>
           </form>
