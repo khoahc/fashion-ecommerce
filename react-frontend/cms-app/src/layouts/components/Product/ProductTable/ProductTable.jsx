@@ -14,11 +14,13 @@ const ProductTable = ({ list }) => {
           </th>
           <th className="image-cell"></th>
           <th>Tên</th>
-          <th>Giá</th>
+          <th>Tùy chọn</th>
+          <th>Chi phí</th>
+          <th>Giá bán</th>
           <th>Số lượng đã bán</th>
           <th>Loại sản phẩm</th>
-          <th>Tạo ngày</th>
-          <th>Cập nhật ngày</th>
+          <th>Voucher</th>
+          <th>Trạng thái</th>
           <th></th>
         </tr>
       </thead>
@@ -31,7 +33,7 @@ const ProductTable = ({ list }) => {
 
 const ProductTableContent = ({ list }) => {
     if (list && list.length !== 0) {
-      return list.map((category) => {
+      return list.map((product) => {
         return (
           <tr>
             <td className="checkbox-cell">
@@ -42,13 +44,18 @@ const ProductTableContent = ({ list }) => {
             </td>
             <td className="image-cell">
               <div className="image">
-                <img src={category.image} class="rounded-full" alt="" />
+                <img src={product.image} class="rounded-full" alt="" />
               </div>
             </td>
-            <td data-label="Name">{category.name}</td>
-            <td data-label="allParentIds">{category.allParentIds}</td>
+            <td data-label="Name">{product.name}</td>
+            <td></td>
+            <td data-label="Cost">{product.cost}</td>
+            <td data-label="Price">{product.price}</td>
+            <td data-label="NumberOfOrder">{product.numberOfOrder}</td>
+            <td data-label="Created">{product.category.name}</td>
+            <td data-label="Voucher">{}</td>
             <td data-label="Status">
-              {category.enabled ? (
+              {product.enabled ? (
                 <span className="icon text-green-600 text-2xl">
                   <i className="mdi mdi-check-circle"></i>
                 </span>
@@ -58,20 +65,10 @@ const ProductTableContent = ({ list }) => {
                 </span>
               )}
             </td>
-            <td data-label="Created">
-              <small class="text-gray-500" title={category.createTime}>
-                {category.createTime}
-              </small>
-            </td>
-            <td data-label="Created">
-              <small class="text-gray-500" title={category.updateTime}>
-                {category.updateTime}
-              </small>
-            </td>
             <td class="actions-cell">
               <div class="buttons right nowrap">
                 <Link
-                  to={`/category/${category.id}`}
+                  to={`/product/${product.id}`}
                   class="button small green --jb-modal"
                 >
                   <span class="icon">
@@ -93,7 +90,7 @@ const ProductTableContent = ({ list }) => {
         );
       });
     } else {
-      return <EmptyBodyTable colSpan={9} />;
+      return <EmptyBodyTable colSpan={11} />;
     }
   };
 

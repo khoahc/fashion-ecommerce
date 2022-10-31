@@ -6,6 +6,11 @@ const categoryApi = {
         return await axiosClient.get(url);
     },
 
+    getAllLevel3Categories: async () => {
+        const url = `/api/v1/categories/level-3`;
+        return await axiosClient.get(url);
+    },
+
     createCategory: async (requestOption) => {
         const url = `/api/v1/categories`;
         return await axiosClient.post(url, requestOption);

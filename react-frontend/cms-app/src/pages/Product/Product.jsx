@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Pagination from "../../components/Pagination";
 import Titlebar from "../../components/Titlebar";
 import ProductTable from "../../layouts/components/Product/ProductTable";
+import productApi from "../../services/axios/productApi";
+
+const { getAllProducts } = productApi;
 
 const Product = () => {
   const [listProduct, setListProduct] = useState([]);
@@ -13,6 +16,24 @@ const Product = () => {
       link: "/product",
     },
   ];
+
+  const getData = async () => {
+    getAllProducts().then(resp => {
+      return resp.data;
+    }).then(data => {
+      console.log(data);
+      setListProduct(data);
+    })
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  useEffect(() => {
+    document.title = "Quản lý loại sản phẩm";
+  });
+
   return (
     <div>
       <Titlebar listTile={listTitle} />
@@ -21,7 +42,6 @@ const Product = () => {
           <Link to={"/product/new"} className="button blue">
             Thêm mới
           </Link>
-          {/* <button className="button blue">Thêm mới</button> */}
         </div>
       </section>
 
