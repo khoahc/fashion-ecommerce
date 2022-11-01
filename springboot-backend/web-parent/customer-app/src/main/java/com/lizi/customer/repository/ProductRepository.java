@@ -1,13 +1,10 @@
 package com.lizi.customer.repository;
 
-import com.lizi.common.entity.CartItem;
 import com.lizi.common.entity.Product;
 import com.lizi.customer.dto.response.*;
-import org.hibernate.engine.jdbc.Size;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
