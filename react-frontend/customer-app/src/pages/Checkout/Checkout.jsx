@@ -1,10 +1,9 @@
-import React, { useRef, useState } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useRef, useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import clsx from "clsx";
 import {
   TextField,
-  Box,
   Autocomplete,
   Radio,
   FormControlLabel,
@@ -17,18 +16,20 @@ import numberWithCommas from "../../utils/numberWithCommas";
 import Button from "../../components/Button";
 import ProductCheckout from "../../components/ProductCheckout";
 import Grid from "../../components/Grid/Grid";
+import * as address from "../../services/address";
 
 const Checkout = () => {
-  //validation
+  //validation form
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => console.log(data);
 
+  const onSubmit = (data) => console.log(JSON.stringify(data) + " data");
+
+  let navigate = useNavigate();
   const location = useLocation();
-  console.log(location.state);
   const [productsCheckout, setProductsCheckout] = useState(location.state);
 
   const initialTotalProducts = () => {
@@ -51,6 +52,24 @@ const Checkout = () => {
 
   const [totalPrice, setTotalPrice] = useState(initialTotalPrice);
 
+  const [shipCost, setShipCost] = useState(0);
+
+  const [shipTime, setShipTime] = useState(0);
+
+  const [showDistrict, setShowDistrict] = useState(false);
+
+  const [showWard, setShowWard] = useState(false);
+
+  const [province, setProvince] = useState([]);
+
+  const [district, setDistrict] = useState([]);
+
+  const [ward, setWard] = useState([]);
+
+  const [selectedProvince, setSelectedProvince] = useState("");
+
+  const [selectedDistrict, setSelectedDistrict] = useState("");
+
   // textInput for coupon
   const textInput = useRef(null);
 
@@ -61,6 +80,86 @@ const Checkout = () => {
     let value = textInput.current.value;
     value !== "" ? setInputHasValue(true) : setInputHasValue(false);
   };
+
+  //when province option change, we will show district
+  const handleChangeProvince = (event, value) => {
+    setShowDistrict(true);
+    value !== null ? setSelectedProvince(value) : selectedProvince("");
+  };
+
+  //when district option change, we will show ward
+  const handleChangeDistrict = (event, value) => {
+    setShowWard(true);
+    value !== null ? setSelectedDistrict(value) : setSelectedDistrict("");
+  };
+
+  //when province option change, we will show district
+  const handleChangeWard = (event, value) => {
+    value.shipCost !== null ? setShipCost(value.shipCost) : setShipCost(0);
+    value.shipTime !== null ? setShipTime(value.shipTime) : setShipCost(0);
+  };
+
+  useEffect(() => {
+    Promise.all([
+      address
+        .getAllProvince()
+        .then((data) => {
+          if (data.status === "OK") {
+            setProvince(data.data);
+          } else {
+            return Promise.reject(new Error(data.message));
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        }),
+      //   catalogCategory
+      //     .getAllProductBySlugCategory(slugCategory)
+      //     .then((data) => {
+      //       if (data.status === "OK") {
+      //         setProductData(data.data);
+      //         setProducts(data.data);
+      //         console.log("get All product: " + JSON.stringify(data.data));
+      //       } else {
+      //         return Promise.reject(new Error(data.message));
+      //       }
+      //     })
+      //     .catch((error) => {
+      //       console.log(error);
+      //       navigate("/error");
+      //     }),
+    ]);
+  }, []);
+
+  useEffect(() => {
+    address
+      .getDistrictsByProvinceId(selectedProvince.id)
+      .then((data) => {
+        if (data.status === "OK") {
+          setDistrict(data.data);
+        } else {
+          return Promise.reject(new Error(data.message));
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [selectedProvince]);
+
+  useEffect(() => {
+    address
+      .getWardsByDistrictId(selectedDistrict.id)
+      .then((data) => {
+        if (data.status === "OK") {
+          setWard(data.data);
+        } else {
+          return Promise.reject(new Error(data.message));
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [selectedDistrict]);
 
   return (
     <>
@@ -77,50 +176,29 @@ const Checkout = () => {
                 <TextField
                   required
                   id="outlined-password-input"
-                  label="Họ"
+                  label="Họ và tên"
                   type="text"
                   size="medium"
                   fullWidth
-                  {...register("lastName", {
-                    required: "Họ không được rỗng!",
+                  {...register("fullName", {
+                    required: "Họ và tên không được rỗng!",
                     pattern: {
                       value:
                         /[aAàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬbBcCdDđĐeEèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆfFgGhHiIìÌỉỈĩĨíÍịỊjJkKlLmMnNoOòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢpPqQrRsStTuUùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰvVwWxXyYỳỲỷỶỹỸýÝỵỴzZ]/,
-                      message: "Họ không hợp lệ!",
+                      message: "Họ và tên không hợp lệ!",
                     },
                   })}
-                  error={!!errors?.lastName}
-                  helperText={errors?.lastName ? errors.lastName.message : null}
+                  error={!!errors?.fullName}
+                  helperText={errors?.fullName ? errors.fullName.message : null}
                 />
               </div>
-              <div className={clsx(styles.item2)}>
-                <TextField
-                  required
-                  id="outlined-password-input"
-                  label="Tên"
-                  type="text"
-                  size="medium"
-                  fullWidth
-                  {...register("firstName", {
-                    required: "Tên không được rỗng!",
-                    pattern: {
-                      value:
-                        /[aAàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬbBcCdDđĐeEèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆfFgGhHiIìÌỉỈĩĨíÍịỊjJkKlLmMnNoOòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢpPqQrRsStTuUùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰvVwWxXyYỳỲỷỶỹỸýÝỵỴzZ]/,
-                      message: "Tên không hợp lệ!",
-                    },
-                  })}
-                  error={!!errors?.firstName}
-                  helperText={
-                    errors?.firstName ? errors.firstName.message : null
-                  }
-                />
-              </div>
+
               <div className={clsx(styles.item3)}>
                 <TextField
                   required
                   id="outlined-password-input"
                   label="Số điện thoại"
-                  type="text"
+                  type="tel"
                   size="medium"
                   name="phone"
                   fullWidth
@@ -161,18 +239,16 @@ const Checkout = () => {
               <div className={clsx(styles.item5)}>
                 <Autocomplete
                   id="country-select-demo"
-                  options={[]}
+                  options={province}
                   autoHighlight
-                  getOptionLabel={(option) => option.label}
-                  renderOption={(props, option) => (
-                    <Box
-                      component="li"
-                      sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
-                      {...props}
-                    >
-                      {option.label} ({option.code}) +{option.phone}
-                    </Box>
-                  )}
+                  defaultValue=""
+                  getOptionLabel={(option) => option.name || ""}
+                  isOptionEqualToValue={(option, value) =>
+                    value === undefined ||
+                    value === "" ||
+                    option.id === value.id
+                  }
+                  onChange={handleChangeProvince}
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -193,71 +269,72 @@ const Checkout = () => {
                 />
               </div>
               <div className={clsx(styles.item6)}>
-                <Autocomplete
-                  id="country-select-demo"
-                  options={[]}
-                  autoHighlight
-                  getOptionLabel={(option) => option.label}
-                  renderOption={(props, option) => (
-                    <Box
-                      component="li"
-                      sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
-                      {...props}
-                    >
-                      {option.label} ({option.code}) +{option.phone}
-                    </Box>
-                  )}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Quận/Huyện"
-                      inputProps={{
-                        ...params.inputProps,
-                        autoComplete: "district", // disable autocomplete and autofill
-                      }}
-                      {...register("district", {
-                        required: "Quận/Huyện không được rỗng!",
-                      })}
-                      error={!!errors?.district}
-                      helperText={
-                        errors?.district ? errors.district.message : null
-                      }
-                    />
-                  )}
-                />
+                {showDistrict && (
+                  <Autocomplete
+                    id="country-select-demo"
+                    options={district}
+                    autoHighlight
+                    onChange={handleChangeDistrict}
+                    defaultValue=""
+                    isOptionEqualToValue={(option, value) =>
+                      value === undefined ||
+                      value === "" ||
+                      option.id === value.id
+                    }
+                    getOptionLabel={(option) => option.name || ""}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Quận/Huyện"
+                        inputProps={{
+                          ...params.inputProps,
+                          autoComplete: "district", // disable autocomplete and autofill
+                        }}
+                        {...register("district", {
+                          required: "Quận/Huyện không được rỗng!",
+                        })}
+                        error={!!errors?.district}
+                        helperText={
+                          errors?.district ? errors.district.message : null
+                        }
+                      />
+                    )}
+                  />
+                )}
               </div>
               <div className={clsx(styles.item7)}>
-                <Autocomplete
-                  id="country-select-demo"
-                  options={[]}
-                  autoHighlight
-                  getOptionLabel={(option) => option.label}
-                  renderOption={(props, option) => (
-                    <Box
-                      component="li"
-                      sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
-                      {...props}
-                    >
-                      {option.label} ({option.code}) +{option.phone}
-                    </Box>
-                  )}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Xã/Thị trấn"
-                      inputProps={{
-                        ...params.inputProps,
-                        autoComplete: "ward", // disable autocomplete and autofill
-                      }}
-                      {...register("ward", {
-                        required: "Xã/Thị trấn không được rỗng!",
-                      })}
-                      error={!!errors?.ward}
-                      helperText={errors?.ward ? errors.ward.message : null}
-                    />
-                  )}
-                />
+                {showWard && (
+                  <Autocomplete
+                    id="country-select-demo"
+                    options={ward}
+                    onChange={handleChangeWard}
+                    defaultValue=""
+                    autoHighlight
+                    getOptionLabel={(option) => option.name || ""}
+                    isOptionEqualToValue={(option, value) =>
+                      value === undefined ||
+                      value === "" ||
+                      option.id === value.id
+                    }
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Xã/Phường"
+                        inputProps={{
+                          ...params.inputProps,
+                          autoComplete: "ward", // disable autocomplete and autofill
+                        }}
+                        {...register("ward", {
+                          required: "Xã/Phường không được rỗng!",
+                        })}
+                        error={!!errors?.ward}
+                        helperText={errors?.ward ? errors.ward.message : null}
+                      />
+                    )}
+                  />
+                )}
               </div>
+
               <div className={clsx(styles.item8)}>
                 <TextField
                   required
@@ -359,11 +436,18 @@ const Checkout = () => {
               <span>{numberWithCommas(Number(totalPrice))} đ</span>
             </div>
             <div className="mY-1 flex-row flex-center font-weight-4">
-              <span className="uppercase">Phí ship</span> <span>0 đ</span>
+              <span className="uppercase">Phí ship</span>{" "}
+              <span>{numberWithCommas(Number(shipCost))} đ</span>
             </div>
+
+            <div className="mY-1 flex-row flex-center font-weight-4">
+              <span className="uppercase">Số ngày vận chuyển dự kiến</span>{" "}
+              <span>{numberWithCommas(Number(shipTime))} ngày</span>
+            </div>
+
             <div className="mY-1 flex-row flex-center font-weight-bold">
               <span className="uppercase">Tổng</span>{" "}
-              <span>{numberWithCommas(Number(totalPrice))} đ</span>
+              <span>{numberWithCommas(Number(totalPrice + shipCost))} đ</span>
             </div>
           </div>
 

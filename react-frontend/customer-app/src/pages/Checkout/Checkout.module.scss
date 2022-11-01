@@ -26,7 +26,7 @@
       display: grid;
       grid-template-columns: auto auto auto;
       grid-template-areas:
-        "lastName firstName firstName"
+        "fullName fullName fullName"
         "phonenumber phonenumber phonenumber"
         "email email email"
         "tinh  huyen  xa"
@@ -44,11 +44,7 @@
     }
 
     .item1 {
-      grid-area: lastName;
-    }
-
-    .item2 {
-      grid-area: firstName;
+      grid-area: fullName;
     }
 
     .item3 {
