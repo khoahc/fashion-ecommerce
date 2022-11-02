@@ -19,4 +19,11 @@ public class ProductOptionServiceImpl implements ProductOptionService {
   public Optional<Set<ProductCartResponseDTO>> getAllProductOptionForCart() {
     return productOptionRepository.findAllProductOptionForCart();
   }
+
+  @Override
+  public Long getIdProductOptionBySlugProductAndColorAndSize(String slugProduct, String slugColor, String size) {
+    return productOptionRepository.findIdProductOptionBySlugProductAndColorAndSize(slugProduct, slugColor, size);
+  }
+
+
 }

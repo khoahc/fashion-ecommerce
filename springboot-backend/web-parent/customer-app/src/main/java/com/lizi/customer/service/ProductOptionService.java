@@ -8,4 +8,6 @@ import java.util.Set;
 
 public interface ProductOptionService {
   Optional<Set<ProductCartResponseDTO>> getAllProductOptionForCart();
+
+  Long getIdProductOptionBySlugProductAndColorAndSize(String slugProduct, String slugColor, String size);
 }
