@@ -10,6 +10,8 @@ import {
   RadioGroup,
 } from "@mui/material";
 import { orange, brown } from "@mui/material/colors";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import styles from "./Checkout.module.scss";
 import numberWithCommas from "../../utils/numberWithCommas";
@@ -17,16 +19,16 @@ import Button from "../../components/Button";
 import ProductCheckout from "../../components/ProductCheckout";
 import Grid from "../../components/Grid/Grid";
 import * as address from "../../services/address";
+import * as order from "../../services/order";
 
 const Checkout = () => {
   //validation form
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-
-  const onSubmit = (data) => console.log(JSON.stringify(data) + " data");
 
   let navigate = useNavigate();
   const location = useLocation();
@@ -161,9 +163,54 @@ const Checkout = () => {
       });
   }, [selectedDistrict]);
 
+  const notify = (type, message) => {
+    type === 1
+      ? toast.success(message, {
+          position: "bottom-left",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        })
+      : toast.warn(message, {
+          position: "bottom-left",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+  };
+
+  //when click order
+  const onSubmit = (data) => {    
+    console.log(JSON.stringify(data) + " data");
+    const dataPost = {
+      ...data,
+      products: productsCheckout,
+      shipCost: shipCost,
+      totalPrice: totalPrice,
+    };
+    console.log(JSON.stringify(dataPost) + " dataPost");
+    order
+      .postOrder(dataPost)
+      .then((response) => {
+        notify(1, "Đặt hàng thành công")
+        console.log(response);
+      })
+      .catch(function (error) {
+        notify(0, "Đặt hàng thất bại!")
+        console.log(error);
+      });
+  };
   return (
     <>
-      <div className={clsx(styles.container)}>
+      <div className={clsx(styles.container)}>       
         <div className={clsx(styles.left)}>
           <div className={clsx(styles.title)}>
             <h3 className="font-weight-5 font-spacing-1 uppercase">
@@ -419,7 +466,18 @@ const Checkout = () => {
             </div>
           </div>
         </div>
-
+        <ToastContainer
+          position="bottom-right"
+          autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
         {/* RIGHT cointainer */}
         <div className={clsx(styles.right)}>
           <div className={clsx(styles.title)}>
