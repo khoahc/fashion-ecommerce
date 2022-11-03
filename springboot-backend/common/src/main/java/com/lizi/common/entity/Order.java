@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -37,7 +38,7 @@ public class Order {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  private UUID id;
 
   @Column(length = 64, nullable = false)
   private String receiverName;
@@ -51,12 +52,7 @@ public class Order {
   @Column(length = 128, nullable = false)
   private String address;
 
-  @Temporal(TemporalType.TIMESTAMP)
-  private Date orderTime;
-
   private BigDecimal shipCost;
-
-  private BigDecimal subtotal;
 
   private BigDecimal totalPrice;
 
@@ -76,9 +72,12 @@ public class Order {
 
   @CreationTimestamp
   @Temporal(TemporalType.TIMESTAMP)
-  private Date createTime;
+  private Date orderTime;
 
   @UpdateTimestamp
   @Temporal(TemporalType.TIMESTAMP)
   private Date updateTime;
+
+  @Column(name = "verification_code", length = 64)
+  private String verificationCode;
 }

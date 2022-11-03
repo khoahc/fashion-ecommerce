@@ -1,11 +1,18 @@
 package com.lizi.common.entity;
 
 public enum OrderStatus {
+  VERIFICATION {
+    @Override
+    public String defaultDescription() {
+      return "Order isn't verification";
+    }
+
+  },
 
   NEW {
     @Override
     public String defaultDescription() {
-      return "Order was placed by the customer";
+      return "Order was verify by the customer";
     }
 
   },
