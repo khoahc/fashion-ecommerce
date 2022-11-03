@@ -4,6 +4,7 @@ import com.lizi.admin.dto.customer.CustomerResDto;
 import com.lizi.admin.dto.voucher.VoucherResDto;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +18,7 @@ import lombok.Setter;
 @Builder
 public class OrderResDto {
 
-  private Long id;
+  private UUID id;
   private String receiverName;
   private String phoneNumber;
   private String email;
