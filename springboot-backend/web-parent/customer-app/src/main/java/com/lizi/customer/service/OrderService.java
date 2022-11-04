@@ -1,11 +1,13 @@
 package com.lizi.customer.service;
 
-import com.lizi.common.entity.Order;
 import com.lizi.customer.dto.request.OrderRequestDTO;
 
-import java.util.List;
-import java.util.Optional;
+import javax.mail.MessagingException;
+import java.io.UnsupportedEncodingException;
+import java.util.UUID;
 
 public interface OrderService {
-  Optional<Order> addOrder(OrderRequestDTO orderRequestDTO);
+  String addOrder(OrderRequestDTO orderRequestDTO, String siteURL) throws MessagingException, UnsupportedEncodingException;
+
+  boolean verify(String verificationCode);
 }

@@ -35,3 +35,15 @@ spring:
                         scope:
                         - email
                         - public_profile
+
+    mail:
+        host: smtp.gmail.com
+        port: 587
+        username: shopme.company2022@gmail.com
+        password: nrgpxpcinvqijowx
+        properties:
+            mail:
+                smtp:
+                    auth: true
+                    starttls:
+                        enable: true
