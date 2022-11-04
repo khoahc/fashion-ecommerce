@@ -30,3 +30,17 @@ export const postOrder = async(data) => {
 }
 
 
+export const verifyOrder = async (code) => {
+  try {
+    const res = await httpRequest.get(`order/verify`, {
+      params: {
+        code,      
+      },
+    });
+
+    return res;
+  } catch (error) {
+    handleError(error);
+  }    
+}
+

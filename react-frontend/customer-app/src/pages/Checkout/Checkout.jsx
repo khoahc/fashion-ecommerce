@@ -9,9 +9,10 @@ import {
   FormControlLabel,
   RadioGroup,
 } from "@mui/material";
-import { orange, brown } from "@mui/material/colors";
+import { orange, brown, common, grey } from "@mui/material/colors";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 import styles from "./Checkout.module.scss";
 import numberWithCommas from "../../utils/numberWithCommas";
@@ -30,10 +31,6 @@ const Checkout = () => {
     formState: { errors },
   } = useForm();
 
-  let navigate = useNavigate();
-  const location = useLocation();
-  const [productsCheckout, setProductsCheckout] = useState(location.state);
-
   const initialTotalProducts = () => {
     let totalProducts = 0;
     productsCheckout.map((item) => {
@@ -49,6 +46,12 @@ const Checkout = () => {
     });
     return totalPrice;
   };
+
+  let navigate = useNavigate();
+
+  //get ProductsCheckout from state
+  const location = useLocation();
+  const [productsCheckout, setProductsCheckout] = useState(location.state);
 
   const [totalProducts, setTotalProducts] = useState(initialTotalProducts);
 
@@ -71,6 +74,8 @@ const Checkout = () => {
   const [selectedProvince, setSelectedProvince] = useState("");
 
   const [selectedDistrict, setSelectedDistrict] = useState("");
+
+  const [loading, setLoading] = useState(false);
 
   // textInput for coupon
   const textInput = useRef(null);
@@ -188,8 +193,8 @@ const Checkout = () => {
   };
 
   //when click order
-  const onSubmit = (data) => {    
-    console.log(JSON.stringify(data) + " data");
+  const onSubmit = (data) => {
+    setLoading(true);
     const dataPost = {
       ...data,
       products: productsCheckout,
@@ -200,17 +205,19 @@ const Checkout = () => {
     order
       .postOrder(dataPost)
       .then((response) => {
-        notify(1, "Đặt hàng thành công")
+        navigate("/order/verify");
+        notify(1, "Đặt hàng thành công");
         console.log(response);
       })
       .catch(function (error) {
-        notify(0, "Đặt hàng thất bại!")
+        notify(0, "Đặt hàng thất bại!");
         console.log(error);
       });
   };
+
   return (
     <>
-      <div className={clsx(styles.container)}>       
+      <div className={clsx(styles.container)}>
         <div className={clsx(styles.left)}>
           <div className={clsx(styles.title)}>
             <h3 className="font-weight-5 font-spacing-1 uppercase">
@@ -537,18 +544,38 @@ const Checkout = () => {
               </Button>
             )}
             <form onSubmit={handleSubmit(onSubmit)}>
-              <Button
+              <LoadingButton
                 type="submit"
-                onClick={""}
-                backgroundColor="black"
-                color="white"
-                radius="3"
-                fontWeight="3"
-                size="5"
-                width="100"
+                sx={{
+                  width: "100%",
+                  height: "50px",
+                  fontSize: "1.15rem",
+                  letterSpacing: "1px",
+                  textTransform: "none",
+                  fontWeight: "400",
+                  backgroundColor: common.black,
+                  borderRadius: "30px",
+                  "&:hover": {
+                    backgroundColor: grey[800],
+                  },
+                }}
+                size="small"
+                loading={loading}
+                variant="contained"
               >
+                {/* <Button
+                  type="submit"
+                  onClick={""}
+                  backgroundColor="black"
+                  color="white"
+                  radius="3"
+                  fontWeight="3"
+                  size="5"
+                  width="100"
+                > */}
                 Đặt hàng
-              </Button>
+                {/* </Button> */}
+              </LoadingButton>
             </form>
           </div>
         </div>

@@ -52,8 +52,6 @@ const Cart = () => {
     } else {
       setCartProducts(cartProducts.map((cart) => setEnabled(cart, false)));
     }
-
-    console.log(JSON.stringify(checkedList) + "da");
   };
 
   // // when checkedList change, if 'checked' has the same value in checkList, set setIsCheckedChooseAll
@@ -137,7 +135,6 @@ const Cart = () => {
               )
               .map((cart) => setCount(cart))
           );
-          console.log(cartProducts + " api");
         } else {
           return Promise.reject(new Error(data.message));
         }

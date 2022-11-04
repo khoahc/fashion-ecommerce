@@ -164,8 +164,10 @@ public class OrderServiceImpl implements OrderService {
     content = content.replace("[[name]]", order.getReceiverName());
     content = content.replace("[[orderId]]", order.getId().toString());
 
-    String verifyURL = siteURL + "/api/v1/order/verify?code=" + order.getVerificationCode();
+//    String verifyURL = siteURL + "/api/v1/order/verify?code=" + order.getVerificationCode();
+    String verifyURL = "http://localhost/order/verify?code=" + order.getVerificationCode();
     content = content.replace("[[URL]]", verifyURL);
+
 
     helper.setText(content, true);
 

@@ -97,6 +97,31 @@ const Product = () => {
     addToCart();
   };
 
+  //handle click button BuyNow
+  const handleBuyNow = () => {
+    const colorName = productDetail.colors
+      .filter((colorProduct) => colorProduct.slug === color)
+      .at(0).name;
+    if (check()) {
+      navigate("/checkout", {
+        state: [
+          {
+            name: productDetail.name,
+            slugProduct: productDetail.slug,
+            image: productDetail.mainImage,
+            size: size,
+            color: colorName,
+            slugColor: color,
+            price: productDetail.price,
+            quantity: productDetail.quantity,
+            count: count,
+            enabled: true,
+          },
+        ],
+      });
+    }
+  };
+
   useEffect(() => {
     // Promise.all([
     product
@@ -282,7 +307,7 @@ const Product = () => {
             </Button>
 
             <Button
-              onClick={""}
+              onClick={handleBuyNow}
               backgroundColor="black"
               color="white"
               radius="3"
