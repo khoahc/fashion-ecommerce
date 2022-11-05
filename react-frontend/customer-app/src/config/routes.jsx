@@ -7,7 +7,10 @@ const routes = {
   search: '/search',
   login: '/login',
   register: '/register',
-
+  checkout: '/checkout',
+  verifyOrderSuccessful: '/order/verifySuccessful',
+  verifyOrderFail: '/order/verifyFail',
+  verifyOrder: '/order/verify'
 };
 
 export default routes;

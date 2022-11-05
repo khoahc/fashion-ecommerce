@@ -21,8 +21,8 @@ public class ProductController {
 
   @RequestMapping(value = "/{slug}")
   public ResponseObject getProductDetailByProductSlug(@PathVariable(name = "slug") String slugProduct,
-                                                      @RequestParam(name = "color", required = false) String slugColor,
-                                                      @RequestParam(name = "size", required = false) String size) {
+                                                      @RequestParam(name = "color", required = false, defaultValue = "") String slugColor,
+                                                      @RequestParam(name = "size", required = false, defaultValue = "") String size) {
     return new ResponseObject<>(HttpStatus.OK, "Thành công", productService.getProductDetailBySlug(slugProduct, slugColor, size));
   }
 

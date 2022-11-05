@@ -10,7 +10,7 @@
 
 html {
   font-size: 1rem;
-  // scroll-behavior: smooth;
+  scroll-behavior: smooth;
 
   @include mobile {
     font-size: 0.75rem;
@@ -98,6 +98,10 @@ hr {
   }
 }
 
+.min-height-100vh{
+  min-height: 100vh;
+}
+
 .right {
   flex: right;
 }
@@ -122,6 +126,10 @@ hr {
   margin: 0 auto;
 }
 
+.m-autoY {
+  margin: auto 0;
+}
+
 .m-1 {
   margin: 10px;
 }
@@ -134,14 +142,39 @@ hr {
   margin: 30px;
 }
 
+.mY-1 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.mY-2 {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
 .mY-10 {
   margin-top: 100px;
   margin-bottom: 100px;
 }
 
+.mY-20 {
+  margin-top: 200px;
+  margin-bottom: 200px;
+}
+
+.mY-30 {
+  margin-top: 300px;
+  margin-bottom: 300px;
+}
+
 .mX-1 {
   margin-left: 10px !important;
   margin-right: 10px !important;
+}
+
+.mX-2 {
+  margin-left: 20px !important;
+  margin-right: 20px !important;
 }
 
 .mt-1 {
@@ -175,15 +208,24 @@ hr {
 .ml-2 {
   margin-left: 20px;
 }
-// ----------------padding---------------
-.py-0-5 {
-  padding-top: 5px !important;
-  padding-bottom: 5px !important;
+
+.mb-3 {
+  margin-bottom: 30px;
 }
 
-.px-0-5 {
-  padding-left: 5px !important;
-  padding-right: 5px !important;
+// ----------------padding---------------
+.py-auto {
+  padding: auto 0px;
+}
+
+.py-0-1 {
+  padding-top: 1.2px !important;
+  padding-bottom: 1.2px !important;
+}
+
+.px-0-1 {
+  padding-left: 1.2px !important;
+  padding-right: 1.2px !important;
 }
 
 .py-1 {
@@ -208,7 +250,6 @@ hr {
 
 // ----------------button---------------
 .btn {
-  color: $txt-main-color;
   font-size: 1rem;
   font-weight: 600;
   border-style: none;
@@ -231,8 +272,13 @@ hr {
   background-color: #000;
 }
 
-.btn-bg-black:hover {
+.btn-bg-black:hover:enabled {
   background-color: #666;
+}
+
+.btn-bg-white.active:enabled {
+  background-color: #000;
+  color: #fff;
 }
 
 .btn-border {
@@ -243,12 +289,16 @@ hr {
   background-color: #fff;
 }
 
-.btn-bg-white:hover {
+.btn-bg-white:hover:enabled {
   border: 1px solid #000;
 }
 
 .btn-size-3 {
   height: 30px;
+}
+
+.btn-size-3-5 {
+  height: 35px;
 }
 
 .btn-size-4 {
@@ -313,9 +363,19 @@ hr {
   font-weight: 500;
 }
 
+.font-weight-4 {
+  font-weight: 400;
+}
+
 .font-weight-3 {
   font-weight: 300;
 }
+//------------------font-spacing----------
+.font-spacing-1 {
+  letter-spacing: 1px;
+}
+
+
 // -----------------font-size--------
 .font-size-1 {
   font-weight: 700;
@@ -351,9 +411,18 @@ hr {
   align-items: center;
 }
 
+.flex-center-align-items {
+  align-items: center;
+}
+
 .flex-right {
   justify-content: center;
   align-items: flex-end;
+}
+
+.flex-left {
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .flex-row {

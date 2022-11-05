@@ -2,7 +2,6 @@ package com.lizi.customer.repository;
 
 import com.lizi.common.entity.Product;
 import com.lizi.customer.dto.response.*;
-import org.hibernate.engine.jdbc.Size;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -112,5 +111,27 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
           "\tON p.id = p_o.product.id\n"+
           "\tWHERE p.slug = :slugProduct \n")
   Optional<List<SizeResponseDTO>> findAllSizesProductBySlugProduct(@Param("slugProduct") String slug);
+
+  @Query(value = "SELECT DISTINCT new com.lizi.customer.dto.response.SizeResponseDTO(p_o.size) FROM Product p \n" +
+          "\tINNER JOIN ProductOption p_o\n" +
+          "\tON p.id = p_o.product.id\n" +
+          "\tINNER JOIN ProductColor p_c\n"+
+          "\tON p_o.productColor.id = p_c.id\n"+
+          "\tINNER JOIN Color c\n" +
+          "\tON p_c.color.id = c.id\n" +
+          "\tWHERE p.slug = :slugProduct AND c.slug = :slugColor\n")
+  Optional<List<SizeResponseDTO>>findAllSizesProductBySlugProductAndSlugColor(@Param("slugProduct") String slugProduct,
+                                                                              @Param("slugColor") String slugColor);
+
+  @Query(value = "SELECT p_o.quantity FROM tbl_products p\n" +
+          "          INNER JOIN tbl_product_options p_o\n" +
+          "          ON p.id = p_o.product_id\n" +
+          "          INNER JOIN tbl_product_colors p_c\n" +
+          "          ON p_o.product_color_id = p_c.id\n" +
+          "          INNER JOIN tbl_color c\n" +
+          "          ON p_c.color_id = c.id\n" +
+          "          WHERE p.slug = :slugProduct AND c.slug = :slugColor AND p_o.size = :size", nativeQuery = true)
+  Integer findQuantityProductBySlugProductSlugColorAndSize(@Param("slugProduct") String slugProduct,
+                                                                     @Param("slugColor") String slugColor, @Param("size") String size);
 
 }
