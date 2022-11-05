@@ -53,16 +53,6 @@ public class OrderServiceImpl implements OrderService {
 
     Set<ProductCheckoutRequestDTO> listProductCheckoutRequestDTO = orderRequestDTO.getProducts();
 
-//    Order finalOrderSaved = orderSaved;
-//    Set<OrderDetail> listOrderDetail = listProductCheckoutRequestDTO.stream().map((item) -> {
-//      OrderDetail orderDetail = OrderDetailMapper.INSTANCE.productCheckoutRequestDTOToOrderDetail(item);
-//      Long idProductOption = productOptionService.getIdProductOptionBySlugProductAndColorAndSize(item.getSlugProduct(), item.getSlugColor(), item.getSize());
-//      orderDetail.setProductOption(productOptionRepository.findById(idProductOption).get());
-//      orderDetail.setOrder(finalOrderSaved);
-//      return orderDetail;
-//    }).collect(Collectors.toSet());
-
-
     Order finalOrderSaved1 = orderSaved;
     listProductCheckoutRequestDTO.forEach((item) -> {
       OrderDetail orderDetail = OrderDetailMapper.INSTANCE.productCheckoutRequestDTOToOrderDetail(item);
