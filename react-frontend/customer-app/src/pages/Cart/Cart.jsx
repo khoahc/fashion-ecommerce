@@ -1,14 +1,14 @@
-import React, { useEffect, useState, useCallback, useRef } from "react";
+import { Checkbox, FormControlLabel } from "@mui/material";
+import { brown, orange } from "@mui/material/colors";
 import clsx from "clsx";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate, Link } from "react-router-dom";
-import { FormControlLabel, Checkbox } from "@mui/material";
-import { orange, brown } from "@mui/material/colors";
+import { useNavigate } from "react-router-dom";
 
-import CartItem from "../../components/CartItem";
 import Button from "../../components/Button";
-import styles from "./Cart.module.scss";
+import CartItem from "../../components/CartItem";
 import * as productOption from "../../services/productOption";
+import styles from "./Cart.module.scss";
 
 import numberWithCommas from "../../utils/numberWithCommas";
 
@@ -248,34 +248,7 @@ const Cart = () => {
           <p>Dụng mã giảm giá trong bước tiếp theo.</p>
         </div>
 
-        <div className="flex-column flex-gap-1 py-2">
-          {/* <div className={clsx(styles.couponInput)}>
-            <input
-              ref={textInput}
-              onChange={handleOnChangeInput}
-              type="text"
-              placeholder="Nhập mã khuyến mãi của bạn"
-              onKeyPress={(e) => {
-                if (e.key === "Enter") {
-                }
-              }}
-            />
-          </div>
-
-          {inputHasValue && (
-            <Button
-              onClick={""}
-              backgroundColor="white"
-              color="black"
-              border="border"
-              radius="3"
-              fontWeight="3"
-              size="5"
-            >
-              Áp dụng
-            </Button>
-          )} */}
-        
+        <div className="flex-column flex-gap-1 py-2">        
           <Button
             onClick={() => {
               navigate("/checkout", { state: cartProductsChose });

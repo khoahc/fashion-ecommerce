@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from "react";
 import clsx from "clsx";
-import { useParams, useNavigate, useSearchParams } from "react-router-dom";
-import StarRatings from "react-star-ratings";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
 import { IoIosAdd, IoIosRemove } from "react-icons/io";
+import { useDispatch } from "react-redux";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import StarRatings from "react-star-ratings";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-import { addItem } from "../../redux/shopping-cart/cartItemsSlide";
 import Breadcrumb from "../../components/Breadcrumb";
-import Grid from "../../components/Grid";
 import Button from "../../components/Button";
-import styles from "./Product.module.scss";
-import numberWithCommas from "../../utils/numberWithCommas";
+import Grid from "../../components/Grid";
+import { addItem } from "../../redux/shopping-cart/cartItemsSlide";
 import * as product from "../../services/product";
 import * as notification from "../../utils/addNotificationElement";
+import numberWithCommas from "../../utils/numberWithCommas";
+import styles from "./Product.module.scss";
 
 const Product = () => {
   const { slugProduct } = useParams();

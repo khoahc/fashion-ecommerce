@@ -1,26 +1,22 @@
-import React, { useRef, useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import clsx from "clsx";
-import {
-  TextField,
-  Autocomplete,
-  Radio,
-  FormControlLabel,
-  RadioGroup,
-} from "@mui/material";
-import { orange, brown, common, grey } from "@mui/material/colors";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import LoadingButton from "@mui/lab/LoadingButton";
+import {
+  Autocomplete, FormControlLabel, Radio, RadioGroup, TextField
+} from "@mui/material";
+import { brown, common, grey, orange } from "@mui/material/colors";
+import clsx from "clsx";
+import React, { useEffect, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useLocation, useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-import styles from "./Checkout.module.scss";
-import numberWithCommas from "../../utils/numberWithCommas";
 import Button from "../../components/Button";
-import ProductCheckout from "../../components/ProductCheckout";
 import Grid from "../../components/Grid/Grid";
+import ProductCheckout from "../../components/ProductCheckout";
 import * as address from "../../services/address";
 import * as order from "../../services/order";
+import numberWithCommas from "../../utils/numberWithCommas";
+import styles from "./Checkout.module.scss";
 
 const Checkout = () => {
   //validation form

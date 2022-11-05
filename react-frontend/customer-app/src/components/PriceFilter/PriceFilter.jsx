@@ -1,5 +1,5 @@
-import React from "react";
 import _ from "lodash";
+import React from "react";
 
 import numberWithCommas from "../../utils/numberWithCommas";
 import CheckBox from "../Checkbox/Checkbox";
@@ -15,18 +15,20 @@ const PriceFilter = (props) => {
     { start: 300000, end: 500000 },
     { start: 500000, end: MAX_PRICE },
   ];
+
   return (
     <>
       {filterPrice.map((item, index) => (
         <div key={index} className="">
           <CheckBox
             label={
-              numberWithCommas(item.start) +
-              " đ" +
-              " - " +
-              (item.end < MAX_PRICE
-                ? numberWithCommas(item.end) + " đ"
-                : "Vô hạn")
+              item.end < MAX_PRICE
+                ? numberWithCommas(item.start) +
+                  " đ" +
+                  " - " +
+                  numberWithCommas(item.end) +
+                  " đ"
+                : "Hơn " + numberWithCommas(item.start) + " đ"
             }
             onChange={(input) => props.onChange("PRICE", input.checked, item)}
             checked={props.checkedList.some((elem) => _.isEqual(item, elem))}

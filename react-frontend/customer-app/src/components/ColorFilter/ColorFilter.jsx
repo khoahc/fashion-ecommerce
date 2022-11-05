@@ -7,6 +7,7 @@ const ColorFilter = (props) => {
       {props.colorsData.map((item, index) => (
         <div key={index} className="">
           <CheckBox
+            hexCodeColor={item.hexCode}
             label={item.name}
             onChange={(input) => props.onChange("COLOR", input.checked, item)}
             checked={props.checkedList.includes(item.slug)}

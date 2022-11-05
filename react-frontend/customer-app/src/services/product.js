@@ -1,4 +1,3 @@
-import axios from "axios";
 import httpRequest from "../utils/httpRequest";
 
 export const getProductDetailBySlug = async (slug, color, size) => {

@@ -11,7 +11,6 @@
 html {
   font-size: 1rem;
   scroll-behavior: smooth;
-
   @include mobile {
     font-size: 0.75rem;
   }
@@ -19,6 +18,7 @@ html {
 
 body {
   font-family: "Roboto", sans-serif;
+  background-color: #efefef;
 }
 
 img {
@@ -120,6 +120,10 @@ hr {
 
 .red {
   color: red;
+}
+
+.orange-bold {
+  color: #9e3500;
 }
 // ------------margin----------------
 .m-auto {

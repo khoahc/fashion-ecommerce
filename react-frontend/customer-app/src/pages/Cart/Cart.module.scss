@@ -14,7 +14,9 @@
 
   .right {
     flex: 1;
-    margin: 30px auto;
+    padding: 20px 10px;
+    border-radius: 5px;
+    background-color: #fff;
 
     .couponInput {
       border: 0.5px groove rgb(167, 166, 166);

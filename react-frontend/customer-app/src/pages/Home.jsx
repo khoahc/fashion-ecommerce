@@ -1,9 +1,9 @@
 import React from "react";
 
-import topProductData from "../assets/fake-data/top-product";
 import categoryData from "../assets/fake-data/category";
-import TopProduct from "../components/TopProduct";
+import topProductData from "../assets/fake-data/top-product";
 import CategoryBanner from "../components/CategoryBanner";
+import TopProduct from "../components/TopProduct";
 
 const Home = () => {
   const data = [];
@@ -26,18 +26,17 @@ const Home = () => {
 
   const listTopProductAndCategoryBanner = data.map((item, index) => (
     <div key={index}>
-      <TopProduct title={item.topProducts.title} listProduct={item.topProducts.data} />
+      <TopProduct
+        title={item.topProducts.title}
+        listProduct={item.topProducts.data}
+      />
       <CategoryBanner category={item.category} index={index} />
     </div>
   ));
 
   console.log("Data: " + JSON.stringify(data, null, 2));
 
-  return (
-    <>   
-      {listTopProductAndCategoryBanner}
-    </>
-  );
+  return <div className="bg-white">{listTopProductAndCategoryBanner}</div>;
 };
 
 export default Home;

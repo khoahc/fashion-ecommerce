@@ -1,21 +1,20 @@
+import clsx from "clsx";
 import React, { useCallback, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
 import { IconContext } from "react-icons";
 import { FaTrashAlt } from "react-icons/fa";
+import { useNavigate, useParams } from "react-router-dom";
 import Select from "react-select";
-import clsx from "clsx";
+import _ from "lodash"
 
-import styles from "./Catalog.module.scss";
-import numberWithCommas from "../../utils/numberWithCommas";
 import Breadcrumb from "../../components/Breadcrumb";
 import Button from "../../components/Button";
-import CheckBox from "../../components/Checkbox";
+import ColorFilter from "../../components/ColorFilter";
 import InfinityList from "../../components/InfinityList";
+import MenuFilter from "../../components/MenuFilter";
+import PriceFilter from "../../components/PriceFilter/PriceFilter";
 import * as catalogCategory from "../../services/catalogCategory";
 import * as colorService from "../../services/color";
-import MenuFilter from "../../components/MenuFilter";
-import ColorFilter from "../../components/ColorFilter";
-import PriceFilter from "../../components/PriceFilter/PriceFilter";
+import styles from "./Catalog.module.scss";
 
 const Catalog = () => {
   const { slugCategory } = useParams();
@@ -29,7 +28,7 @@ const Catalog = () => {
 
   const [selectedOption, setSelectedOption] = useState([]);
 
-  console.log("sort" + selectedOption);
+  console.log("option sort: " + selectedOption);
   // -----------------------------------------------------
   const initFilter = {
     category: [],
@@ -144,7 +143,7 @@ const Catalog = () => {
 
   const [filter, setFilter] = useState(initFilter);
 
-  console.log(JSON.stringify(filter));
+  console.log("filter: ", JSON.stringify(filter));
   const initMenuFilter = {
     ...filter,
     category: [],
@@ -181,11 +180,11 @@ const Catalog = () => {
           setFilter({ ...filter, category: newCategory });
           break;
         case "COLOR":
-          const newColor = filter.color.filter((e) => e !== item.color);
+          const newColor = filter.color.filter((e) => e !== item.slug);
           setFilter({ ...filter, color: newColor });
           break;
         case "PRICE":
-          const newPrice = filter.price.filter((e) => e !== item);
+          const newPrice = filter.price.filter((e) => !_.isEqual(e,item));
           setFilter({ ...filter, price: newPrice });
           break;
         default:
@@ -200,9 +199,7 @@ const Catalog = () => {
 
   //filter
   const updateProducts = useCallback(() => {
-    console.log("in to call");
     let temp = productData;
-    console.log("product call back: " + JSON.stringify(temp, null, 2));
     if (filter.category.length > 0) {
       temp = temp.filter((e) => {
         const check = e.slugCategories.find((category) =>
@@ -236,7 +233,7 @@ const Catalog = () => {
         return false;
       });
     }
-    console.log("update product", JSON.stringify(temp));
+    console.log("update product", JSON.stringify("product checked: ", temp));
     setProducts(temp);
   }, [filter]);
 
@@ -246,7 +243,7 @@ const Catalog = () => {
 
   return (
     <>
-      <img className={clsx(styles.banner)} src={category.image} alt="" />
+      {/* <img className={clsx(styles.banner)} src={category.image} alt="" /> */}
 
       <div className={clsx(styles.container)}>
         <Breadcrumb name={category.name} />
