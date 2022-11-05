@@ -120,21 +120,6 @@ const Checkout = () => {
         .catch((error) => {
           console.log(error);
         }),
-      //   catalogCategory
-      //     .getAllProductBySlugCategory(slugCategory)
-      //     .then((data) => {
-      //       if (data.status === "OK") {
-      //         setProductData(data.data);
-      //         setProducts(data.data);
-      //         console.log("get All product: " + JSON.stringify(data.data));
-      //       } else {
-      //         return Promise.reject(new Error(data.message));
-      //       }
-      //     })
-      //     .catch((error) => {
-      //       console.log(error);
-      //       navigate("/error");
-      //     }),
     ]);
   }, []);
 
@@ -201,7 +186,9 @@ const Checkout = () => {
       shipCost: shipCost,
       totalPrice: totalPrice,
     };
-    console.log(JSON.stringify(dataPost) + " dataPost");
+    console.log(JSON.stringify(dataPost, null, 2) + " dataPost");
+
+    //post order
     order
       .postOrder(dataPost)
       .then((response) => {
@@ -441,6 +428,7 @@ const Checkout = () => {
                   aria-labelledby="demo-radio-buttons-group-label"
                   defaultValue="cod"
                   name="radio-buttons-group"
+                  {...register("paymentMethod")}
                 >
                   <FormControlLabel
                     value="cod"
@@ -563,18 +551,7 @@ const Checkout = () => {
                 loading={loading}
                 variant="contained"
               >
-                {/* <Button
-                  type="submit"
-                  onClick={""}
-                  backgroundColor="black"
-                  color="white"
-                  radius="3"
-                  fontWeight="3"
-                  size="5"
-                  width="100"
-                > */}
                 Đặt hàng
-                {/* </Button> */}
               </LoadingButton>
             </form>
           </div>
