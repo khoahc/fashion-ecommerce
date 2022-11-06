@@ -11,18 +11,6 @@ const MenuFilter = (props) => {
             onChange={(input) => props.onChange("CATEGORY", input.checked, item)}
             checked={props.checkedList.includes(item.slug)}
           />
-
-          {/* {item.hasOwnProperty("children") &&
-            item.children.map((item, index) => (
-              <CheckBox
-                key={index}
-                label={item.name}
-                onChange={(input) =>
-                  props.onChange("CATEGORY", input.checked, item)
-                }
-                checked={props.checkedList.includes(item.slug)}
-              />
-            ))} */}
         </div>
       ))}
     </>

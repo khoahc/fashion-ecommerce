@@ -10,6 +10,7 @@ import CartItem from "../../components/CartItem";
 import * as productOption from "../../services/productOption";
 import styles from "./Cart.module.scss";
 
+import InfinityCartListSkeleton from "../../components/InfinityCartListSkeleton/InfinityCartListSkeleton";
 import numberWithCommas from "../../utils/numberWithCommas";
 
 const Cart = () => {
@@ -33,6 +34,8 @@ const Cart = () => {
   const [totalPrice, setTotalPrice] = useState(0);
 
   const [isCheckedChooseAll, setIsCheckedChooseAll] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(true);
 
   const initialCheckList = () => {
     let arr = [];
@@ -135,6 +138,7 @@ const Cart = () => {
               )
               .map((cart) => setCount(cart))
           );
+          setIsLoading(false);
         } else {
           return Promise.reject(new Error(data.message));
         }
@@ -184,15 +188,23 @@ const Cart = () => {
           </h4>
         </div>
         {/* list cart */}
-        {cartProducts.map((item, index) => (
-          <CartItem
-            item={item}
-            id={index}
-            key={index}
-            checkList={checkedList}
-            // onChangeChoose={setCheckedList}
-          />
-        ))}
+        {isLoading ? (
+          <InfinityCartListSkeleton />
+        ) : cartProducts.length === 0 ? (
+          <h2 className="mt-3 font-weight-5">
+            Hiện tại không có sản phẩm nào trong giỏ hàng
+          </h2>
+        ) : (
+          cartProducts.map((item, index) => (
+            <CartItem
+              item={item}
+              id={index}
+              key={index}
+              checkList={checkedList}
+              // onChangeChoose={setCheckedList}
+            />
+          ))
+        )}
       </div>
 
       <div className={clsx(styles.right)}>
@@ -248,11 +260,13 @@ const Cart = () => {
           <p>Dụng mã giảm giá trong bước tiếp theo.</p>
         </div>
 
-        <div className="flex-column flex-gap-1 py-2">        
+        <div className="flex-column flex-gap-1 py-2">
           <Button
             onClick={() => {
-              navigate("/checkout", { state: cartProductsChose });
+              if (cartProductsChose.length > 0)
+                navigate("/checkout", { state: cartProductsChose });
             }}
+            disabled={cartProductsChose.length <= 0}
             backgroundColor="black"
             color="white"
             radius="3"

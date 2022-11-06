@@ -1,15 +1,19 @@
 import clsx from "clsx";
+import _ from "lodash";
 import React, { useCallback, useEffect, useState } from "react";
 import { IconContext } from "react-icons";
 import { FaTrashAlt } from "react-icons/fa";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import { useNavigate, useParams } from "react-router-dom";
 import Select from "react-select";
-import _ from "lodash"
 
 import Breadcrumb from "../../components/Breadcrumb";
 import Button from "../../components/Button";
 import ColorFilter from "../../components/ColorFilter";
+import FilterSkeleton from "../../components/FilterSkeleton";
 import InfinityList from "../../components/InfinityList";
+import InfinityListSkeleton from "../../components/InfinityListSkeleton";
 import MenuFilter from "../../components/MenuFilter";
 import PriceFilter from "../../components/PriceFilter/PriceFilter";
 import * as catalogCategory from "../../services/catalogCategory";
@@ -48,6 +52,9 @@ const Catalog = () => {
 
   const [menuCategory, setMenuCategory] = useState([]);
 
+  //use skeleton
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     // const fetchData = async () => {
     //   productList1 = await catalogCategory.getCategoryBySlug(slug);
@@ -77,6 +84,7 @@ const Catalog = () => {
           if (data.status === "OK") {
             setProductData(data.data);
             setProducts(data.data);
+            setIsLoading(false);
             console.log("get All product: " + JSON.stringify(data.data));
           } else {
             return Promise.reject(new Error(data.message));
@@ -184,7 +192,7 @@ const Catalog = () => {
           setFilter({ ...filter, color: newColor });
           break;
         case "PRICE":
-          const newPrice = filter.price.filter((e) => !_.isEqual(e,item));
+          const newPrice = filter.price.filter((e) => !_.isEqual(e, item));
           setFilter({ ...filter, price: newPrice });
           break;
         default:
@@ -255,7 +263,9 @@ const Catalog = () => {
           })}
         >
           <div>
-            <h2 className={clsx(styles.titleCategory)}>{category.name}</h2>
+            <h2 className={clsx(styles.titleCategory)}>
+              {isLoading ? <Skeleton width={100} height={30} /> : category.name}
+            </h2>
           </div>
           <div className={clsx(styles.sort)}>
             <Select
@@ -306,11 +316,15 @@ const Catalog = () => {
                   </div>
                   {/* list menu */}
                   <div className="mt-1">
-                    <MenuFilter
-                      menuData={menuCategory}
-                      checkedList={filter.category}
-                      onChange={filterSelect}
-                    />
+                    {isLoading ? (
+                      <FilterSkeleton />
+                    ) : (
+                      <MenuFilter
+                        menuData={menuCategory}
+                        checkedList={filter.category}
+                        onChange={filterSelect}
+                      />
+                    )}
                   </div>
                 </div>
 
@@ -327,11 +341,15 @@ const Catalog = () => {
                     </div>
                     {/* list color */}
                     <div className="mt-1">
-                      <ColorFilter
-                        colorsData={colorsCategory}
-                        checkedList={filter.color}
-                        onChange={filterSelect}
-                      />
+                      {isLoading ? (
+                        <FilterSkeleton />
+                      ) : (
+                        <ColorFilter
+                          colorsData={colorsCategory}
+                          checkedList={filter.color}
+                          onChange={filterSelect}
+                        />
+                      )}
                     </div>
                   </div>
                   <div className={clsx(styles.priceList)}>
@@ -345,10 +363,14 @@ const Catalog = () => {
                     </div>
                     {/* list price */}
                     <div className="mt-1 mb-2">
-                      <PriceFilter
-                        onChange={filterSelect}
-                        checkedList={filter.price}
-                      />
+                      {isLoading ? (
+                        <FilterSkeleton />
+                      ) : (
+                        <PriceFilter
+                          onChange={filterSelect}
+                          checkedList={filter.price}
+                        />
+                      )}
                     </div>
                   </div>
                 </div>
@@ -358,7 +380,11 @@ const Catalog = () => {
             {/* list product */}
             <div className={clsx(styles.right)}>
               <div className={clsx(styles.listProduct)}>
-                <InfinityList data={products} />
+                {isLoading ? (
+                  <InfinityListSkeleton />
+                ) : (
+                  <InfinityList data={products} />
+                )}
               </div>
             </div>
           </div>
