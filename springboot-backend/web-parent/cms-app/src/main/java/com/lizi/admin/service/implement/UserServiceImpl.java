@@ -62,8 +62,11 @@ public class UserServiceImpl implements UserService {
       throw new ResourceAlreadyExistsException("user", "email", userReqDto.getEmail());
     }
 
-    Image photo = imageRepo.findById(userReqDto.getPhotoId())
-        .orElseThrow(() -> new ResourceNotFoundException("image", "id", userReqDto.getPhotoId()));
+    Image photo = null;
+    if (userReqDto.getPhotoId() != null) {
+      photo = imageRepo.findById(userReqDto.getPhotoId())
+          .orElseThrow(() -> new ResourceNotFoundException("image", "id", userReqDto.getPhotoId()));
+    }
 
     Set<Role> roles = userReqDto.getRoleIds().stream().map(rId -> roleRepo.findById(rId)
             .orElseThrow(() -> new ResourceNotFoundException("role", "id", rId)))
