@@ -18,7 +18,7 @@ import lombok.Setter;
 @Builder
 public class OrderResDto {
 
-  private UUID id;
+  private String id;
   private String receiverName;
   private String phoneNumber;
   private String email;
