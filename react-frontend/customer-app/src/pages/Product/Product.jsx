@@ -136,6 +136,7 @@ const Product = () => {
       .then((data) => {
         if (data.data.status === "OK") {
           setProductDetail(data.data.data);
+          setCount(1);
         } else {
           return Promise.reject(new Error(data.message));
         }
