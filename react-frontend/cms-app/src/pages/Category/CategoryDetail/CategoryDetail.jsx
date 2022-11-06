@@ -1,29 +1,27 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
 import Titlebar from "../../../components/Titlebar";
 import CategoryForm from "../../../layouts/components/Category/CategoryForm";
 import categoryApi from "../../../services/axios/categoryApi";
 
-const { getCategoryDetails, updateCategory, uploadImageCategory } = categoryApi;
+const { getCategoryDetails } = categoryApi;
 
 const CategoryDetail = () => {
   const { categoryId } = useParams();
-  const [categoryDataForm, setCategoryDataForm] = useState({});
-  const [selectedFile, setSelectedFile] = useState();
-  const navigate = useNavigate();
+
+  const [category, setCategory] = useState({});
 
   useEffect(() => {
     const getData = async () => {
-      const resp = await getCategoryDetails(categoryId);
-      const data = resp.data;
-      setCategoryDataForm({
-        name: data.name,
-        parentId: data.parent ? data.parent.id : null,
-        enabled: data.enabled,
-        imageUrl: data.image,
-      });
-      setSelectedFile(data.image);
+      // const resp = await getCategoryDetails(categoryId);
+      // const data = resp.data;
+      getCategoryDetails(categoryId).then(resp => {
+        if (resp.status === 'OK') {
+          return resp.data;
+        }
+      }).then(data => {
+        setCategory(data);
+      })
     };
 
     getData();
@@ -35,40 +33,17 @@ const CategoryDetail = () => {
       link: "/category",
     },
     {
-      title: `${categoryDataForm.name}`,
+      title: `${category.name}`,
       link: `/category/${categoryId}`,
     },
   ];
-
-  const onSubmitHandle = (e) => {
-    e.preventDefault();
-    console.log(categoryDataForm);
-    updateCategory(categoryId, categoryDataForm).then((response) => {
-      console.log(response);
-      if (response.status === 'OK') {
-        toast.success("Cập nhật thông tin thành công!", {
-          position: toast.POSITION.TOP_RIGHT,
-          autoClose: 1900,
-        });
-        navigate('/category');
-      } else {
-        toast.error("Cập nhật thông tin không thành công!", {
-          position: toast.POSITION.TOP_RIGHT,
-        });
-      }
-    });
-  };
 
   return (
     <div>
       <Titlebar listTitle={listTitle} />
 
       <section className="section main-section">
-        {categoryDataForm.imageUrl && <CategoryForm
-          categoryDataForm={categoryDataForm}
-          setCategoryDataForm={setCategoryDataForm}
-          onSubmitHandle={onSubmitHandle}
-        />}
+      <CategoryForm category={category} />
         
       </section>
     </div>

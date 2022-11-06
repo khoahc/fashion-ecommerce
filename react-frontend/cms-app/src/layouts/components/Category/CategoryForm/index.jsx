@@ -1,1 +1,1 @@
-export { default } from './CategoryFrom';
+export { default } from './CategoryForm';
