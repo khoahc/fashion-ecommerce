@@ -14,7 +14,7 @@
 }
 
 .button.small {
-  @apply text-xs p-1;
+  @apply text-xl p-1;
 }
 
 .button.small.textual {

@@ -16,10 +16,12 @@ import Customer from '../pages/Customer';
 import Statis from '../pages/Statis';
 import AddProduct from '../pages/Product/AddProduct';
 import ProductDetail from '../pages/Product/ProductDetail';
-import Login from '../pages/Login/Login';
+import AddUser from '../pages/User/AddUser/AddUser';
+import UserDetail from '../pages/User/UserDetail/UserDetail';
 
 // Public routes
 const publicRoutes = [
+
     { path: config.routes.home, element: Home },
 
     { path: config.routes.category, element: Category },
@@ -33,13 +35,16 @@ const publicRoutes = [
     { path: config.routes.order, element: Order },
     { path: config.routes.voucher, element: Voucher },
     { path: config.routes.delivery, element: Delivery },
+
     { path: config.routes.user, element: User },
+    { path: config.routes.addUser, element: AddUser },
+    { path: config.routes.userDetail, element: UserDetail },
+
     { path: config.routes.customer, element: Customer },
     { path: config.routes.statis, element: Statis },
-
-    // { path: config.routes.login, element: Login },
 ];
 
-const privateRoutes = [];
+const privateRoutes = [
+];
 
 export { publicRoutes, privateRoutes };

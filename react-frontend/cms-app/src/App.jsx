@@ -9,11 +9,7 @@ import Login from "./pages/Login";
 import useToken from "./utils/useToken";
 
 function App() {
-  const { token, setToken } = useToken();
-
-  // if (!token) {
-  //   return <Login setToken={setToken} />;
-  // }
+  const { setToken } = useToken();
 
   return (
     <Router>

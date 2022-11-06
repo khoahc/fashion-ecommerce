@@ -61,7 +61,7 @@ const CategoryDetail = () => {
 
   return (
     <div>
-      <Titlebar listTile={listTitle} />
+      <Titlebar listTitle={listTitle} />
 
       <section className="section main-section">
         {categoryDataForm.imageUrl && <CategoryForm

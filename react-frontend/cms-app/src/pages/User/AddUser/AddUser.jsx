@@ -1,21 +1,21 @@
 import { useEffect } from "react";
 import Titlebar from "../../../components/Titlebar";
-import ProductForm from "../../../layouts/components/Product/ProductForm";
+import UserForm from "../../../layouts/components/User/UserForm";
 
-const AddProduct = () => {
+const AddUser = () => {
   const listTitle = [
     {
-      title: "Sản phẩm",
-      link: "/product",
+      title: "Nhân viên",
+      link: "/user",
     },
     {
       title: "Thêm mới",
-      link: "/product/new",
+      link: "/user/new",
     },
   ];
 
   useEffect(() => {
-    document.title = "Thêm sản phẩm";
+    document.title = "Thêm nhân viên";
   });
 
   return (
@@ -23,10 +23,10 @@ const AddProduct = () => {
       <Titlebar listTitle={listTitle} />
       
       <section className="section main-section">
-        <ProductForm />
+        <UserForm />
       </section>
     </div>
-  );
-};
+  )
+}
 
-export default AddProduct;
+export default AddUser

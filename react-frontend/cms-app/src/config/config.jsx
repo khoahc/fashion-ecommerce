@@ -12,7 +12,11 @@ const routes = {
     order: '/order',
     voucher: '/voucher',
     delivery: '/delivery',
+
     user: '/user',
+    addUser: '/user/new',
+    userDetail: '/user/:userId',
+
     customer: '/customer',
     statis: '/statis',
 

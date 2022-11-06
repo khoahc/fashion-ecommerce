@@ -34,7 +34,7 @@ const ProductDetail = () => {
 
   return (
     <div>
-      <Titlebar listTile={listTitle} />
+      <Titlebar listTitle={listTitle} />
 
       <section className="section main-section">
         <ProductForm product={product} />

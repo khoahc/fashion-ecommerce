@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
 
-const Titlebar = (props) => {
+const Titlebar = ({ listTitle }) => {
   return (
     <section className="is-title-bar">
       <div className="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
         <ul>
           <TilebarItem link={"/"} title={"Quản lý"} />
-          {props.listTile.map((title) => {
-            return <TilebarItem {...title} />;
+          { listTitle.map(item => {
+            return <TilebarItem {...item} />;
           })}
         </ul>
       </div>
@@ -15,10 +15,10 @@ const Titlebar = (props) => {
   );
 };
 
-const TilebarItem = (props) => {
+const TilebarItem = ({ title, link }) => {
   return (
     <li className="underline">
-      <Link to={props.link}>{props.title}</Link>
+      <Link to={link}>{title}</Link>
     </li>
   );
 };

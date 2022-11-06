@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import userApi from "../../services/axios/userApi";
 
 const Login = ({ setToken }) => {
@@ -20,9 +21,22 @@ const Login = ({ setToken }) => {
       email: email,
       password: password,
     }).then((resp) => {
-      console.log(resp);
-      setToken(resp.data.accessToken);
+      if (resp.status !== 'OK') {
+        toast.error("Đăng nhập không thành công!", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
+      return resp.data;
+    }).then(data => {
+      setToken(data.accessToken);
+      toast.success("Đăng nhập thành công!", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
       navigate('/');
+    }).catch(err => {
+      toast.error("Đăng nhập không thành công!", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
     });
   };
 
