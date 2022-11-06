@@ -6,7 +6,7 @@ import roleApi from "../../../../services/axios/roleApi";
 import userApi from "../../../../services/axios/userApi";
 
 const { getAllRole } = roleApi;
-const { createUser } = userApi;
+const { createUser, uploadPhotoUser, updateUser } = userApi;
 
 const UserForm = ({ user }) => {
   const navigate = useNavigate();
@@ -17,8 +17,12 @@ const UserForm = ({ user }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [enabled, setEnabled] = useState(false);
-  const [photoId, setPhotoId] = useState(null);
   const [roleIds, setRoleIds] = useState([]);
+  const [file, setFile] = useState(null);
+
+  const [preview, setPreview] = useState(
+    "https://res.cloudinary.com/hauhc/image/upload/v1667738857/lizi/users/default_najhrt.webp"
+  );
 
   const [listRole, setListRole] = useState([]);
 
@@ -43,42 +47,160 @@ const UserForm = ({ user }) => {
       setFirstName(user.firstName);
       setLastName(user.lastName);
       setEmail(user.email);
-      setRoleIds(user.roles ? user.roles.map(role => role.id) : []);
+      setRoleIds(user.roles ? user.roles.map((role) => role.id) : []);
       setEnabled(user.enabled);
+      if (user.photo) {
+        setPreview(user.photo);
+      }
     }
   }, [user]);
+
+  const onSelectFile = (e) => {
+    console.log("select file");
+    if (!e.target.files || e.target.files.length === 0) {
+      setFile(null);
+      return;
+    }
+
+    setFile(e.target.files[0]);
+    setPreview(URL.createObjectURL(e.target.files[0]));
+  };
 
   const onSubmitHandle = (e) => {
     e.preventDefault();
 
     switch (mode) {
       case "create":
-        setPhotoId(4);
-        createUser({
-          email,
-          password,
-          firstName,
-          lastName,
-          enabled,
-          photoId,
-          roleIds,
-        }).then((resp) => {
-          if (resp.status === "OK") {
-            toast.success("Thêm nhân viên thành công!", {
-              position: toast.POSITION.TOP_RIGHT,
-              autoClose: 1900,
+        if (file) {
+          uploadPhotoUser({
+            photo: file,
+          })
+            .then((resp) => {
+              if (resp.status === "OK") {
+                return resp.data;
+              } else {
+                toast.error("Thêm nhân viên không thành công!", {
+                  position: toast.POSITION.TOP_RIGHT,
+                  autoClose: 1900,
+                });
+              }
+              console.log(resp);
+            })
+            .then((data) => {
+              createUser({
+                email,
+                password,
+                firstName,
+                lastName,
+                enabled,
+                photoId: data.id,
+                roleIds,
+              }).then((resp) => {
+                if (resp.status === "OK") {
+                  toast.success("Thêm nhân viên thành công!", {
+                    position: toast.POSITION.TOP_RIGHT,
+                    autoClose: 1900,
+                  });
+                  navigate("/user");
+                } else {
+                  toast.error("Thêm nhân viên không thành công!", {
+                    position: toast.POSITION.TOP_RIGHT,
+                    autoClose: 1900,
+                  });
+                }
+              });
             });
-            navigate("/user");
-          } else {
-            toast.success("Thêm nhân viên không thành công!", {
-              position: toast.POSITION.TOP_RIGHT,
-              autoClose: 1900,
-            });
-          }
-        });
+        } else {
+          createUser({
+            email,
+            password,
+            firstName,
+            lastName,
+            enabled,
+            photoId: null,
+            roleIds,
+          }).then((resp) => {
+            if (resp.status === "OK") {
+              toast.success("Thêm nhân viên thành công!", {
+                position: toast.POSITION.TOP_RIGHT,
+                autoClose: 1900,
+              });
+              navigate("/user");
+            } else {
+              toast.error("Thêm nhân viên không thành công!", {
+                position: toast.POSITION.TOP_RIGHT,
+                autoClose: 1900,
+              });
+            }
+          });
+        }
         break;
 
       case "update":
+        console.log(file);
+        if (file) {
+          uploadPhotoUser({
+            photo: file,
+          })
+            .then((resp) => {
+              if (resp.status === "OK") {
+                return resp.data;
+              } else {
+                toast.error("Thêm nhân viên không thành công!", {
+                  position: toast.POSITION.TOP_RIGHT,
+                  autoClose: 1900,
+                });
+              }
+              console.log(resp);
+            })
+            .then((data) => {
+              updateUser(user.id, {
+                email,
+                password,
+                firstName,
+                lastName,
+                enabled,
+                photoId: data.id,
+                roleIds,
+              }).then((resp) => {
+                if (resp.status === "OK") {
+                  toast.success("Cập nhật thông tin nhân viên thành công!", {
+                    position: toast.POSITION.TOP_RIGHT,
+                    autoClose: 1900,
+                  });
+                  navigate("/user");
+                } else {
+                  toast.error("Cập nhật thông tin nhân viên không thành công!", {
+                    position: toast.POSITION.TOP_RIGHT,
+                    autoClose: 1900,
+                  });
+                }
+              });
+            });
+        } else {
+          updateUser(user.id, {
+            email,
+            password,
+            firstName,
+            lastName,
+            enabled,
+            photoId: null,
+            roleIds,
+          }).then((resp) => {
+            if (resp.status === "OK") {
+              toast.success("Cập nhật thông tin nhân viên thành công!", {
+                position: toast.POSITION.TOP_RIGHT,
+                autoClose: 1900,
+              });
+              navigate("/user");
+            } else {
+              toast.error("Cập nhật thông tin nhân viên không thành công!", {
+                position: toast.POSITION.TOP_RIGHT,
+                autoClose: 1900,
+              });
+            }
+          });
+        }
         break;
 
       default:
@@ -93,6 +215,13 @@ const UserForm = ({ user }) => {
           <form onSubmit={onSubmitHandle}>
             <div className="field">
               <div className="field-body">
+                <div class="image w-48 h-48 mx-auto mb-4">
+                  <img
+                    src={preview}
+                    alt=""
+                    class="rounded-full border-2 border-gray-400 object-cover"
+                  />
+                </div>
                 <div className="field">
                   <div className="control">
                     <input
@@ -189,6 +318,16 @@ const UserForm = ({ user }) => {
                         />
                         <span className="check"></span>
                         <span className="control-label">Trạng thái</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="field-body">
+                    <div class="field file">
+                      <label class="upload control">
+                        <span class="button blue">Tải ảnh</span>
+                        <input type="file" onChange={onSelectFile} />
                       </label>
                     </div>
                   </div>

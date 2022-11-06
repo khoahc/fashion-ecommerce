@@ -12,7 +12,6 @@ const CategoryTable = ({ list }) => {
               <span className="check"></span>
             </label>
           </th>
-          <th className="image-cell"></th>
           <th>Tên</th>
           <th>Tất cả loại sản phẩm cha</th>
           <th>Trạng thái</th>
@@ -38,11 +37,6 @@ const CategoryTableContent = ({ list }) => {
               <input type="checkbox"></input>
               <span className="check"></span>
             </label>
-          </td>
-          <td className="image-cell">
-            <div className="image">
-              <img src={category.image} class="rounded-full" alt="" />
-            </div>
           </td>
           <td data-label="Name">{category.name}</td>
           <td data-label="allParentIds">{category.allParentNames}</td>

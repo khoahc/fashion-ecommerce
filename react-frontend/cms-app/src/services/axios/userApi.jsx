@@ -1,4 +1,4 @@
-import { axiosClient } from './axiosClient';
+import { axiosClient, axiosClientMultipart } from './axiosClient';
 
 const userApi = {
     loginWithEmail: async (requestOption) => {
@@ -20,6 +20,8 @@ const userApi = {
       return await axiosClient.get(url);
     },
 
+    // ========================================= //
+
     getAllUser: async () => {
       const url = `/api/v1/users`;
       return await axiosClient.get(url);
@@ -30,9 +32,19 @@ const userApi = {
       return await axiosClient.get(url);
     },
 
+    uploadPhotoUser: async (requestOption) => {
+      const url = `/api/v1/users/photos`;
+      return await axiosClientMultipart.post(url, requestOption);
+    },
+
     createUser: async (requestOption) => {
       const url = `/api/v1/users`;
       return await axiosClient.post(url, requestOption);
+    },
+
+    updateUser: async (id, requestOption) => {
+      const url = `/api/v1/users/${id}`;
+      return await axiosClient.put(url, requestOption);
     },
   };
   

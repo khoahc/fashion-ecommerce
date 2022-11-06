@@ -3,5 +3,5 @@
 }
 
 .image img {
-  @apply block h-auto w-full max-w-full;
+  @apply block h-full w-full max-h-full;
 }

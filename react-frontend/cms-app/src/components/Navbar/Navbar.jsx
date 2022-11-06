@@ -10,6 +10,7 @@ const { getInfo } = userApi;
 
 const Navbar = () => {
   const [firstName, setFirstName] = useState("");
+  const [photo, setPhoto] = useState('https://res.cloudinary.com/hauhc/image/upload/v1667738857/lizi/users/default_najhrt.webp');
   const navigate = useNavigate();
 
   const { removeToken } = useToken();
@@ -30,6 +31,7 @@ const Navbar = () => {
         })
         .then((data) => {
           setFirstName(data.firstName);
+          setPhoto(data.photo);
         });
     };
 
@@ -64,12 +66,12 @@ const Navbar = () => {
       <div className="navbar-menu" id="navbar-menu">
         <div className="navbar-end">
           <div className="navbar-item dropdown has-divider has-user-avatar">
-            <a href="#" className="navbar-link">
+            <div className="navbar-link">
               <div className="user-avatar">
                 <img
-                  src="https://avatars.dicebear.com/v2/initials/john-doe.svg"
-                  alt="John Doe"
-                  className="rounded-full"
+                  src={photo}
+                  alt={firstName}
+                  className="rounded-full object-cover h-full w-full"
                 ></img>
               </div>
               <div className="is-user-name">
@@ -78,7 +80,7 @@ const Navbar = () => {
               <span className="icon">
                 <i className="mdi mdi-chevron-down"></i>
               </span>
-            </a>
+            </div>
             <div className="navbar-dropdown">
               <a
                 href="profile.html"

@@ -59,7 +59,7 @@ td.image-cell:before, td.actions-cell:before {
 }
 
 td.image-cell .image {
-  @apply w-24 h-24 mx-auto lg:w-6 lg:h-6;
+  @apply w-24 h-24 mx-auto lg:w-16 lg:h-16;
 }
 
 .table-pagination {

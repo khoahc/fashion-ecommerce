@@ -41,8 +41,8 @@ const ProductTableContent = ({ list }) => {
             </label>
           </td>
           <td className="image-cell">
-            <div className="image">
-              <img src={user.image} class="rounded-full" alt="" />
+            <div className="image w-32 h-32">
+              <img src={user.photo || 'https://res.cloudinary.com/hauhc/image/upload/v1667738857/lizi/users/default_najhrt.webp'} class="rounded-full w-32 h-32 object-cover" alt="" />
             </div>
           </td>
           <td data-label="LastName">{user.lastName}</td>

@@ -48,7 +48,7 @@
   }
 
   .navbar-item.has-user-avatar .user-avatar {
-    @apply w-6 h-6 mr-3 inline-flex;
+    @apply w-9 h-9 mr-3 inline-flex;
   }
 
   .navbar-item.dropdown {

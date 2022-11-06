@@ -4,7 +4,13 @@ import BackButton from "../../../../components/BackButton/BackButton";
 
 const { getAllCategories } = categoryApi;
 
-const CategoryFrom = ({ categoryDataForm, setCategoryDataForm, onSubmitHandle, selectedFile, setSelectedFile }) => {
+const CategoryFrom = ({
+  categoryDataForm,
+  setCategoryDataForm,
+  onSubmitHandle,
+  selectedFile,
+  setSelectedFile,
+}) => {
   const [preview, setPreview] = useState();
 
   const [listCategory, setListCategory] = useState([]);
@@ -29,7 +35,7 @@ const CategoryFrom = ({ categoryDataForm, setCategoryDataForm, onSubmitHandle, s
   }, [selectedFile, categoryDataForm.imageUrl]);
 
   const onSelectFile = (e) => {
-    console.log("select file")
+    console.log("select file");
     if (!e.target.files || e.target.files.length === 0) {
       setSelectedFile(undefined);
       return;
@@ -74,7 +80,10 @@ const CategoryFrom = ({ categoryDataForm, setCategoryDataForm, onSubmitHandle, s
                       >
                         <option value={null}>Loại sản phẩm cha</option>
                         {listCategory.map((c) => (
-                          <option value={c.id}>{c.name + (c.parent ? ' - ' + c.allParentNames : '')}</option>
+                          <option value={c.id}>
+                            {c.name +
+                              (c.parent ? " - " + c.allParentNames : "")}
+                          </option>
                         ))}
                       </select>
                     </div>
@@ -100,30 +109,27 @@ const CategoryFrom = ({ categoryDataForm, setCategoryDataForm, onSubmitHandle, s
                     </div>
                   </div>
                 </div>
-                <div className="field">
-                  <div className="field-body">
-                    <div className="max-h-52 rounded-full flex items-center justify-center">
-                      {selectedFile && (
-                        <img
-                          style={{
-                            height: 300,
-                            objectFit: "contain",
-                          }}
-                          className="m-h-52"
-                          src={preview}
-                          alt=""
-                        />
-                      )}
+                <div class="field">
+                  <div class="field-body">
+                    <div class="field file">
+                      <label class="upload control">
+                        <a class="button blue">Tải ảnh</a>
+                        <input type="file" />
+                      </label>
                     </div>
+                  </div>
+                </div>
+                {/* <div className="field">
+                  <div className="field-body">
                     <div className="field file">
                       <input
                         type="file"
                         onChange={onSelectFile}
                         className="mt-5"
-                      ></input>
+                      />
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
 
