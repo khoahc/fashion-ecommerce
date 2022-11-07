@@ -5,6 +5,7 @@ import clsx from "clsx";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaChevronRight } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 import styles from "./OrderTracker.module.scss";
 
@@ -15,7 +16,38 @@ const OrderTracker = () => {
     formState: { errors },
   } = useForm();
 
+  let navigate = useNavigate();
+
   const [loading, setLoading] = useState(false);
+
+  //when click "Tra cuu"
+  const onSubmit = (data) => {
+  
+    // setLoading(true);
+    // const dataPost = {
+    //   ...data,
+    //   products: productsCheckout,
+    //   shipCost: shipCost,
+    //   totalPrice: totalPrice,
+    // };
+    // console.log(JSON.stringify(dataPost, null, 2) + " dataPost");
+
+    // //post order
+    // order
+    //   .postOrder(dataPost)
+    //   .then((response) => {
+    //     navigate("/order/verify");
+    //     notify(1, "Đặt hàng thành công");
+    //     console.log(response);
+    //   })
+    //   .catch(function (error) {
+    //     notify(0, "Đặt hàng thất bại!");
+    //     console.log(error);
+    //   });
+
+    navigate("/order-tracker-detail");
+
+  };
 
   return (
     <div className={clsx(styles.container)}>
@@ -63,7 +95,7 @@ const OrderTracker = () => {
         </div>
       </div>
       <div className="">
-        <form onSubmit={handleSubmit("")}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <LoadingButton
             type="submit"
             endIcon={<FaChevronRight color="white" size={16} />}
@@ -76,11 +108,11 @@ const OrderTracker = () => {
               fontWeight: "400",
               backgroundColor: common.black,
               borderRadius: "0px",
-              boxShadow: "2px 2px 1px 5px #fff, 3px 3px 0px 5px #666",
+              boxShadow: "0.25px 0.25px 1px 5px #fff, 1px 1px 0px 5px #111",
               "&:hover": {
                 backgroundColor: common.black,
                 color: "#F2C94C",
-                boxShadow: "2px 2px 1px 5px #fff, 3px 3px 0px 5px #666",
+                boxShadow: "2px 2px 1px 5px #fff, 3px 3px 0px 5px #333",
               },
             }}
             size="medium"

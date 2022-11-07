@@ -6,6 +6,7 @@ const routes = {
   product: '/p/:slugProduct',
   search: '/search',
   orderTracker: '/order-tracker',
+  orderTrackerDetail: '/order-tracker-detail',
   login: '/login',
   register: '/register',
   checkout: '/checkout',
