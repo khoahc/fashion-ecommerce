@@ -1,0 +1,3 @@
+.has-user-avatar:hover > .user-actions {
+    display: block;
+}
