@@ -44,7 +44,7 @@ const ProductTableContent = ({ list }) => {
             </td>
             <td className="image-cell">
               <div className="image">
-                <img src={product.image} class="rounded-full" alt="" />
+                <img src={product.image ? product.image : 'https://res.cloudinary.com/hauhc/image/upload/v1667836224/lizi/products/default-clothing_wy2ygo.png'} class="rounded-full" alt="" />
               </div>
             </td>
             <td data-label="Name">{product.name}</td>
