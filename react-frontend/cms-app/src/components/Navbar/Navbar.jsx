@@ -1,4 +1,4 @@
-import "./navbar.css";
+// import "./Navbar.css";
 
 import { useState } from "react";
 import { useEffect } from "react";
@@ -10,9 +10,7 @@ const { getInfo } = userApi;
 
 const Navbar = () => {
   const [firstName, setFirstName] = useState("");
-  const [photo, setPhoto] = useState(
-    "https://res.cloudinary.com/hauhc/image/upload/v1667738857/lizi/users/default_najhrt.webp"
-  );
+  const [photo, setPhoto] = useState('https://res.cloudinary.com/hauhc/image/upload/v1667738857/lizi/users/default_najhrt.webp');
   const navigate = useNavigate();
 
   const { removeToken } = useToken();
@@ -83,7 +81,7 @@ const Navbar = () => {
                 <i className="mdi mdi-chevron-down"></i>
               </span>
             </div>
-            <div className="navbar-dropdown user-actions">
+            <div className="navbar-dropdown">
               <a
                 href="profile.html"
                 className="navbar-item --set-active-profile-html"
@@ -91,19 +89,27 @@ const Navbar = () => {
                 <span className="icon">
                   <i className="mdi mdi-account"></i>
                 </span>
-                <span>Trang Cá nhân</span>
+                <span>My Profile</span>
+              </a>
+              <a href="/#" className="navbar-item">
+                <span className="icon">
+                  <i className="mdi mdi-settings"></i>
+                </span>
+                <span>Settings</span>
+              </a>
+              <a href="/#" className="navbar-item">
+                <span className="icon">
+                  <i className="mdi mdi-email"></i>
+                </span>
+                <span>Messages</span>
               </a>
               <hr className="navbar-divider"></hr>
-              <button
-                className="navbar-item"
-                onClick={logout}
-                title="Đăng xuất"
-              >
+              <a href="/#" className="navbar-item">
                 <span className="icon">
                   <i className="mdi mdi-logout"></i>
                 </span>
                 <span>Đăng xuất</span>
-              </button>
+              </a>
             </div>
           </div>
           <button

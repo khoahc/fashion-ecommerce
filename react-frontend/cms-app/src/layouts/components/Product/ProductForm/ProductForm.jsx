@@ -149,7 +149,7 @@ const ProductForm = ({ product }) => {
                     <input
                       className="input"
                       type={"number"}
-                      placeholder="Giá nhập"
+                      placeholder="Chi phí"
                       value={cost}
                       onChange={(e) => {
                         setCost(e.target.value);
