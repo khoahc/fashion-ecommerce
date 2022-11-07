@@ -31,7 +31,14 @@ const Navbar = () => {
 
   return (
     <div className={`navbar ${ scrollDirection === "down" ? "hide" : "show"}`}>
-      <div className="container">
+      <div className="flex-row flex-row-right white container">
+        <div className="navbar__top flex-row flex-gap-1">
+          <Link className="py-1 font-weight-3 font-size-0-85" to={"/order-tracker"}> <span>trình theo dõi đơn hàng</span> </Link>
+          <Link className="py-1 font-weight-3 font-size-0-85" to={"/login"}> <span>đăng nhập</span> </Link>
+          <Link className="py-1 font-weight-3 font-size-0-85" to={"/register"}> <span>đăng ký</span> </Link>
+        </div>
+      </div>
+      <div className="container flex-center mb-1">
         <Link to="/">
           <img className="navbar__logo" src={Logo} alt="logo"></img>
         </Link>

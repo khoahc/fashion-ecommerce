@@ -13,6 +13,7 @@ import Cart from "../pages/Cart/Cart";
 import Page404 from "../pages/Page404";
 import Checkout from "../pages/Checkout/Checkout";
 import VerifyOrder from "../pages/VerifyOrder/VerifyOrder";
+import OrderTracker from "../pages/OrderTracker";
 
 // Public routes
 const publicRoutes = [
@@ -21,6 +22,7 @@ const publicRoutes = [
   { path: config.routes.category, element: Catalog, layout: NoHeaderLayout },
   { path: config.routes.checkout, element: Checkout, layout: NoHeaderLayout },
   { path: config.routes.product, element: Product, layout: NoHeaderLayout },
+  { path: config.routes.orderTracker, element: OrderTracker, layout: NoHeaderLayout },
   { path: config.routes.search, element: Search, layout: null },
   {
     path: config.routes.verifyOrder,
