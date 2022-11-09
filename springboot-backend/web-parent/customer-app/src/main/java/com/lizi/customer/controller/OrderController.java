@@ -1,6 +1,8 @@
 package com.lizi.customer.controller;
 
 import com.lizi.customer.dto.request.OrderRequestDTO;
+import com.lizi.customer.dto.request.OrderTrackerRequestDTO;
+import com.lizi.customer.dto.response.OrderTrackerResponseDTO;
 import com.lizi.customer.dto.response.ResponseObject;
 import com.lizi.customer.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +22,8 @@ public class OrderController {
   private OrderService orderService;
 
   @PostMapping("")
-  public ResponseObject addOrder(@Valid @RequestBody OrderRequestDTO orderRequestDTO, HttpServletRequest request) throws MessagingException, UnsupportedEncodingException {
+  public ResponseObject addOrder(@Valid @RequestBody OrderRequestDTO orderRequestDTO, HttpServletRequest request)
+          throws MessagingException, UnsupportedEncodingException {
     return new ResponseObject<>(HttpStatus.OK, "Thành công", orderService.addOrder(orderRequestDTO, getSiteURL(request)));
   }
 
@@ -33,9 +36,15 @@ public class OrderController {
     }
   }
 
-
   private String getSiteURL(HttpServletRequest request) {
     String siteURL = request.getRequestURL().toString();
     return siteURL.replace(request.getServletPath(), "");
+  }
+
+  @RequestMapping(value = "/order-tracker", method = RequestMethod.GET)
+  public ResponseObject getOrderTrackerByOrderIdAndEmail(@RequestParam("orderId") String orderId, @RequestParam("email") String email) {
+    OrderTrackerResponseDTO orderTrackerResponseDTO =
+            orderService.getOrderTrackerByOrderIdAndEmail(orderId, email);
+    return new ResponseObject<>(HttpStatus.OK, "Thành công", orderTrackerResponseDTO);
   }
 }
