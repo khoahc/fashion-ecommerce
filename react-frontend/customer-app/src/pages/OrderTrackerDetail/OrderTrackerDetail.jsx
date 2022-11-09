@@ -1,14 +1,12 @@
 import clsx from "clsx";
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
+import ProductCheckout from "../../components/ProductCheckout";
 import TrackList from "../../components/TrackList";
 import numberWithCommas from "../../utils/numberWithCommas";
 
 import styles from "./OrderTrackerDetail.module.scss";
 
-const OrderTrackerDetail = () => {
-  const [loading, setLoading] = useState(false);
-
+const OrderTrackerDetail = (props) => {
   return (
     <div className={clsx(styles.container)}>
       <div className={clsx(styles.left)}>
@@ -18,15 +16,11 @@ const OrderTrackerDetail = () => {
           </h3>
         </div>
 
-        <div style={{ textDecoration: "underline" }}>
-          <Link to={"/order-tracker"}>Đơn hàng khác?</Link>
-        </div>
-
         <div className="font-weight-5 font-spacing-1 uppercase mY-2">
-          <h3>Mã đơn hàng: 12131 </h3>
+          <h3>Mã đơn hàng: {props.data.orderId} </h3>
         </div>
 
-        <TrackList data={[]} />
+        <TrackList data={props.data.orderTracks} />
       </div>
 
       {/* RIGHT cointainer */}
@@ -39,25 +33,33 @@ const OrderTrackerDetail = () => {
 
         <div className="mY-1 mX-2">
           <div className="mY-1 flex-row flex-center font-weight-4">
-            <span className="uppercase">Ngày đặt</span> <span>2/3/2022</span>
+            <span className="uppercase">Ngày đặt</span>{" "}
+            <span>{props.data.orderTime}</span>
           </div>
           <div className="mY-1 flex-row flex-center font-weight-4">
-            <span className="uppercase">{Number(1)} sản phẩm</span>{" "}
-            <span>{numberWithCommas(Number(12))} đ</span>
+            <span className="uppercase">
+              {Number(props.data.products.length)} sản phẩm
+            </span>{" "}
+            <span>{numberWithCommas(Number(props.data.totalPrice))} đ</span>
           </div>
           <div className="mY-1 flex-row flex-center font-weight-4">
             <span className="uppercase">Phí ship</span>{" "}
-            <span>{numberWithCommas(Number(12))} đ</span>
+            <span>{numberWithCommas(Number(props.data.shipCost))} đ</span>
           </div>
 
-          <div className="mY-1 flex-row flex-center font-weight-4">
+          {/* <div className="mY-1 flex-row flex-center font-weight-4">
             <span className="uppercase">Số ngày vận chuyển dự kiến</span>{" "}
             <span>{numberWithCommas(Number(1))} ngày</span>
-          </div>
+          </div> */}
 
           <div className="mY-1 flex-row flex-center font-weight-bold">
             <span className="uppercase">Tổng</span>{" "}
-            <span>{numberWithCommas(Number(1 + 12))} đ</span>
+            <span>
+              {numberWithCommas(
+                Number(props.data.totalPrice + props.data.shipCost)
+              )}{" "}
+              đ
+            </span>
           </div>
         </div>
 
@@ -69,16 +71,9 @@ const OrderTrackerDetail = () => {
                 Sản phẩm đặt mua
               </h3>
             </div>
-
-            {/* {productsCheckout.map((item, index) => (
-              <ProductCheckout
-                key={index}
-                data={item}
-                onChange={setProductsCheckout}
-              />
-            ))} */}
-
-            {/* <ProductCheckout /> */}
+            {props.data.products.map((item, index) => (
+              <ProductCheckout key={index} data={item} count={item.quantity} />
+            ))}
           </div>
         </div>
       </div>

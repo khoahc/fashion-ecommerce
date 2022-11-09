@@ -34,7 +34,7 @@ const ProductCheckout = (props) => {
 
         {/* QUANTITY */}
         <div className="flex-row flex-gap-1 flex-center-align-items m-1">
-          <h4 className="font-weight-4 mr-1">Số lượng {props.data.count}</h4>
+          <h4 className="font-weight-4 mr-1">Số lượng {props.count}</h4>
         </div>
       </div>
     </div>

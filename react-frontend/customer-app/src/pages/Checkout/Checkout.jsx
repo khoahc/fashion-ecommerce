@@ -406,6 +406,7 @@ const Checkout = () => {
                 <ProductCheckout
                   key={index}
                   data={item}
+                  count={item.count}
                   onChange={setProductsCheckout}
                 />
               ))}

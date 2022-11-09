@@ -6,6 +6,7 @@ import styles from "./StepTrack.module.scss";
 const StepTrack = (props) => {
   return (
     <div className={clsx(styles.step)}>
+      <span className={clsx(styles.text)}>{props.text}</span>
       <span
         className={
           props.checked ? clsx([styles.icon, styles.active]) : clsx(styles.icon)
@@ -13,7 +14,6 @@ const StepTrack = (props) => {
       >
         {props.icon}
       </span>
-      <span className={clsx(styles.text)}>{props.text}</span>
       <i className={clsx(styles.date)}>{props?.date ? props.date : ""}</i>
     </div>
   );
