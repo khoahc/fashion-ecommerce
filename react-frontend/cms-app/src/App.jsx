@@ -7,6 +7,7 @@ import DefaultLayout from "./layouts/DefaultLayout/DefaultLayout";
 import { publicRoutes } from "./routes/routes";
 import Login from "./pages/Login";
 import useToken from "./utils/useToken";
+import ProtectedRoute from "./layouts/ProtectedRoute/ProtectedRoute";
 
 function App() {
   const { setToken } = useToken();
@@ -17,6 +18,7 @@ function App() {
       <ToastContainer />
         <Routes>
           <Route path={"/login"} element={<Login setToken={setToken} />} />
+          <Route element={<ProtectedRoute />}>
 
           {publicRoutes.map((route, index) => {
             const Page = route.element;
@@ -39,7 +41,7 @@ function App() {
                 }
               />
             );
-          })}
+          })}</Route>
         </Routes>
       </div>
     </Router>

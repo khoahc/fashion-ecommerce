@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import userApi from "../../services/axios/userApi";
+import { userLogin } from "../../redux/user/userAction";
 
 const Login = ({ setToken }) => {
+  const { loading, userToken, error } = useSelector((state) => state.user)
+  const dispatch = useDispatch()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -12,32 +15,38 @@ const Login = ({ setToken }) => {
     document.title = "Đăng nhập";
   });
 
-  const { loginWithEmail } = userApi;
+  useEffect(() => {
+    if (userToken) {
+      console.log("navigateS");
+      navigate('/')
+    }
+  }, [navigate, userToken])
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    dispatch(userLogin({email, password}));
 
-    loginWithEmail({
-      email: email,
-      password: password,
-    }).then((resp) => {
-      if (resp.status !== 'OK') {
-        toast.error("Đăng nhập không thành công!", {
-          position: toast.POSITION.TOP_RIGHT,
-        });
-      }
-      return resp.data;
-    }).then(data => {
-      setToken(data.accessToken);
-      toast.success("Đăng nhập thành công!", {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-      navigate('/');
-    }).catch(err => {
-      toast.error("Đăng nhập không thành công!", {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-    });
+    // loginWithEmail({
+    //   email: email,
+    //   password: password,
+    // }).then((resp) => {
+    //   if (resp.status !== 'OK') {
+    //     toast.error("Đăng nhập không thành công!", {
+    //       position: toast.POSITION.TOP_RIGHT,
+    //     });
+    //   }
+    //   return resp.data;
+    // }).then(data => {
+    //   setToken(data.accessToken);
+    //   toast.success("Đăng nhập thành công!", {
+    //     position: toast.POSITION.TOP_RIGHT,
+    //   });
+    //   navigate('/');
+    // }).catch(err => {
+    //   toast.error("Đăng nhập không thành công!", {
+    //     position: toast.POSITION.TOP_RIGHT,
+    //   });
+    // });
   };
 
   return (

@@ -1,44 +1,23 @@
 import "./navbar.css";
 
-import { useState } from "react";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import userApi from "../../services/axios/userApi";
-import useToken from "../../utils/useToken";
-
-const { getInfo } = userApi;
+import { useDispatch, useSelector } from "react-redux";
+import { getUserDetails } from "../../redux/user/userAction";
+import { logout } from "../../redux/user/userSlice";
 
 const Navbar = () => {
-  const [firstName, setFirstName] = useState("");
-  const [photo, setPhoto] = useState(
-    "https://res.cloudinary.com/hauhc/image/upload/v1667738857/lizi/users/default_najhrt.webp"
-  );
-  const navigate = useNavigate();
-
-  const { removeToken } = useToken();
-
-  const logout = () => {
-    removeToken();
-    navigate("/login");
-  };
+  const { userInfo, userToken } = useSelector((state) => state.user)
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    const getData = async () => {
-      getInfo()
-        .then((resp) => {
-          if (resp.status !== "OK") {
-            navigate("/login");
-          }
-          return resp.data;
-        })
-        .then((data) => {
-          setFirstName(data.firstName);
-          setPhoto(data.photo);
-        });
-    };
+    if (userToken) {
+      dispatch(getUserDetails())
+    }
+  }, [userToken, dispatch])
 
-    getData();
-  });
+  const handleLogout = () => {
+    dispatch(logout());
+  };
 
   return (
     <nav id="navbar-main" className="navbar is-fixed-top">
@@ -71,13 +50,13 @@ const Navbar = () => {
             <div className="navbar-link">
               <div className="user-avatar">
                 <img
-                  src={photo}
-                  alt={firstName}
+                  src={userInfo && userInfo.photo ? userInfo.photo : 'https://res.cloudinary.com/hauhc/image/upload/v1667738857/lizi/users/default_najhrt.webp'}
+                  alt={userInfo && userInfo.firstName}
                   className="rounded-full object-cover h-full w-full"
                 ></img>
               </div>
               <div className="is-user-name">
-                <span>{firstName}</span>
+                <span>{userInfo && userInfo.firstName}</span>
               </div>
               <span className="icon">
                 <i className="mdi mdi-chevron-down"></i>
@@ -96,7 +75,7 @@ const Navbar = () => {
               <hr className="navbar-divider"></hr>
               <button
                 className="navbar-item"
-                onClick={logout}
+                onClick={handleLogout}
                 title="Đăng xuất"
               >
                 <span className="icon">
@@ -107,7 +86,7 @@ const Navbar = () => {
             </div>
           </div>
           <button
-            onClick={logout}
+            onClick={handleLogout}
             title="Đăng xuất"
             className="navbar-item desktop-icon-only"
           >

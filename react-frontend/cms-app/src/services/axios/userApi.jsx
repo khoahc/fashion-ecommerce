@@ -15,9 +15,9 @@ const userApi = {
       return await axiosClient.post(url, requestOption);
     },
 
-    getInfo: async () => {
+    getInfo: async (config) => {
       const url = `/api/v1/my`;
-      return await axiosClient.get(url);
+      return await axiosClient.get(url, config);
     },
 
     // ========================================= //

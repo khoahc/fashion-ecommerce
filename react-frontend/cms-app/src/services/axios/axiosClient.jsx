@@ -1,20 +1,11 @@
 import axios from 'axios';
 
-const getToken = () => {
-  const tokenString = localStorage.getItem('token');
-  const userToken = JSON.parse(tokenString);
-  return userToken;
-};
-const token = getToken();
-
-
 const baseURL = process.env.URL_MY_API || "http://localhost:8081/lizi-cms";
 
 const axiosClient = axios.create({
   baseURL: baseURL,
   headers: {
     'Content-Type': 'application/json',
-    'Authorization': `Bearer ${token}`,
   },
 });
 
@@ -28,7 +19,7 @@ axiosClient.interceptors.response.use(
   },
   (error) => {
     // Handle errors
-    throw error;
+    return error;
   },
 );
 
@@ -36,7 +27,6 @@ const axiosClientMultipart = axios.create({
   baseURL: baseURL,
   headers: {
     'Content-Type': 'multipart/form-data',
-    'Authorization': `Bearer ${token}`,
   },
 });
 
