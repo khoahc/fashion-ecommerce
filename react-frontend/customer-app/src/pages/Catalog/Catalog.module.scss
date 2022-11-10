@@ -17,8 +17,8 @@
     background-color: #fff;
     padding: 10px;
     border-radius: 3px;
-    z-index: 2;
-    transition: top 0.3s;
+    z-index: 1;
+    transition: top 150ms;
     -webkit-box-shadow: 0px 1px 0px #ccc;
     -moz-box-shadow: 0px 1px 0px #ccc;
     box-shadow: 0px 1px 0px #ccc;
@@ -92,7 +92,7 @@
       }
 
       div.right:nth-of-type(2) {
-        flex: 8;        ;
+        flex: 8;
         margin-left: 10px;
         min-height: 1000px;
       }
@@ -104,6 +104,6 @@
   }
 
   .down {
-    top: 84px;
+    top: 82px;
   }
 }

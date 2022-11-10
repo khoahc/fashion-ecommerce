@@ -1,13 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import categoryData from "../../../assets/fake-data/category";
 import Logo from "../../../assets/images/logo_dark.png";
+import * as catalogCategory from "../../../services/catalogCategory";
 
 const Navbar = () => {
   const { pathname } = useLocation();
+
+  const [categoryData, setCategoryData] = useState([]);
+
   const activeNav = categoryData.findIndex((e) => "/c/" + e.slug === pathname);
 
   const [scrollDirection, setScrollDirection] = useState(null);
+
+  useEffect(() => {
+    catalogCategory
+      .getAllRootCategory()
+      .then((data) => {
+        if (data.status === "OK") {
+          setCategoryData(data.data);
+          console.log("categoryData :>> ", categoryData);
+        } else {
+          return Promise.reject(new Error(data.message));
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   useEffect(() => {
     let lastScrollY = window.pageYOffset;
@@ -30,12 +49,24 @@ const Navbar = () => {
   }, [scrollDirection]);
 
   return (
-    <div className={`navbar ${ scrollDirection === "down" ? "hide" : "show"}`}>
+    <div className={`navbar ${scrollDirection === "down" ? "hide" : "show"}`}>
       <div className="flex-row flex-row-right white container">
         <div className="navbar__top flex-row flex-gap-1">
-          <Link className="py-1 font-weight-3 font-size-0-85" to={"/order-tracker"}> <span>trình theo dõi đơn hàng</span> </Link>
-          <Link className="py-1 font-weight-3 font-size-0-85" to={"/login"}> <span>đăng nhập</span> </Link>
-          <Link className="py-1 font-weight-3 font-size-0-85" to={"/register"}> <span>đăng ký</span> </Link>
+          <Link
+            className="py-1 font-weight-3 font-size-0-85"
+            to={"/order-tracker"}
+          >
+            {" "}
+            <span>trình theo dõi đơn hàng</span>{" "}
+          </Link>
+          <Link className="py-1 font-weight-3 font-size-0-85" to={"/login"}>
+            {" "}
+            <span>đăng nhập</span>{" "}
+          </Link>
+          <Link className="py-1 font-weight-3 font-size-0-85" to={"/register"}>
+            {" "}
+            <span>đăng ký</span>{" "}
+          </Link>
         </div>
       </div>
       <div className="container flex-center mb-1">
@@ -44,18 +75,19 @@ const Navbar = () => {
         </Link>
 
         <div className="navbar__menu">
-          {categoryData.map((item, index) => (
-            <div
-              key={index}
-              className={`navbar__menu__item ${
-                index === activeNav ? "active" : ""
-              }`}
-            >
-              <Link to={"/c/" + item.slug}>
-                <span>{item.name}</span>
-              </Link>
-            </div>
-          ))}
+          {categoryData !== null &&
+            categoryData.map((item, index) => (
+              <div
+                key={index}
+                className={`navbar__menu__item ${
+                  index === activeNav ? "active" : ""
+                }`}
+              >
+                <Link to={"/c/" + item.slug}>
+                  <span>{item.name}</span>
+                </Link>
+              </div>
+            ))}
         </div>
 
         <div className="navbar__items">

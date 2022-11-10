@@ -40,3 +40,13 @@ export const getMenuCategory = async (slug) => {
     handleError(error);
   }
 };
+
+export const getAllRootCategory = async () => {
+  try {
+    const res = await httpRequest.get(`/category/root`);
+
+    return res;
+  } catch (error) {
+    handleError(error);
+  }
+};
