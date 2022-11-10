@@ -16,8 +16,10 @@ const OrderTrackerDetail = (props) => {
           </h3>
         </div>
 
-        <div className="font-weight-5 font-spacing-1 uppercase mY-2">
-          <h3>Mã đơn hàng: {props.data.orderId} </h3>
+        <div className="mY-2">
+          <h4 className="font-weight-5 font-spacing-1 uppercase ">
+            Mã đơn hàng: {props.data.orderId}{" "}
+          </h4>
         </div>
 
         <TrackList data={props.data.orderTracks} />

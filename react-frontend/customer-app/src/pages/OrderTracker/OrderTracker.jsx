@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { FaChevronRight } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { getOrderTracker } from "../../services/orderTracker";
+import { addNotificationElement } from "../../utils/addNotificationElement";
 import OrderTrackerDetail from "../OrderTrackerDetail/OrderTrackerDetail";
 
 import styles from "./OrderTracker.module.scss";
@@ -35,13 +36,21 @@ const OrderTracker = () => {
     setLoading(true);
 
     //get order tracker
-    getOrderTracker(data.orderId, data.email).then((response) => {
-      if (response.status === "OK") {
-        setData(response.data);
-        console.log(JSON.stringify(response.data, null, 2));
-        setIsShowOrderTrackerDetail(true);
-      }
-    });
+    getOrderTracker(data.orderId, data.email)
+      .then((response) => {
+        if (response.status === "OK") {
+          setData(response.data);
+          console.log(JSON.stringify(response.data, null, 2));
+          setIsShowOrderTrackerDetail(true);
+          setLoading(false);
+        } else if (response.status === "NOT_FOUND") {
+          addNotificationElement("email", response.message);
+          setLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
   };
 
   return (
@@ -71,7 +80,7 @@ const OrderTracker = () => {
                 helperText={errors?.orderId ? errors.orderId.message : null}
               />
             </div>
-            <div className="">
+            <div id="email">
               <TextField
                 required
                 id="outlined-password-input"

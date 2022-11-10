@@ -35,14 +35,15 @@
   }
 
   .text {
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 500;
-    width: 230px;
+    min-width: 200px;
     text-align: right;
   }
 
   .date {
-    font-size: 1rem;
+    font-size: 0.85rem;
+    min-width: 200px;
     font-weight: 300;
   }
 
