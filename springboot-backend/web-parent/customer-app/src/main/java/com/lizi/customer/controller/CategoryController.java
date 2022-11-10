@@ -15,6 +15,11 @@ public class CategoryController {
   @Autowired
   private CategoryService categoryService;
 
+  @RequestMapping(value = "/root", method = RequestMethod.GET)
+  public ResponseObject getAllRootCategory() {
+    return new ResponseObject<>(HttpStatus.OK, "Tìm được loại sản phẩm thành công", categoryService.getAllRootCategory());
+  }
+
   @RequestMapping(value = "/{slug}", method = RequestMethod.GET)
   public ResponseObject getCategoryBySlug(@PathVariable(name = "slug") String slug) {
     return new ResponseObject<>(HttpStatus.OK, "Tìm được loại sản phẩm thành công", categoryService.getCategoryBySlug(slug));

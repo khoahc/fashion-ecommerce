@@ -8,6 +8,7 @@ import com.lizi.customer.dto.request.CategoryRequestDTO;
 import com.lizi.customer.dto.response.CategoryResponseDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 
 /**
  * @author Dang Khoa Aug 1, 2022
@@ -15,6 +16,7 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface CategoryMapper {
+	CategoryMapper INSTANCE = Mappers.getMapper(CategoryMapper.class);
 
 	@Mapping(target = "name", source = "entity.name")
 	@Mapping(target = "slug", source = "entity.slug")

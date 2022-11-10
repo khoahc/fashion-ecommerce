@@ -31,6 +31,18 @@ public class CategoryServiceImpl implements CategoryService {
   }
 
   @Override
+  public List<CategoryResponseDTO> getAllRootCategory() {
+    List<Category> categories = categoryRepository.findAllRootCategory();
+    List<CategoryResponseDTO> listCategoryResponseDTO = new ArrayList<CategoryResponseDTO>();
+
+    categories.forEach(item -> {
+      listCategoryResponseDTO.add(CategoryMapper.INSTANCE.categoryToCategoryResponseDTO(item));
+    });
+
+    return  listCategoryResponseDTO;
+  }
+
+  @Override
   public List<CategoryResponseDTO> getMenuCategoryBySlug(String slug) {
     List<Category> menuCategory = categoryRepository.findMenuCategoryBySlug(slug);
 

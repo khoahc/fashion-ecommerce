@@ -7,5 +7,7 @@ import java.util.List;
 public interface CategoryService {
   CategoryResponseDTO getCategoryBySlug(String slug);
 
+  List<CategoryResponseDTO> getAllRootCategory();
+
   List<CategoryResponseDTO> getMenuCategoryBySlug(String slug);
 }

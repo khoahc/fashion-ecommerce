@@ -15,6 +15,10 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
           "WHERE c.all_parent_ids like concat('%', (select id from tbl_categories where slug = :slug) , '%') ", nativeQuery = true)
   List<Category> findMenuCategoryBySlug(@Param(value = "slug") String slug);
 
+  @Query(value = "select c FROM Category c \n" +
+          "WHERE c.parent.id = null")
+  List<Category> findAllRootCategory();
+
   Optional<Category> findBySlugAndEnabledTrue(String slug);
 
   @Query(value = "select c.slug from tbl_categories c \n" +
