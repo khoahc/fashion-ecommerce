@@ -7,6 +7,7 @@ import com.lizi.customer.repository.CategoryRepository;
 import com.lizi.customer.repository.ProductRepository;
 import com.lizi.customer.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -108,6 +109,41 @@ public class ProductServiceImpl implements ProductService {
 
     return product;
   }
+
+  @Override
+  public TopProductsResponseDTO<TopProductDetailResponseDTO> getTopSellingProducts() {
+    TopProductsResponseDTO<TopProductDetailResponseDTO> topSellingProducts = new TopProductsResponseDTO<TopProductDetailResponseDTO>();
+    topSellingProducts.setTitle("Top sản phẩm bán chạy");
+
+    List<TopProductDetailResponseDTO> data = productRepository.findTopSellingProducts(PageRequest.of(0, 10));
+    data.forEach(item -> {
+      List<ColorProductDetailResponseDTO> colors = productRepository.findAllColorsProductBySlugProduct(item.getSlug()).get();
+      double rating = productRepository.findRatingAverageBySlugProduct(item.getSlug());
+      item.setRate(rating);
+      item.setColors(colors);
+    });
+
+    topSellingProducts.setData(data);
+    return topSellingProducts;
+  }
+
+  @Override
+  public TopProductsResponseDTO<TopProductDetailResponseDTO> getTopNewProducts() {
+    TopProductsResponseDTO<TopProductDetailResponseDTO> topNewProducts = new TopProductsResponseDTO<TopProductDetailResponseDTO>();
+    topNewProducts.setTitle("Top sản phẩm mới");
+
+    List<TopProductDetailResponseDTO> data = productRepository.findTopNewProducts(PageRequest.of(0, 10));
+    data.forEach(item -> {
+      List<ColorProductDetailResponseDTO> colors = productRepository.findAllColorsProductBySlugProduct(item.getSlug()).get();
+      double rating = productRepository.findRatingAverageBySlugProduct(item.getSlug());
+      item.setRate(rating);
+      item.setColors(colors);
+    });
+
+    topNewProducts.setData(data);
+    return topNewProducts;
+  }
+
 
 //  @Override
 //  public Optional<List<SizeResponseDTO>> getAllSizesForProductDetailByProductSlug(String slug) {

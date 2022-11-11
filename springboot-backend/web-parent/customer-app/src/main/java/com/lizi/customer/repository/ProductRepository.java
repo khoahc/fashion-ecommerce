@@ -2,6 +2,7 @@ package com.lizi.customer.repository;
 
 import com.lizi.common.entity.Product;
 import com.lizi.customer.dto.response.*;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -9,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-import java.lang.*;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
@@ -109,7 +109,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
   @Query(value = "SELECT DISTINCT new com.lizi.customer.dto.response.SizeResponseDTO(p_o.size) FROM Product p \n" +
           "\tINNER JOIN ProductOption p_o\n"+
           "\tON p.id = p_o.product.id\n"+
-          "\tWHERE p.slug = :slugProduct \n")
+          "\tWHERE p.slug = :slugProduct\n")
   Optional<List<SizeResponseDTO>> findAllSizesProductBySlugProduct(@Param("slugProduct") String slug);
 
   @Query(value = "SELECT DISTINCT new com.lizi.customer.dto.response.SizeResponseDTO(p_o.size) FROM Product p \n" +
@@ -133,5 +133,16 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
           "          WHERE p.slug = :slugProduct AND c.slug = :slugColor AND p_o.size = :size", nativeQuery = true)
   Integer findQuantityProductBySlugProductSlugColorAndSize(@Param("slugProduct") String slugProduct,
                                                                      @Param("slugColor") String slugColor, @Param("size") String size);
+
+
+  @Query(value = "Select new com.lizi.customer.dto.response.TopProductDetailResponseDTO(p.name, p.slug, p.cost, p.price) from Product p\n" +
+            "WHERE p.enabled = true\n" +
+          "ORDER BY p.numberOfOrder DESC")
+  List<TopProductDetailResponseDTO> findTopSellingProducts(Pageable pageable);
+
+  @Query(value = "Select new com.lizi.customer.dto.response.TopProductDetailResponseDTO(p.name, p.slug, p.cost, p.price) from Product p\n" +
+          "WHERE p.enabled = true\n" +
+          "ORDER BY p.createTime DESC")
+  List<TopProductDetailResponseDTO> findTopNewProducts(Pageable pageable);
 
 }

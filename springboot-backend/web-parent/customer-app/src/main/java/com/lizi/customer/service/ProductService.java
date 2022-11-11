@@ -1,9 +1,7 @@
 package com.lizi.customer.service;
 
 import com.lizi.common.entity.Product;
-import com.lizi.customer.dto.response.ProductCatalogResponseDTO;
-import com.lizi.customer.dto.response.ProductDetailResponseDTO;
-import com.lizi.customer.dto.response.SizeResponseDTO;
+import com.lizi.customer.dto.response.*;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
@@ -15,6 +13,9 @@ public interface ProductService {
 
   Optional<ProductDetailResponseDTO> getProductDetailBySlug(String slugProduct, String slugColor, String size);
 
-//  Optional<List<SizeResponseDTO>> getAllSizesForProductDetailByProductSlug(String slug);
+  TopProductsResponseDTO<TopProductDetailResponseDTO> getTopSellingProducts();
+
+  TopProductsResponseDTO<TopProductDetailResponseDTO> getTopNewProducts();
+
 
 }
