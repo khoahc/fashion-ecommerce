@@ -548,9 +548,8 @@ const Checkout = () => {
                     width: "100%",
                     height: "50px",
                     fontSize: "1.15rem",
-                    letterSpacing: "1px",
                     textTransform: "none",
-                    fontWeight: "400",
+                    fontWeight: "300",
                     backgroundColor: common.black,
                     borderRadius: "30px",
                     "&:hover": {

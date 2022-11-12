@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+
 import Logo from "../../../assets/images/logo_dark.png";
 import * as catalogCategory from "../../../services/catalogCategory";
 
@@ -12,6 +14,8 @@ const Navbar = () => {
   const activeNav = categoryData.findIndex((e) => "/c/" + e.slug === pathname);
 
   const [scrollDirection, setScrollDirection] = useState(null);
+
+  const cartItems = useSelector((state) => state.cartItems.value);
 
   useEffect(() => {
     catalogCategory
@@ -66,14 +70,14 @@ const Navbar = () => {
             {" "}
             <span>trình theo dõi đơn hàng</span>{" "}
           </Link>
-          <Link className="py-1 font-weight-3 font-size-0-85" to={"/login"}>
+          {/* <Link className="py-1 font-weight-3 font-size-0-85" to={"/login"}>
             {" "}
             <span>đăng nhập</span>{" "}
           </Link>
           <Link className="py-1 font-weight-3 font-size-0-85" to={"/register"}>
             {" "}
             <span>đăng ký</span>{" "}
-          </Link>
+          </Link> */}
         </div>
       </div>
       <div className="container flex-center mb-1">
@@ -106,14 +110,15 @@ const Navbar = () => {
               onKeyPress={handleSearch}
             />
           </div>
-          <div className="navbar__items__item">
+          {/* <div className="navbar__items__item">
             <Link to="/login">
               <i className="bx bx-user bx-sm"></i>
             </Link>
-          </div>
-          <div className="navbar__items__item">
+          </div> */}
+          <div className="navbar__items__item cart">
             <Link to="/cart">
               <i className="bx bx-shopping-bag bx-sm"></i>
+              <span className="notification">{cartItems.length}</span>
             </Link>
           </div>
         </div>

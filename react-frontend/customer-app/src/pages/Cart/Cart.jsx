@@ -1,7 +1,7 @@
 import { Checkbox, FormControlLabel } from "@mui/material";
 import { brown, orange } from "@mui/material/colors";
 import clsx from "clsx";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -19,11 +19,6 @@ const Cart = () => {
     navigate(-1);
   };
   const cartItems = useSelector((state) => state.cartItems.value);
-
-  // textInput must be declared here so the ref can refer to it
-  const textInput = useRef(null);
-
-  const [inputHasValue, setInputHasValue] = useState(false);
 
   const [cartProducts, setCartProducts] = useState([]);
 
@@ -84,12 +79,6 @@ const Cart = () => {
       return newCheckedList;
     });
   }, [isCheckedChooseAll]);
-
-  //handle onchange (show, hide) coupon input
-  const handleOnChangeInput = () => {
-    let value = textInput.current.value;
-    value !== "" ? setInputHasValue(true) : setInputHasValue(false);
-  };
 
   const setCount = (cartItem) => {
     let cart = cartItems.filter(
