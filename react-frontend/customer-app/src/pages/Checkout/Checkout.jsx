@@ -1,6 +1,10 @@
 import LoadingButton from "@mui/lab/LoadingButton";
 import {
-  Autocomplete, FormControlLabel, Radio, RadioGroup, TextField
+  Autocomplete,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
+  TextField
 } from "@mui/material";
 import { brown, common, grey, orange } from "@mui/material/colors";
 import clsx from "clsx";
@@ -10,7 +14,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import Button from "../../components/Button";
 import Grid from "../../components/Grid/Grid";
 import ProductCheckout from "../../components/ProductCheckout";
 import * as address from "../../services/address";
@@ -29,17 +32,22 @@ const Checkout = () => {
 
   const initialTotalProducts = () => {
     let totalProducts = 0;
-    productsCheckout.map((item) => {
-      totalProducts += item.count;
-    });
+
+    productsCheckout === null
+      ? navigate(`/`)
+      : productsCheckout.map((item) => {
+          totalProducts += item.count;
+        });
     return totalProducts;
   };
 
   const initialTotalPrice = () => {
     let totalPrice = 0;
-    productsCheckout.map((item) => {
-      totalPrice += item.price * item.count;
-    });
+    productsCheckout === null
+      ? navigate(`/`)
+      : productsCheckout.map((item) => {
+          totalPrice += item.price * item.count;
+        });
     return totalPrice;
   };
 
@@ -103,20 +111,22 @@ const Checkout = () => {
   };
 
   useEffect(() => {
-    Promise.all([
-      address
-        .getAllProvince()
-        .then((data) => {
-          if (data.status === "OK") {
-            setProvince(data.data);
-          } else {
-            return Promise.reject(new Error(data.message));
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        }),
-    ]);
+    productsCheckout === null
+      ? navigate(`/`)
+      : Promise.all([
+          address
+            .getAllProvince()
+            .then((data) => {
+              if (data.status === "OK") {
+                setProvince(data.data);
+              } else {
+                return Promise.reject(new Error(data.message));
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            }),
+        ]);
   }, []);
 
   useEffect(() => {
@@ -200,309 +210,312 @@ const Checkout = () => {
 
   return (
     <>
-      <div className={clsx(styles.container)}>
-        <div className={clsx(styles.left)}>
-          <div className={clsx(styles.title)}>
-            <h3 className="font-weight-5 font-spacing-1 uppercase">
-              Địa chỉ giao hàng
-            </h3>
-          </div>
-          <form>
-            <div className={clsx(styles.gridContainer)}>
-              <div className={clsx(styles.item1)}>
-                <TextField
-                  required
-                  id="outlined-password-input"
-                  label="Họ và tên"
-                  type="text"
-                  size="medium"
-                  fullWidth
-                  {...register("fullName", {
-                    required: "Họ và tên không được rỗng!",
-                    pattern: {
-                      value:
-                        /[aAàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬbBcCdDđĐeEèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆfFgGhHiIìÌỉỈĩĨíÍịỊjJkKlLmMnNoOòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢpPqQrRsStTuUùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰvVwWxXyYỳỲỷỶỹỸýÝỵỴzZ]/,
-                      message: "Họ và tên không hợp lệ!",
-                    },
-                  })}
-                  error={!!errors?.fullName}
-                  helperText={errors?.fullName ? errors.fullName.message : null}
-                />
-              </div>
+      {productsCheckout !== null && (
+        <div className={clsx(styles.container)}>
+          <div className={clsx(styles.left)}>
+            <div className={clsx(styles.title)}>
+              <h3 className="font-weight-5 font-spacing-1 uppercase">
+                Địa chỉ giao hàng
+              </h3>
+            </div>
+            <form>
+              <div className={clsx(styles.gridContainer)}>
+                <div className={clsx(styles.item1)}>
+                  <TextField
+                    required
+                    id="outlined-password-input"
+                    label="Họ và tên"
+                    type="text"
+                    size="medium"
+                    fullWidth
+                    {...register("fullName", {
+                      required: "Họ và tên không được rỗng!",
+                      pattern: {
+                        value:
+                          /[aAàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬbBcCdDđĐeEèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆfFgGhHiIìÌỉỈĩĨíÍịỊjJkKlLmMnNoOòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢpPqQrRsStTuUùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰvVwWxXyYỳỲỷỶỹỸýÝỵỴzZ]/,
+                        message: "Họ và tên không hợp lệ!",
+                      },
+                    })}
+                    error={!!errors?.fullName}
+                    helperText={
+                      errors?.fullName ? errors.fullName.message : null
+                    }
+                  />
+                </div>
 
-              <div className={clsx(styles.item3)}>
-                <TextField
-                  required
-                  id="outlined-password-input"
-                  label="Số điện thoại"
-                  type="tel"
-                  size="medium"
-                  name="phone"
-                  fullWidth
-                  {...register("phoneNumber", {
-                    required: "Số điện thoại không được rỗng!",
-                    pattern: {
-                      value: /[0]{1}[0-9]{9}/,
-                      message: "Số điện thoại không hợp lệ!",
-                    },
-                  })}
-                  error={!!errors?.phoneNumber}
-                  helperText={
-                    errors?.phoneNumber ? errors.phoneNumber.message : null
-                  }
-                />
-              </div>
+                <div className={clsx(styles.item3)}>
+                  <TextField
+                    required
+                    id="outlined-password-input"
+                    label="Số điện thoại"
+                    type="tel"
+                    size="medium"
+                    name="phone"
+                    fullWidth
+                    {...register("phoneNumber", {
+                      required: "Số điện thoại không được rỗng!",
+                      pattern: {
+                        value: /[0]{1}[0-9]{9}/,
+                        message: "Số điện thoại không hợp lệ!",
+                      },
+                    })}
+                    error={!!errors?.phoneNumber}
+                    helperText={
+                      errors?.phoneNumber ? errors.phoneNumber.message : null
+                    }
+                  />
+                </div>
 
-              <div className={clsx(styles.item4)}>
-                <TextField
-                  required
-                  id="outlined-password-input"
-                  label="Email"
-                  type="email"
-                  size="medium"
-                  fullWidth
-                  {...register("email", {
-                    required: "Email không được rỗng!",
-                    pattern: {
-                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                      message: "Địa chỉ email không hợp lệ!",
-                    },
-                  })}
-                  error={!!errors?.email}
-                  helperText={errors?.email ? errors.email.message : null}
-                />
-              </div>
+                <div className={clsx(styles.item4)}>
+                  <TextField
+                    required
+                    id="outlined-password-input"
+                    label="Email"
+                    type="email"
+                    size="medium"
+                    fullWidth
+                    {...register("email", {
+                      required: "Email không được rỗng!",
+                      pattern: {
+                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                        message: "Địa chỉ email không hợp lệ!",
+                      },
+                    })}
+                    error={!!errors?.email}
+                    helperText={errors?.email ? errors.email.message : null}
+                  />
+                </div>
 
-              <div className={clsx(styles.item5)}>
-                <Autocomplete
-                  id="country-select-demo"
-                  options={province}
-                  autoHighlight
-                  defaultValue=""
-                  getOptionLabel={(option) => option.name || ""}
-                  isOptionEqualToValue={(option, value) =>
-                    value === undefined ||
-                    value === "" ||
-                    option.id === value.id
-                  }
-                  onChange={handleChangeProvince}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Tỉnh/Thành phố"
-                      inputProps={{
-                        ...params.inputProps,
-                        autoComplete: "tinh", // disable autocomplete and autofill
-                      }}
-                      {...register("province", {
-                        required: "Tỉnh/Thành phố không được rỗng!",
-                      })}
-                      error={!!errors?.province}
-                      helperText={
-                        errors?.province ? errors.province.message : null
-                      }
-                    />
-                  )}
-                />
-              </div>
-              <div className={clsx(styles.item6)}>
-                {showDistrict && (
+                <div className={clsx(styles.item5)}>
                   <Autocomplete
                     id="country-select-demo"
-                    options={district}
+                    options={province}
                     autoHighlight
-                    onChange={handleChangeDistrict}
                     defaultValue=""
+                    getOptionLabel={(option) => option.name || ""}
                     isOptionEqualToValue={(option, value) =>
                       value === undefined ||
                       value === "" ||
                       option.id === value.id
                     }
-                    getOptionLabel={(option) => option.name || ""}
+                    onChange={handleChangeProvince}
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        label="Quận/Huyện"
+                        label="Tỉnh/Thành phố"
                         inputProps={{
                           ...params.inputProps,
-                          autoComplete: "district", // disable autocomplete and autofill
+                          autoComplete: "tinh", // disable autocomplete and autofill
                         }}
-                        {...register("district", {
-                          required: "Quận/Huyện không được rỗng!",
+                        {...register("province", {
+                          required: "Tỉnh/Thành phố không được rỗng!",
                         })}
-                        error={!!errors?.district}
+                        error={!!errors?.province}
                         helperText={
-                          errors?.district ? errors.district.message : null
+                          errors?.province ? errors.province.message : null
                         }
                       />
                     )}
                   />
-                )}
-              </div>
-              <div className={clsx(styles.item7)}>
-                {showWard && (
-                  <Autocomplete
-                    id="country-select-demo"
-                    options={ward}
-                    onChange={handleChangeWard}
-                    defaultValue=""
-                    autoHighlight
-                    getOptionLabel={(option) => option.name || ""}
-                    isOptionEqualToValue={(option, value) =>
-                      value === undefined ||
-                      value === "" ||
-                      option.id === value.id
-                    }
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Xã/Phường"
-                        inputProps={{
-                          ...params.inputProps,
-                          autoComplete: "ward", // disable autocomplete and autofill
-                        }}
-                        {...register("ward", {
-                          required: "Xã/Phường không được rỗng!",
-                        })}
-                        error={!!errors?.ward}
-                        helperText={errors?.ward ? errors.ward.message : null}
-                      />
-                    )}
-                  />
-                )}
-              </div>
-
-              <div className={clsx(styles.item8)}>
-                <TextField
-                  required
-                  id="outlined-password-input"
-                  label="Địa chỉ cụ thể"
-                  type="text"
-                  size="medium"
-                  fullWidth
-                  {...register("address", {
-                    required: "Địa chỉ cụ thể không được rỗng!",
-                    pattern: {
-                      value:
-                        /[1-9aAàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬbBcCdDđĐeEèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆfFgGhHiIìÌỉỈĩĨíÍịỊjJkKlLmMnNoOòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢpPqQrRsStTuUùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰvVwWxXyYỳỲỷỶỹỸýÝỵỴzZ]/,
-                      message: "Địa chỉ cụ thể không hợp lệ!",
-                    },
-                  })}
-                  error={!!errors?.address}
-                  helperText={errors?.address ? errors.address.message : null}
-                />
-              </div>
-            </div>
-          </form>
-          {/* product list */}
-          <div className="mY-2">
-            <div className={clsx(styles.title)}>
-              <h3 className="font-weight-5 font-spacing-1 uppercase">
-                Sản phẩm đặt mua
-              </h3>
-            </div>
-            <Grid col={2} mdCol={1} gap={10}>
-              {productsCheckout.map((item, index) => (
-                <ProductCheckout
-                  key={index}
-                  data={item}
-                  count={item.count}
-                  onChange={setProductsCheckout}
-                />
-              ))}
-            </Grid>
-          </div>
-
-          <div className="">
-            <div className={clsx(styles.title)}>
-              <h3 className="font-weight-5 font-spacing-1 uppercase">
-                Phương thức thanh toán
-              </h3>
-            </div>
-            <div className="">
-              <div className="">
-                <RadioGroup
-                  aria-labelledby="demo-radio-buttons-group-label"
-                  defaultValue="cod"
-                  name="radio-buttons-group"
-                  {...register("paymentMethod")}
-                >
-                  <FormControlLabel
-                    value="cod"
-                    control={
-                      <Radio
-                        sx={{
-                          color: brown[200],
-                          "&.Mui-checked": {
-                            color: orange[700],
-                          },
-                        }}
-                      />
-                    }
-                    label={
-                      <div className="flex-row flex-center flex-gap-1">
-                        <img
-                          src="https://img.ltwebstatic.com/images2_pi/2018/06/06/15282728403108279621.webp"
-                          alt=""
-                          style={{ maxWidth: "50px" }}
+                </div>
+                <div className={clsx(styles.item6)}>
+                  {showDistrict && (
+                    <Autocomplete
+                      id="country-select-demo"
+                      options={district}
+                      autoHighlight
+                      onChange={handleChangeDistrict}
+                      defaultValue=""
+                      isOptionEqualToValue={(option, value) =>
+                        value === undefined ||
+                        value === "" ||
+                        option.id === value.id
+                      }
+                      getOptionLabel={(option) => option.name || ""}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Quận/Huyện"
+                          inputProps={{
+                            ...params.inputProps,
+                            autoComplete: "district", // disable autocomplete and autofill
+                          }}
+                          {...register("district", {
+                            required: "Quận/Huyện không được rỗng!",
+                          })}
+                          error={!!errors?.district}
+                          helperText={
+                            errors?.district ? errors.district.message : null
+                          }
                         />
+                      )}
+                    />
+                  )}
+                </div>
+                <div className={clsx(styles.item7)}>
+                  {showWard && (
+                    <Autocomplete
+                      id="country-select-demo"
+                      options={ward}
+                      onChange={handleChangeWard}
+                      defaultValue=""
+                      autoHighlight
+                      getOptionLabel={(option) => option.name || ""}
+                      isOptionEqualToValue={(option, value) =>
+                        value === undefined ||
+                        value === "" ||
+                        option.id === value.id
+                      }
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Xã/Phường"
+                          inputProps={{
+                            ...params.inputProps,
+                            autoComplete: "ward", // disable autocomplete and autofill
+                          }}
+                          {...register("ward", {
+                            required: "Xã/Phường không được rỗng!",
+                          })}
+                          error={!!errors?.ward}
+                          helperText={errors?.ward ? errors.ward.message : null}
+                        />
+                      )}
+                    />
+                  )}
+                </div>
 
-                        <p className="font-weight-4">
-                          Thanh toán khi giao hàng
-                        </p>
-                      </div>
-                    }
+                <div className={clsx(styles.item8)}>
+                  <TextField
+                    required
+                    id="outlined-password-input"
+                    label="Địa chỉ cụ thể"
+                    type="text"
+                    size="medium"
+                    fullWidth
+                    {...register("address", {
+                      required: "Địa chỉ cụ thể không được rỗng!",
+                      pattern: {
+                        value:
+                          /[1-9aAàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬbBcCdDđĐeEèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆfFgGhHiIìÌỉỈĩĨíÍịỊjJkKlLmMnNoOòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢpPqQrRsStTuUùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰvVwWxXyYỳỲỷỶỹỸýÝỵỴzZ]/,
+                        message: "Địa chỉ cụ thể không hợp lệ!",
+                      },
+                    })}
+                    error={!!errors?.address}
+                    helperText={errors?.address ? errors.address.message : null}
                   />
-                </RadioGroup>
+                </div>
+              </div>
+            </form>
+            {/* product list */}
+            <div className="mY-2">
+              <div className={clsx(styles.title)}>
+                <h3 className="font-weight-5 font-spacing-1 uppercase">
+                  Sản phẩm đặt mua
+                </h3>
+              </div>
+              <Grid col={2} mdCol={1} gap={10}>
+                {productsCheckout.map((item, index) => (
+                  <ProductCheckout
+                    key={index}
+                    data={item}
+                    count={item.count}
+                    onChange={setProductsCheckout}
+                  />
+                ))}
+              </Grid>
+            </div>
+
+            <div className="">
+              <div className={clsx(styles.title)}>
+                <h3 className="font-weight-5 font-spacing-1 uppercase">
+                  Phương thức thanh toán
+                </h3>
+              </div>
+              <div className="">
+                <div className="">
+                  <RadioGroup
+                    aria-labelledby="demo-radio-buttons-group-label"
+                    defaultValue="cod"
+                    name="radio-buttons-group"
+                    {...register("paymentMethod")}
+                  >
+                    <FormControlLabel
+                      value="cod"
+                      control={
+                        <Radio
+                          sx={{
+                            color: brown[200],
+                            "&.Mui-checked": {
+                              color: orange[700],
+                            },
+                          }}
+                        />
+                      }
+                      label={
+                        <div className="flex-row flex-center flex-gap-1">
+                          <img
+                            src="https://img.ltwebstatic.com/images2_pi/2018/06/06/15282728403108279621.webp"
+                            alt=""
+                            style={{ maxWidth: "50px" }}
+                          />
+
+                          <p className="font-weight-4">
+                            Thanh toán khi giao hàng
+                          </p>
+                        </div>
+                      }
+                    />
+                  </RadioGroup>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <ToastContainer
-          position="bottom-right"
-          autoClose={2000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-        />
-        {/* RIGHT cointainer */}
-        <div className={clsx(styles.right)}>
-          <div className={clsx(styles.title)}>
-            <h3 className="font-weight-5 font-spacing-1 uppercase">
-              Tóm tắt đơn hàng
-            </h3>
-          </div>
-
-          <div className="mY-1 mX-2">
-            <div className="mY-1 flex-row flex-center font-weight-4">
-              <span className="uppercase">
-                {Number(totalProducts)} sản phẩm
-              </span>{" "}
-              <span>{numberWithCommas(Number(totalPrice))} đ</span>
-            </div>
-            <div className="mY-1 flex-row flex-center font-weight-4">
-              <span className="uppercase">Phí ship</span>{" "}
-              <span>{numberWithCommas(Number(shipCost))} đ</span>
+          <ToastContainer
+            position="bottom-right"
+            autoClose={2000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
+          {/* RIGHT cointainer */}
+          <div className={clsx(styles.right)}>
+            <div className={clsx(styles.title)}>
+              <h3 className="font-weight-5 font-spacing-1 uppercase">
+                Tóm tắt đơn hàng
+              </h3>
             </div>
 
-            <div className="mY-1 flex-row flex-center font-weight-4">
-              <span className="uppercase">Số ngày vận chuyển dự kiến</span>{" "}
-              <span>{numberWithCommas(Number(shipTime))} ngày</span>
+            <div className="mY-1 mX-2">
+              <div className="mY-1 flex-row flex-center font-weight-4">
+                <span className="uppercase">
+                  {Number(totalProducts)} sản phẩm
+                </span>{" "}
+                <span>{numberWithCommas(Number(totalPrice))} đ</span>
+              </div>
+              <div className="mY-1 flex-row flex-center font-weight-4">
+                <span className="uppercase">Phí ship</span>{" "}
+                <span>{numberWithCommas(Number(shipCost))} đ</span>
+              </div>
+
+              <div className="mY-1 flex-row flex-center font-weight-4">
+                <span className="uppercase">Số ngày vận chuyển dự kiến</span>{" "}
+                <span>{numberWithCommas(Number(shipTime))} ngày</span>
+              </div>
+
+              <div className="mY-1 flex-row flex-center font-weight-bold">
+                <span className="uppercase">Tổng</span>{" "}
+                <span>{numberWithCommas(Number(totalPrice + shipCost))} đ</span>
+              </div>
             </div>
 
-            <div className="mY-1 flex-row flex-center font-weight-bold">
-              <span className="uppercase">Tổng</span>{" "}
-              <span>{numberWithCommas(Number(totalPrice + shipCost))} đ</span>
-            </div>
-          </div>
-
-          <div className="flex-column flex-gap-1 py-2">
-            {/* <div className={clsx(styles.couponInput)}>
+            <div className="flex-column flex-gap-1 py-2">
+              {/* <div className={clsx(styles.couponInput)}>
               <input
                 ref={textInput}
                 onChange={handleOnChangeInput}
@@ -528,32 +541,33 @@ const Checkout = () => {
                 Áp dụng
               </Button>
             )} */}
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <LoadingButton
-                type="submit"
-                sx={{
-                  width: "100%",
-                  height: "50px",
-                  fontSize: "1.15rem",
-                  letterSpacing: "1px",
-                  textTransform: "none",
-                  fontWeight: "400",
-                  backgroundColor: common.black,
-                  borderRadius: "30px",
-                  "&:hover": {
-                    backgroundColor: grey[800],
-                  },
-                }}
-                size="small"
-                loading={loading}
-                variant="contained"
-              >
-                Đặt hàng
-              </LoadingButton>
-            </form>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <LoadingButton
+                  type="submit"
+                  sx={{
+                    width: "100%",
+                    height: "50px",
+                    fontSize: "1.15rem",
+                    letterSpacing: "1px",
+                    textTransform: "none",
+                    fontWeight: "400",
+                    backgroundColor: common.black,
+                    borderRadius: "30px",
+                    "&:hover": {
+                      backgroundColor: grey[800],
+                    },
+                  }}
+                  size="small"
+                  loading={loading}
+                  variant="contained"
+                >
+                  Đặt hàng
+                </LoadingButton>
+              </form>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </>
   );
 };
