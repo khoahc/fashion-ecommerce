@@ -29,7 +29,7 @@ const publicRoutes = [
     layout: NoHeaderLayout,
   },
 
-  { path: config.routes.search, element: Search, layout: null },
+  { path: config.routes.search, element: Search, layout: NoHeaderLayout },
   {
     path: config.routes.verifyOrder,
     element: VerifyOrder,

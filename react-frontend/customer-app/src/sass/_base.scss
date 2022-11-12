@@ -10,7 +10,7 @@
 
 html {
   font-size: 1rem;
-  scroll-behavior: smooth;
+  // scroll-behavior: smooth;
   @include mobile {
     font-size: 0.75rem;
   }

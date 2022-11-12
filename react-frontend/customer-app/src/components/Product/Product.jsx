@@ -1,7 +1,7 @@
-import React from "react";
-import StarRatings from "react-star-ratings";
-import { NumericFormat } from "react-number-format";
 import clsx from "clsx";
+import React from "react";
+import { NumericFormat } from "react-number-format";
+import StarRatings from "react-star-ratings";
 
 import styles from "./Product.module.scss";
 
@@ -9,7 +9,7 @@ const Product = (props) => {
   return (
     <div className={clsx(styles.container)}>
       <div className={clsx(styles.image)}>
-        <img src={props.product.image} alt="image product" />
+        <img src={props.product.colors[0].image} alt="image product" />
       </div>
 
       <div className={clsx(styles.content)}>
@@ -30,9 +30,9 @@ const Product = (props) => {
             valueIsNumericString={true}
             decimalSeparator=","
             thousandSeparator="."
-            displayType="text"     
-            suffix=" đ"                   
-          />          
+            displayType="text"
+            suffix=" đ"
+          />
         </div>
       </div>
     </div>

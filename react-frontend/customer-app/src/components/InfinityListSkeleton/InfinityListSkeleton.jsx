@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import React from "react";
 
 import Grid from "../Grid";
@@ -19,10 +18,10 @@ const InfinityListSkeleton = () => {
         <ProductCardSkeleton />
         <ProductCardSkeleton />
         <ProductCardSkeleton />
+        <ProductCardSkeleton />
       </Grid>
     </div>
   );
 };
-
 
 export default InfinityListSkeleton;

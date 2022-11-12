@@ -24,7 +24,7 @@ const Product = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [productDetail, setProductDetail] = useState([]);
 
-  searchParams.get("size") != null &&
+  searchParams.get("size") !== null &&
     searchParams.set("size", searchParams.get("size").toUpperCase());
 
   const [color, setColor] = useState(searchParams.get("color"));

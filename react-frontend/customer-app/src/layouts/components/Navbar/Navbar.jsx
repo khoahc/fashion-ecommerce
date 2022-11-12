@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Logo from "../../../assets/images/logo_dark.png";
 import * as catalogCategory from "../../../services/catalogCategory";
 
 const Navbar = () => {
+  let navigate = useNavigate();
   const { pathname } = useLocation();
 
   const [categoryData, setCategoryData] = useState([]);
@@ -47,6 +48,12 @@ const Navbar = () => {
       window.removeEventListener("scroll", updateScrollDirection); // clean up
     };
   }, [scrollDirection]);
+
+  const handleSearch = (e) => {
+    e.key === "Enter" &&
+      e.target.value !== "" &&
+      navigate(`/search?keyword=${e.target.value}`);
+  };
 
   return (
     <div className={`navbar ${scrollDirection === "down" ? "hide" : "show"}`}>
@@ -96,10 +103,7 @@ const Navbar = () => {
             <input
               type="search"
               placeholder="Tìm kiếm"
-              onKeyPress={(e) => {
-                if (e.key === "Enter") {
-                }
-              }}
+              onKeyPress={handleSearch}
             />
           </div>
           <div className="navbar__items__item">
