@@ -502,7 +502,7 @@ const Checkout = () => {
           </div>
 
           <div className="flex-column flex-gap-1 py-2">
-            <div className={clsx(styles.couponInput)}>
+            {/* <div className={clsx(styles.couponInput)}>
               <input
                 ref={textInput}
                 onChange={handleOnChangeInput}
@@ -527,7 +527,7 @@ const Checkout = () => {
               >
                 Áp dụng
               </Button>
-            )}
+            )} */}
             <form onSubmit={handleSubmit(onSubmit)}>
               <LoadingButton
                 type="submit"
