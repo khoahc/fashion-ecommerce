@@ -18,4 +18,9 @@ public class ColorController {
   public ResponseObject getAllColorsByCategory(@PathVariable(name = "slugCategory") String slug) {
     return new ResponseObject<>(HttpStatus.OK, "Tìm màu thành công", colorService.getAllColorBySlugCategory(slug));
   }
+
+  @RequestMapping(value = "", method = RequestMethod.GET)
+  public ResponseObject getAllColors() {
+    return new ResponseObject<>(HttpStatus.OK, "Tìm màu thành công", colorService.getAllColors());
+  }
 }

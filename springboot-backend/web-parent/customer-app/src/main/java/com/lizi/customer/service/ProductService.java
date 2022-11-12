@@ -10,6 +10,7 @@ import java.util.Optional;
 public interface ProductService {
 
   Optional<List<ProductCatalogResponseDTO>> getAllProductsByCategorySlug(String slug);
+  Optional<List<ProductCatalogResponseDTO>> getProducts(String keyword);
 
   Optional<ProductDetailResponseDTO> getProductDetailBySlug(String slugProduct, String slugColor, String size);
 

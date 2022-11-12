@@ -14,6 +14,17 @@ import java.util.Optional;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
+  //get products
+  @Query(value = "SELECT DISTINCT new com.lizi.customer.dto.response.ProductCatalogResponseDTO(p.name, p.slug, c.slug, p.price) \n" +
+          "FROM \n" +
+          "\tProduct p \n" +
+          "INNER JOIN Category c\n" +
+          "ON p.category.id = c.id\n" +
+          "WHERE (p.name LIKE CONCAT('%', :keyword ,'%'))\n" +
+          " OR (c.name LIKE CONCAT('%', :keyword ,'%'))")
+  Optional<List<ProductCatalogResponseDTO>> findProducts(@Param("keyword") String keyword);
+
+
   //find all product (name, slug and price attribute) by category slug
   @Query(value = "SELECT DISTINCT new com.lizi.customer.dto.response.ProductCatalogResponseDTO(p.name, p.slug, c.slug, p.price) \n" +
           "FROM \n" +

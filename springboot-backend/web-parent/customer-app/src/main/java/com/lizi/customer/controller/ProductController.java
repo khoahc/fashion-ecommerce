@@ -14,6 +14,12 @@ public class ProductController {
   @Autowired
   private ProductService productService;
 
+  @RequestMapping(value = "")
+  public ResponseObject getProduct(
+          @RequestParam(name = "keyword", required = false, defaultValue = "") String keyword) {
+    return new ResponseObject<>(HttpStatus.OK, "Thành công", productService.getProducts(keyword));
+  }
+
   @RequestMapping(value = "/catalog/{slug}", method = RequestMethod.GET)
   public ResponseObject getAllProductsByCategorySlug(@PathVariable(name = "slug") String slug) {
     return new ResponseObject<>(HttpStatus.OK, "Thành công", productService.getAllProductsByCategorySlug(slug));
