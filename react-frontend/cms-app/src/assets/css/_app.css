@@ -11,7 +11,7 @@ body {
 }
 
 .main-section {
-  @apply p-6;
+  @apply p-4;
 }
 
 .dropdown {

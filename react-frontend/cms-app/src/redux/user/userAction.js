@@ -36,6 +36,7 @@ export const getUserDetails = createAsyncThunk(
       console.log(data);
       return data;
     } catch (error) {
+      console.log(error);
       if (error.response && error.response.data.message) {
         return rejectWithValue(error.response.data.message);
       } else {

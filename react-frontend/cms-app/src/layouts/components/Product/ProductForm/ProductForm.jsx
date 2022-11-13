@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import BackButton from "../../../../components/BackButton/BackButton";
 import categoryApi from "../../../../services/axios/categoryApi";
 import productApi from "../../../../services/axios/productApi";
+import ProductOptionForm from "../ProductOptionForm/ProductOptionForm";
 
 const { getAllLevel3Categories } = categoryApi;
 const { createProduct } = productApi;
@@ -20,6 +21,82 @@ const ProductForm = ({ product }) => {
   const [cost, setCost] = useState(0);
   const [price, setPrice] = useState(0);
   const [vouchersId, setVouchersId] = useState([]);
+
+  const productEntity = {
+    id: 0,
+    name: '',
+    slug: '',
+    description: '',
+    enabled: false,
+    cost: 0,
+    price: 0,
+    numberOfOrder: 0,
+    category: {
+      id: 0,
+      name: '',
+      slug: '',
+    },
+    options: [
+      {
+        id: 0,
+        size: '',
+        productColor: {
+          id: 0,
+          color: {
+            id: 0,
+            name: '',
+            slug: '',
+            hexCode: '',
+          },
+          mainImage: {
+            id: 0,
+            url: '',
+            cloudinaryId: '',
+          },
+          productImageColors: [
+            {
+              id: 0,
+              image: {
+                id: 0,
+                url: '',
+                cloudinaryId: ''
+              }
+            }
+          ],
+        },
+        quantity: 0,
+      }
+    ], 
+    vouchers: [
+      {
+        id: 0,
+
+      }
+    ]
+  }
+
+  const productReqDto = {
+    id: 0,
+    name: '', 
+    description: '',
+    enabled: false,
+    cost: 0,
+    price: 0,
+    categoryId: 0,
+    options: [
+      {
+        id: 0,
+        size: '',
+        productColor: {
+          id: 0,
+          colorId: 0,
+          mainImageId: 0,
+          productImageColorIds: [0]
+        }
+      }
+    ],
+    voucherIds: [0]
+  }
 
   const onSubmitHandle = (e) => {
     e.preventDefault();
@@ -93,11 +170,11 @@ const ProductForm = ({ product }) => {
   }, []);
 
   return (
-    <section className="section main-section">
       <div className="card mb-6">
         <div className="card-content">
           <form onSubmit={onSubmitHandle}>
             <div className="field">
+              <label class="label">Thông tin sản phẩm</label>
               <div className="field-body">
                 <div className="field">
                   <div className="control">
@@ -198,8 +275,14 @@ const ProductForm = ({ product }) => {
                     />
                   </div>
                 </div>
+                <hr />
+                <div className="productOptionGroup">
+                  <label class="label">Kiểu dáng</label>
+                  <ProductOptionForm />
+                </div>
               </div>
             </div>
+            <hr />
 
             <div className="field grouped mt-10">
               <div className="control">
@@ -214,7 +297,6 @@ const ProductForm = ({ product }) => {
           </form>
         </div>
       </div>
-    </section>
   );
 };
 

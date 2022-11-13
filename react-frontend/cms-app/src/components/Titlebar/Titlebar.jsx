@@ -6,9 +6,7 @@ const Titlebar = ({ listTitle }) => {
       <div className="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
         <ul>
           <TilebarItem link={"/"} title={"Quản lý"} />
-          { listTitle.map(item => {
-            return <TilebarItem {...item} />;
-          })}
+          { listTitle.map(item => item.link ? <TilebarItem {...item} /> : <TilebarNoLinkItem {...item} /> )}
         </ul>
       </div>
     </section>
@@ -22,5 +20,13 @@ const TilebarItem = ({ title, link }) => {
     </li>
   );
 };
+
+const TilebarNoLinkItem = ({ title }) => {
+  return (
+    <li>
+      <span >{title}</span>
+    </li>
+  );
+}
 
 export default Titlebar;

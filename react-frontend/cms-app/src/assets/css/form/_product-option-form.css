@@ -1,0 +1,12 @@
+
+.roductOptionForm .card-content {
+    @apply p-2;
+}
+
+.productOptionRow {
+    @apply flex;
+}
+
+.productOptionRow > .field {
+    @apply px-2 py-0 mb-0;
+}

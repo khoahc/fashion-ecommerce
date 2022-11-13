@@ -10,7 +10,6 @@ const AddProduct = () => {
     },
     {
       title: "Thêm mới",
-      link: "/product/new",
     },
   ];
 
