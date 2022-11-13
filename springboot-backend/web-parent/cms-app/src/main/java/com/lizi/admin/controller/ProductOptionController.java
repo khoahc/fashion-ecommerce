@@ -33,12 +33,12 @@ public class ProductOptionController {
             .data(productOptionService.getAllOptionOfProduct(productId)).build());
   }
 
-  @GetMapping(value = "/{productId}/options/{optionId}")
+  @GetMapping(value = "/options/{optionId}")
   public ResponseEntity<ResponseObject> getOption(@PathVariable(name = "productId") Long productId,
       @PathVariable(name = "optionId") Long optionId) {
     return ResponseEntity.ok().body(
         ResponseObject.builder().status(HttpStatus.OK).message(Constant.SUCCESS)
-            .data(productOptionService.getProductOption(productId, optionId)).build());
+            .data(productOptionService.getProductOption(optionId)).build());
   }
 
   @PostMapping(value = "/{productId}/options")

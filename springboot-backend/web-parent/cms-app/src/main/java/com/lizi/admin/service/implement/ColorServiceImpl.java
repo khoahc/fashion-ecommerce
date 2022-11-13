@@ -26,9 +26,15 @@ public class ColorServiceImpl implements ColorService {
   }
 
   @Override
-  public Color getColor(String name) {
+  public Color getColorByName(String name) {
     return colorRepo.findByName(name)
         .orElseThrow(() -> new ResourceNotFoundException("color", "name", name));
+  }
+
+  @Override
+  public Color getColorById(Long id) {
+    return colorRepo.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("color", "id", id));
   }
 
   @Override

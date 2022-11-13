@@ -1,5 +1,6 @@
 package com.lizi.admin.dto.product;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,9 +12,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ProductOptionReqDto {
+public class ProductColorReqDto {
   private Long id;
-  private String size;
-  private int quantity;
-  private ProductColorReqDto productColor;
+  private Long colorId;
+  private Long mainImageId;
+  private List<Long> imageIds;
 }

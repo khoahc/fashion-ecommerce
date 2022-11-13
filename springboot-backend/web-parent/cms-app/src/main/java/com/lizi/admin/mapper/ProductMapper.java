@@ -22,7 +22,11 @@ public interface ProductMapper {
 
   List<ProductResDto> productsToDtos(List<Product> product);
 
+  @Mapping(source = "name", target = "name")
+  @Mapping(source = "description", target = "description")
   @Mapping(source = "enabled", target = "enabled")
+  @Mapping(source = "cost", target = "cost")
+  @Mapping(source = "price", target = "price")
   @Mapping(ignore = true, target = "numberOfOrder")
   @Mapping(ignore = true, target = "category")
   @Mapping(ignore = true, target = "slug")

@@ -4,7 +4,9 @@ import com.lizi.admin.dto.product.ProductReqDto;
 import com.lizi.admin.dto.product.ProductResDto;
 import com.lizi.admin.mapper.ProductMapper;
 import com.lizi.admin.repository.CategoryRepository;
+import com.lizi.admin.repository.ProductOptionRepository;
 import com.lizi.admin.repository.ProductRepository;
+import com.lizi.admin.service.ProductOptionService;
 import com.lizi.admin.service.ProductService;
 import com.lizi.admin.util.Util;
 import com.lizi.common.entity.Category;
@@ -22,6 +24,9 @@ public class ProductServiceImpl implements ProductService {
 
   @Autowired
   private ProductRepository productRepo;
+
+  @Autowired
+  private ProductOptionService productOptionService;
 
   @Autowired
   private CategoryRepository categoryRepo;
@@ -50,15 +55,15 @@ public class ProductServiceImpl implements ProductService {
 
     // generate slug
     String slug = Util.toSlug(productReqDto.getName());
-//    while (productRepo.findBySlug(slug).isPresent()) {
-//      slug = slug + "-" + RandomStringUtils.randomAlphanumeric(10);
-//    }
 
     Product newProduct = ProductMapper.INSTANCE.dtoToProduct(productReqDto);
     newProduct.setCategory(category);
     newProduct.setSlug(slug);
+    productRepo.save(newProduct);
 
-    return ProductMapper.INSTANCE.productToDto(productRepo.save(newProduct));
+    productOptionService.createProductOptions(newProduct, productReqDto.getOptions());
+
+    return ProductMapper.INSTANCE.productToDto(newProduct);
   }
 
   @Override

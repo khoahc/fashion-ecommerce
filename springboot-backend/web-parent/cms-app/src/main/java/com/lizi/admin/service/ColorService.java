@@ -8,7 +8,8 @@ import java.util.List;
 public interface ColorService {
 
   List<ColorResDto> getAllColorResDto();
-  Color getColor(String name);
+  Color getColorByName(String name);
+  Color getColorById(Long id);
   ColorResDto createColor(ColorReqDto dto);
   boolean isExist(String name);
 }
