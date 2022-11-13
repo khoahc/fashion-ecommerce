@@ -1,6 +1,7 @@
 package com.lizi.admin.exception;
 
 import com.lizi.common.entity.ResponseObject;
+import io.jsonwebtoken.ExpiredJwtException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,6 +20,13 @@ public class GlobalExceptionHandler {
   @ResponseBody
   protected ResponseObject handleConstraintViolationException(ConstraintViolationException e) {
     return ResponseObject.builder().status(HttpStatus.BAD_REQUEST).message(e.getMessage()).build();
+  }
+
+  @ExceptionHandler(value = {ExpiredJwtException.class})
+  @ResponseStatus(HttpStatus.UNAUTHORIZED)
+  @ResponseBody
+  protected ResponseObject handleExpiredJwtException(ExpiredJwtException e) {
+    return ResponseObject.builder().status(HttpStatus.UNAUTHORIZED).message(e.getMessage()).build();
   }
 
   @ExceptionHandler(value = {RuntimeException.class})

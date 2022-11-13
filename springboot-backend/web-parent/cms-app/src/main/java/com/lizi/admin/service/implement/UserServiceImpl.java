@@ -12,6 +12,7 @@ import com.lizi.common.entity.Role;
 import com.lizi.common.entity.User;
 import com.lizi.common.exception.ResourceAlreadyExistsException;
 import com.lizi.common.exception.ResourceNotFoundException;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -54,6 +55,7 @@ public class UserServiceImpl implements UserService {
         userRepo.findByEmail(email)
             .orElseThrow(() -> new ResourceNotFoundException("user", "email", email)));
   }
+
 
   @Override
   @Transactional

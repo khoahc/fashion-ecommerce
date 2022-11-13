@@ -2,6 +2,7 @@ package com.lizi.admin.service;
 
 import com.lizi.admin.dto.user.UserReqDto;
 import com.lizi.admin.dto.user.UserResDto;
+import java.security.Principal;
 import java.util.List;
 
 public interface UserService {
