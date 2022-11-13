@@ -10,8 +10,7 @@
 
 html {
   font-size: 1rem;
-  scroll-behavior: smooth;
-
+  // scroll-behavior: smooth;
   @include mobile {
     font-size: 0.75rem;
   }
@@ -19,6 +18,7 @@ html {
 
 body {
   font-family: "Roboto", sans-serif;
+  background-color: #efefef;
 }
 
 img {
@@ -74,9 +74,8 @@ hr {
 }
 
 .container {
-  max-width: 90%;
+  max-width: 1440px;
   margin: auto;
-
   //   @include tablet {
   //   }
 
@@ -102,6 +101,10 @@ hr {
   min-height: 100vh;
 }
 
+.width-90 {
+  width: 90%;;
+}
+
 .right {
   flex: right;
 }
@@ -116,6 +119,14 @@ hr {
 
 .white {
   color: #fff;
+}
+
+.red {
+  color: red;
+}
+
+.orange-bold {
+  color: #9e3500;
 }
 // ------------margin----------------
 .m-auto {
@@ -211,6 +222,10 @@ hr {
 
 .mb-3 {
   margin-bottom: 30px;
+}
+
+.mt-3 {
+  margin-top: 30px;
 }
 
 // ----------------padding---------------
@@ -377,8 +392,16 @@ hr {
 
 
 // -----------------font-size--------
+.font-size-0-85 {
+  font-size: 0.85rem;
+}
+
 .font-size-1 {
-  font-weight: 700;
+  font-size: 1rem;
+}
+
+.font-size-2 {
+  font-size: 2rem;
 }
 
 //-------------width---------
@@ -420,6 +443,11 @@ hr {
   align-items: flex-end;
 }
 
+.flex-row-right {
+  justify-content: flex-end;
+  align-items: center;
+}
+
 .flex-left {
   justify-content: center;
   align-items: flex-start;
@@ -432,4 +460,8 @@ hr {
 
 .flex-gap-1 {
   gap: 1rem;
+}
+
+.flex-gap-2 {
+  gap: 2rem;
 }

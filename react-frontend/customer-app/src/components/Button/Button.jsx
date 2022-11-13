@@ -1,6 +1,5 @@
-import React from "react";
 import PropTypes from "prop-types";
-import styles from "./Button.module.scss";
+import React from "react";
 
 const Button = (props) => {
   const bg = props.backgroundColor

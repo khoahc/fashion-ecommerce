@@ -47,4 +47,10 @@ public class OrderTrack {
   @ManyToOne
   @JoinColumn(name = "order_id")
   private Order order;
+
+  public OrderTrack(OrderStatus status, Date updateTime) {
+    this.status = status;
+    this.updateTime = updateTime;
+  }
+
 }

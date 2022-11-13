@@ -1,27 +1,31 @@
-import { useRef } from "react";
 import { Link } from "react-router-dom";
 
 // Import Swiper React components
+import { A11y, Autoplay, Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, A11y, Autoplay } from "swiper";
 
 // Import Swiper styles
+import "swiper/css/autoplay";
 import "swiper/scss";
 import "swiper/scss/navigation";
 import "swiper/scss/pagination";
-import "swiper/css/autoplay";
 
 import Product from "../Product";
 
 export default (props) => {
   const listData = props.data;
-  const listItems = listData.map((item, index) => (
-    <SwiperSlide key={index}>
-      <Link to={"/p/" + item.slug}>
-        <Product product={item} />
-      </Link>
-    </SwiperSlide>
-  ));
+  const listItems = listData?.map((item, index) =>
+    item.colors.length > 0 ? (
+      <SwiperSlide key={index}>
+        <Link to={`/p/${item.slug}?color=${item.colors[0].slug}`}>
+          <Product product={item} />
+        </Link>
+      </SwiperSlide>
+    ) : (
+      ""
+    )
+  );
+
   return (
     <Swiper
       modules={[Navigation, Pagination, A11y, Autoplay]}

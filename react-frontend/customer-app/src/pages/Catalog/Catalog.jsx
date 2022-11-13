@@ -1,21 +1,24 @@
+import clsx from "clsx";
+import _ from "lodash";
 import React, { useCallback, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
 import { IconContext } from "react-icons";
 import { FaTrashAlt } from "react-icons/fa";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import { useNavigate, useParams } from "react-router-dom";
 import Select from "react-select";
-import clsx from "clsx";
 
-import styles from "./Catalog.module.scss";
-import numberWithCommas from "../../utils/numberWithCommas";
 import Breadcrumb from "../../components/Breadcrumb";
 import Button from "../../components/Button";
-import CheckBox from "../../components/Checkbox";
+import ColorFilter from "../../components/ColorFilter";
+import FilterSkeleton from "../../components/FilterSkeleton";
 import InfinityList from "../../components/InfinityList";
+import InfinityListSkeleton from "../../components/InfinityListSkeleton";
+import MenuFilter from "../../components/MenuFilter";
+import PriceFilter from "../../components/PriceFilter/PriceFilter";
 import * as catalogCategory from "../../services/catalogCategory";
 import * as colorService from "../../services/color";
-import MenuFilter from "../../components/MenuFilter";
-import ColorFilter from "../../components/ColorFilter";
-import PriceFilter from "../../components/PriceFilter/PriceFilter";
+import styles from "./Catalog.module.scss";
 
 const Catalog = () => {
   const { slugCategory } = useParams();
@@ -29,7 +32,7 @@ const Catalog = () => {
 
   const [selectedOption, setSelectedOption] = useState([]);
 
-  console.log("sort" + selectedOption);
+  console.log("option sort: " + selectedOption);
   // -----------------------------------------------------
   const initFilter = {
     category: [],
@@ -48,6 +51,9 @@ const Catalog = () => {
   const [category, setCategory] = useState([]);
 
   const [menuCategory, setMenuCategory] = useState([]);
+
+  //use skeleton
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // const fetchData = async () => {
@@ -78,6 +84,7 @@ const Catalog = () => {
           if (data.status === "OK") {
             setProductData(data.data);
             setProducts(data.data);
+            setIsLoading(false);
             console.log("get All product: " + JSON.stringify(data.data));
           } else {
             return Promise.reject(new Error(data.message));
@@ -144,7 +151,7 @@ const Catalog = () => {
 
   const [filter, setFilter] = useState(initFilter);
 
-  console.log(JSON.stringify(filter));
+  console.log("filter: ", JSON.stringify(filter));
   const initMenuFilter = {
     ...filter,
     category: [],
@@ -181,11 +188,11 @@ const Catalog = () => {
           setFilter({ ...filter, category: newCategory });
           break;
         case "COLOR":
-          const newColor = filter.color.filter((e) => e !== item.color);
+          const newColor = filter.color.filter((e) => e !== item.slug);
           setFilter({ ...filter, color: newColor });
           break;
         case "PRICE":
-          const newPrice = filter.price.filter((e) => e !== item);
+          const newPrice = filter.price.filter((e) => !_.isEqual(e, item));
           setFilter({ ...filter, price: newPrice });
           break;
         default:
@@ -200,9 +207,7 @@ const Catalog = () => {
 
   //filter
   const updateProducts = useCallback(() => {
-    console.log("in to call");
     let temp = productData;
-    console.log("product call back: " + JSON.stringify(temp, null, 2));
     if (filter.category.length > 0) {
       temp = temp.filter((e) => {
         const check = e.slugCategories.find((category) =>
@@ -236,7 +241,7 @@ const Catalog = () => {
         return false;
       });
     }
-    console.log("update product", JSON.stringify(temp));
+    console.log("update product", JSON.stringify("product checked: ", temp));
     setProducts(temp);
   }, [filter]);
 
@@ -246,7 +251,7 @@ const Catalog = () => {
 
   return (
     <>
-      <img className={clsx(styles.banner)} src={category.image} alt="" />
+      {/* <img className={clsx(styles.banner)} src={category.image} alt="" /> */}
 
       <div className={clsx(styles.container)}>
         <Breadcrumb name={category.name} />
@@ -258,7 +263,9 @@ const Catalog = () => {
           })}
         >
           <div>
-            <h2 className={clsx(styles.titleCategory)}>{category.name}</h2>
+            <h2 className={clsx(styles.titleCategory)}>
+              {isLoading ? <Skeleton width={100} height={30} /> : category.name}
+            </h2>
           </div>
           <div className={clsx(styles.sort)}>
             <Select
@@ -309,11 +316,15 @@ const Catalog = () => {
                   </div>
                   {/* list menu */}
                   <div className="mt-1">
-                    <MenuFilter
-                      menuData={menuCategory}
-                      checkedList={filter.category}
-                      onChange={filterSelect}
-                    />
+                    {isLoading ? (
+                      <FilterSkeleton />
+                    ) : (
+                      <MenuFilter
+                        menuData={menuCategory}
+                        checkedList={filter.category}
+                        onChange={filterSelect}
+                      />
+                    )}
                   </div>
                 </div>
 
@@ -330,11 +341,15 @@ const Catalog = () => {
                     </div>
                     {/* list color */}
                     <div className="mt-1">
-                      <ColorFilter
-                        colorsData={colorsCategory}
-                        checkedList={filter.color}
-                        onChange={filterSelect}
-                      />
+                      {isLoading ? (
+                        <FilterSkeleton />
+                      ) : (
+                        <ColorFilter
+                          colorsData={colorsCategory}
+                          checkedList={filter.color}
+                          onChange={filterSelect}
+                        />
+                      )}
                     </div>
                   </div>
                   <div className={clsx(styles.priceList)}>
@@ -348,10 +363,14 @@ const Catalog = () => {
                     </div>
                     {/* list price */}
                     <div className="mt-1 mb-2">
-                      <PriceFilter
-                        onChange={filterSelect}
-                        checkedList={filter.price}
-                      />
+                      {isLoading ? (
+                        <FilterSkeleton />
+                      ) : (
+                        <PriceFilter
+                          onChange={filterSelect}
+                          checkedList={filter.price}
+                        />
+                      )}
                     </div>
                   </div>
                 </div>
@@ -361,7 +380,11 @@ const Catalog = () => {
             {/* list product */}
             <div className={clsx(styles.right)}>
               <div className={clsx(styles.listProduct)}>
-                <InfinityList data={products} />
+                {isLoading ? (
+                  <InfinityListSkeleton />
+                ) : (
+                  <InfinityList data={products} />
+                )}
               </div>
             </div>
           </div>

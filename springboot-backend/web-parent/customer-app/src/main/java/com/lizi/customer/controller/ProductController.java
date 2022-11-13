@@ -14,6 +14,12 @@ public class ProductController {
   @Autowired
   private ProductService productService;
 
+  @RequestMapping(value = "")
+  public ResponseObject getProduct(
+          @RequestParam(name = "keyword", required = false, defaultValue = "") String keyword) {
+    return new ResponseObject<>(HttpStatus.OK, "Thành công", productService.getProducts(keyword));
+  }
+
   @RequestMapping(value = "/catalog/{slug}", method = RequestMethod.GET)
   public ResponseObject getAllProductsByCategorySlug(@PathVariable(name = "slug") String slug) {
     return new ResponseObject<>(HttpStatus.OK, "Thành công", productService.getAllProductsByCategorySlug(slug));
@@ -26,9 +32,14 @@ public class ProductController {
     return new ResponseObject<>(HttpStatus.OK, "Thành công", productService.getProductDetailBySlug(slugProduct, slugColor, size));
   }
 
-//  @RequestMapping(value = "/{slug}/size")
-//  public ResponseObject getAllSizesForProductDetailByProductSlug(@PathVariable(name = "slug") String slug) {
-//    return new ResponseObject<>(HttpStatus.OK, "Thành công", productService.getAllSizesForProductDetailByProductSlug(slug));
-//  }
+  @RequestMapping(value = "/top-selling-products")
+  public ResponseObject getTopSellingProducts() {
+    return new ResponseObject<>(HttpStatus.OK, "Thành công", productService.getTopSellingProducts());
+  }
+
+  @RequestMapping(value = "/top-new-products")
+  public ResponseObject getTopNewProducts() {
+    return new ResponseObject<>(HttpStatus.OK, "Thành công", productService.getTopNewProducts());
+  }
 
 }

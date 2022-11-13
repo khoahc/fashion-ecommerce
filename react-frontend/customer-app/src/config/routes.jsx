@@ -5,6 +5,7 @@ const routes = {
   profile: '/member/@:nickname',  
   product: '/p/:slugProduct',
   search: '/search',
+  orderTracker: '/order-tracker',
   login: '/login',
   register: '/register',
   checkout: '/checkout',

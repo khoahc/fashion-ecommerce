@@ -1,15 +1,16 @@
-import React, { useEffect, useState, useCallback, useRef } from "react";
+import { Checkbox, FormControlLabel } from "@mui/material";
+import { brown, orange } from "@mui/material/colors";
 import clsx from "clsx";
+import React, { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate, Link } from "react-router-dom";
-import { FormControlLabel, Checkbox } from "@mui/material";
-import { orange, brown } from "@mui/material/colors";
+import { useNavigate } from "react-router-dom";
 
-import CartItem from "../../components/CartItem";
 import Button from "../../components/Button";
-import styles from "./Cart.module.scss";
+import CartItem from "../../components/CartItem";
 import * as productOption from "../../services/productOption";
+import styles from "./Cart.module.scss";
 
+import InfinityCartListSkeleton from "../../components/InfinityCartListSkeleton/InfinityCartListSkeleton";
 import numberWithCommas from "../../utils/numberWithCommas";
 
 const Cart = () => {
@@ -18,11 +19,6 @@ const Cart = () => {
     navigate(-1);
   };
   const cartItems = useSelector((state) => state.cartItems.value);
-
-  // textInput must be declared here so the ref can refer to it
-  const textInput = useRef(null);
-
-  const [inputHasValue, setInputHasValue] = useState(false);
 
   const [cartProducts, setCartProducts] = useState([]);
 
@@ -33,6 +29,8 @@ const Cart = () => {
   const [totalPrice, setTotalPrice] = useState(0);
 
   const [isCheckedChooseAll, setIsCheckedChooseAll] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(true);
 
   const initialCheckList = () => {
     let arr = [];
@@ -82,12 +80,6 @@ const Cart = () => {
     });
   }, [isCheckedChooseAll]);
 
-  //handle onchange (show, hide) coupon input
-  const handleOnChangeInput = () => {
-    let value = textInput.current.value;
-    value !== "" ? setInputHasValue(true) : setInputHasValue(false);
-  };
-
   const setCount = (cartItem) => {
     let cart = cartItems.filter(
       (item) =>
@@ -135,6 +127,7 @@ const Cart = () => {
               )
               .map((cart) => setCount(cart))
           );
+          setIsLoading(false);
         } else {
           return Promise.reject(new Error(data.message));
         }
@@ -184,15 +177,23 @@ const Cart = () => {
           </h4>
         </div>
         {/* list cart */}
-        {cartProducts.map((item, index) => (
-          <CartItem
-            item={item}
-            id={index}
-            key={index}
-            checkList={checkedList}
-            // onChangeChoose={setCheckedList}
-          />
-        ))}
+        {isLoading ? (
+          <InfinityCartListSkeleton />
+        ) : cartProducts.length === 0 ? (
+          <h2 className="mt-3 font-weight-5">
+            Hiện tại không có sản phẩm nào trong giỏ hàng
+          </h2>
+        ) : (
+          cartProducts.map((item, index) => (
+            <CartItem
+              item={item}
+              id={index}
+              key={index}
+              checkList={checkedList}
+              // onChangeChoose={setCheckedList}
+            />
+          ))
+        )}
       </div>
 
       <div className={clsx(styles.right)}>
@@ -249,37 +250,12 @@ const Cart = () => {
         </div>
 
         <div className="flex-column flex-gap-1 py-2">
-          {/* <div className={clsx(styles.couponInput)}>
-            <input
-              ref={textInput}
-              onChange={handleOnChangeInput}
-              type="text"
-              placeholder="Nhập mã khuyến mãi của bạn"
-              onKeyPress={(e) => {
-                if (e.key === "Enter") {
-                }
-              }}
-            />
-          </div>
-
-          {inputHasValue && (
-            <Button
-              onClick={""}
-              backgroundColor="white"
-              color="black"
-              border="border"
-              radius="3"
-              fontWeight="3"
-              size="5"
-            >
-              Áp dụng
-            </Button>
-          )} */}
-        
           <Button
             onClick={() => {
-              navigate("/checkout", { state: cartProductsChose });
+              if (cartProductsChose.length > 0)
+                navigate("/checkout", { state: cartProductsChose });
             }}
+            disabled={cartProductsChose.length <= 0}
             backgroundColor="black"
             color="white"
             radius="3"

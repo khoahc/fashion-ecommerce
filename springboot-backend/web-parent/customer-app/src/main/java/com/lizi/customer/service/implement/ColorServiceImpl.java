@@ -7,6 +7,7 @@ import com.lizi.customer.service.ColorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -22,5 +23,10 @@ public class ColorServiceImpl implements ColorService {
   public Optional<Set<Color>> getAllColorBySlugCategory(String slugCategory) {
     Integer idCategory = categoryRepository.findIdBySlug(slugCategory);
     return colorRepository.findAllColorsBySlugCategory(slugCategory, idCategory);
+  }
+
+  @Override
+  public List<Color> getAllColors() {
+    return colorRepository.findAll();
   }
 }

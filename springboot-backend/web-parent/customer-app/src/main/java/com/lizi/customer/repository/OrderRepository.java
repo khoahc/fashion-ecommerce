@@ -17,4 +17,6 @@ public interface OrderRepository extends CrudRepository<Order, String> {
   @Modifying
   @Transactional
   void enableOrder(String id);
+
+  Optional<Order> findByIdAndEmail(String id, String email);
 }

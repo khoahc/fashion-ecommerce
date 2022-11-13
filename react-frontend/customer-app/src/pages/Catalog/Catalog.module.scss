@@ -4,7 +4,7 @@
 }
 
 .container {
-  max-width: 90%;
+  max-width: 1440px;
   margin: auto;
 
   .nav {
@@ -15,8 +15,10 @@
     justify-content: space-between;
     align-items: center;
     background-color: #fff;
-    z-index: 2;
-    transition: top 0.3s;
+    padding: 10px;
+    border-radius: 3px;
+    z-index: 1;
+    transition: top 150ms;
     -webkit-box-shadow: 0px 1px 0px #ccc;
     -moz-box-shadow: 0px 1px 0px #ccc;
     box-shadow: 0px 1px 0px #ccc;
@@ -24,6 +26,7 @@
     .titleCategory {
       font-size: 1.25rem;
       text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     .sort {
@@ -37,7 +40,7 @@
     margin: auto;
 
     .content {
-      margin-top: 30px;
+      margin-top: 10px;
       display: flex;
 
       .up {
@@ -46,7 +49,7 @@
       }
 
       .down {
-        top: 120px;
+        top: 150px;
         font-size: 1rem;
       }
 
@@ -59,6 +62,10 @@
         overflow: auto;
         align-self: flex-start;
         transition: top 0.3s;
+        padding: 20px 10px;
+        border-radius: 5px;
+        background-color: #fff;
+        margin-bottom: 100px;
 
         .title {
           display: flex;
@@ -86,11 +93,8 @@
 
       div.right:nth-of-type(2) {
         flex: 8;
-        margin-left: 20px;
+        margin-left: 10px;
         min-height: 1000px;
-        .listProduct {
-          padding: 20px 10px 100px;
-        }
       }
     }
   }
@@ -100,6 +104,6 @@
   }
 
   .down {
-    top: 60px;
+    top: 82px;
   }
 }

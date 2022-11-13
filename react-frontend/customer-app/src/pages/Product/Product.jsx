@@ -1,19 +1,20 @@
-import React, { useState, useEffect } from "react";
 import clsx from "clsx";
-import { useParams, useNavigate, useSearchParams } from "react-router-dom";
-import StarRatings from "react-star-ratings";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
 import { IoIosAdd, IoIosRemove } from "react-icons/io";
+import { useDispatch } from "react-redux";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import StarRatings from "react-star-ratings";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-import { addItem } from "../../redux/shopping-cart/cartItemsSlide";
 import Breadcrumb from "../../components/Breadcrumb";
-import Grid from "../../components/Grid";
 import Button from "../../components/Button";
-import styles from "./Product.module.scss";
-import numberWithCommas from "../../utils/numberWithCommas";
+import Grid from "../../components/Grid";
+import { addItem } from "../../redux/shopping-cart/cartItemsSlide";
 import * as product from "../../services/product";
+import * as notification from "../../utils/addNotificationElement";
+import numberWithCommas from "../../utils/numberWithCommas";
+import styles from "./Product.module.scss";
 
 const Product = () => {
   const { slugProduct } = useParams();
@@ -23,7 +24,7 @@ const Product = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [productDetail, setProductDetail] = useState([]);
 
-  searchParams.get("size") != null &&
+  searchParams.get("size") !== null &&
     searchParams.set("size", searchParams.get("size").toUpperCase());
 
   const [color, setColor] = useState(searchParams.get("color"));
@@ -32,27 +33,29 @@ const Product = () => {
   const [count, setCount] = useState(1);
 
   const notify = (type, message) => {
-    type === 1
-      ? toast.success(message, {
-          position: "bottom-left",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        })
-      : toast.warn(message, {
-          position: "bottom-left",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+    if (type === 1) {
+      toast.success(message, {
+        position: "bottom-left",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    } else {
+      toast.warn(message, {
+        position: "bottom-left",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
   };
 
   const check = () => {
@@ -60,7 +63,7 @@ const Product = () => {
       color === null ||
       productDetail.colors.filter((item) => item.slug === color).length < 1
     ) {
-      notify(0, "Vui lòng chọn màu sắc!");
+      notification.addNotificationElement("color", "Vui lòng chọn màu sắc!");
       return false;
     }
 
@@ -68,7 +71,7 @@ const Product = () => {
       size === null ||
       productDetail.sizes.filter((item) => item.name === size).length < 1
     ) {
-      notify(0, "Vui lòng chọn kích cỡ!");
+      notification.addNotificationElement("size", "Vui lòng chọn size!");
       return false;
     }
 
@@ -99,10 +102,10 @@ const Product = () => {
 
   //handle click button BuyNow
   const handleBuyNow = () => {
-    const colorName = productDetail.colors
-      .filter((colorProduct) => colorProduct.slug === color)
-      .at(0).name;
     if (check()) {
+      const colorName = productDetail.colors
+        .filter((colorProduct) => colorProduct.slug === color)
+        .at(0).name;
       navigate("/checkout", {
         state: [
           {
@@ -133,6 +136,7 @@ const Product = () => {
       .then((data) => {
         if (data.data.status === "OK") {
           setProductDetail(data.data.data);
+          setCount(1);
         } else {
           return Promise.reject(new Error(data.message));
         }
@@ -141,8 +145,23 @@ const Product = () => {
         console.log(error);
         navigate("/error");
       });
-  }, [searchParams]);
 
+    return () => {
+      let size = document.getElementById("sizeNotification");
+      if (size) {
+        if (size.parentNode) {
+          size.parentNode.removeChild(size);
+        }
+      }
+
+      let color = document.getElementById("colorNotification");
+      if (color) {
+        if (color.parentNode) {
+          color.parentNode.removeChild(color);
+        }
+      }
+    };
+  }, [searchParams]);
   return (
     <div className={clsx(styles.container)}>
       <Breadcrumb name={productDetail.name} />
@@ -179,7 +198,7 @@ const Product = () => {
           </div>
 
           {/* color */}
-          <div className="mb-2">
+          <div id="color" className="mb-2">
             <h3>Màu</h3>
             <div className={clsx(styles.list)}>
               {productDetail.colors?.map((item, index) => (
@@ -215,7 +234,7 @@ const Product = () => {
           <hr />
 
           {/* size */}
-          <div className="mb-2">
+          <div id="size" className="mb-2">
             <h3>Size</h3>
             <div className={clsx(styles.list)}>
               {productDetail.sizes?.map((item, index) => (

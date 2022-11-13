@@ -6,14 +6,20 @@ import com.lizi.common.entity.OrderStatus;
 import com.lizi.common.entity.OrderTrack;
 import com.lizi.customer.dto.request.OrderRequestDTO;
 import com.lizi.customer.dto.request.ProductCheckoutRequestDTO;
+import com.lizi.customer.dto.response.OrderTrackResponseDTO;
+import com.lizi.customer.dto.response.OrderTrackerResponseDTO;
+import com.lizi.customer.dto.response.ProductCartResponseDTO;
+import com.lizi.customer.exception.ResourceNotFoundException;
 import com.lizi.customer.mapper.OrderDetailMapper;
 import com.lizi.customer.mapper.OrderMapper;
+import com.lizi.customer.mapper.OrderTrackMapper;
 import com.lizi.customer.repository.OrderDetailRepository;
 import com.lizi.customer.repository.OrderRepository;
 import com.lizi.customer.repository.OrderTrackRepository;
 import com.lizi.customer.repository.ProductOptionRepository;
 import com.lizi.customer.service.OrderService;
 import com.lizi.customer.service.ProductOptionService;
+import com.lizi.customer.util.DateFormat;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -23,7 +29,8 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
-import java.util.Set;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -52,16 +59,6 @@ public class OrderServiceImpl implements OrderService {
     Order orderSaved = orderRepository.save(order);
 
     Set<ProductCheckoutRequestDTO> listProductCheckoutRequestDTO = orderRequestDTO.getProducts();
-
-//    Order finalOrderSaved = orderSaved;
-//    Set<OrderDetail> listOrderDetail = listProductCheckoutRequestDTO.stream().map((item) -> {
-//      OrderDetail orderDetail = OrderDetailMapper.INSTANCE.productCheckoutRequestDTOToOrderDetail(item);
-//      Long idProductOption = productOptionService.getIdProductOptionBySlugProductAndColorAndSize(item.getSlugProduct(), item.getSlugColor(), item.getSize());
-//      orderDetail.setProductOption(productOptionRepository.findById(idProductOption).get());
-//      orderDetail.setOrder(finalOrderSaved);
-//      return orderDetail;
-//    }).collect(Collectors.toSet());
-
 
     Order finalOrderSaved1 = orderSaved;
     listProductCheckoutRequestDTO.forEach((item) -> {
@@ -185,6 +182,37 @@ public class OrderServiceImpl implements OrderService {
       orderRepository.enableOrder(order.getId());
       //create new track
       return true;
+    }
+  }
+
+  @Override
+  public boolean checkOrderByOrderIdAndEmail(String orderId, String email) {
+    Optional<Order> order = orderRepository.findByIdAndEmail(orderId, email);
+    return order.isPresent();
+  }
+
+  @Override
+  public OrderTrackerResponseDTO getOrderTrackerByOrderIdAndEmail(String orderId, String email) {
+    if(checkOrderByOrderIdAndEmail(orderId, email)) {
+      Optional<Order> order = orderRepository.findById(orderId);
+      List<ProductCartResponseDTO> products = orderDetailRepository.findAllProductOptionByOrderId(orderId);
+      List<OrderTrack> orderTrackEntityList = orderTrackRepository.findByOrderId(orderId);
+
+      //Convert orderTrackEntityList to orderTracks
+      List<OrderTrackResponseDTO> orderTracks = new ArrayList<OrderTrackResponseDTO>();
+      orderTrackEntityList.forEach(orderTrackEntity -> {
+        OrderTrackResponseDTO orderTrackResponseDTO = OrderTrackMapper.INSTANCE.orderTrackToOrderTrackResponseDTO(orderTrackEntity);
+        orderTracks.add(orderTrackResponseDTO);
+      });
+
+      return OrderTrackerResponseDTO.builder().orderId(order.get().getId())
+              .orderTime(DateFormat.DateToString(order.get().getOrderTime()))
+              .totalPrice(order.get().getTotalPrice())
+              .shipCost(order.get().getShipCost())
+              .products(products)
+              .orderTracks(orderTracks).build();
+    } else {
+      throw new ResourceNotFoundException("Mã đơn hàng hoặc email sai!");
     }
   }
 

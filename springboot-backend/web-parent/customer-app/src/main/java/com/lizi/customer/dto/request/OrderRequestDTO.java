@@ -1,5 +1,6 @@
 package com.lizi.customer.dto.request;
 
+import com.lizi.common.entity.PaymentMethod;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -15,6 +16,7 @@ public class OrderRequestDTO {
   private String fullName;
   private String phoneNumber;
   private String email;
+  private String paymentMethod;
   private String province;
   private String district;
   private String ward;

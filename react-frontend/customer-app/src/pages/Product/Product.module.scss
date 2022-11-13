@@ -1,5 +1,5 @@
 .container {
-  max-width: 90%;
+  max-width: 1440px;
   margin: auto;
 
   .wrap {
@@ -9,10 +9,13 @@
     justify-content: center;
     align-items: flex-start;
     max-width: 1440px;
-    margin: auto;
+    margin: 20px auto 100px;
+    padding: 50px;
+    border-radius: 5px;
+    background-color: #fff;
 
     .left {
-      flex: 1.75;     
+      flex: 1.5;     
     }
 
     .right {
