@@ -18,6 +18,8 @@ public interface ProductMapper {
   @Mapping(source = "enabled", target = "enabled")
   @Mapping(expression = "java(CategoryMapper.INSTANCE.categoryToDto(product.getCategory()))",
       target = "category")
+  @Mapping(expression = "java(ProductOptionMapper.INSTANCE.toDtos(product.getOptions()))",
+      target = "options")
   ProductResDto productToDto(Product product);
 
   List<ProductResDto> productsToDtos(List<Product> product);
