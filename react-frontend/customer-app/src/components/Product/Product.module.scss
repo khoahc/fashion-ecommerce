@@ -1,0 +1,18 @@
+.container {
+  height: 300px;
+  display: flex;
+  margin: 30px 0px;
+
+  img {
+    height: 300px;
+    width: 250px;
+  }
+
+  .content {
+    margin: auto 5px;
+
+    .name {
+      font-weight: 500;
+    }
+  }
+}
