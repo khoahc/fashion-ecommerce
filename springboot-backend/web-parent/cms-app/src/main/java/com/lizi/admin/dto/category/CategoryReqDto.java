@@ -17,5 +17,6 @@ public class CategoryReqDto {
   private String name;
   private boolean enabled;
   private Long imageId;
+  private String imageUrl;
   private Long parentId;
 }

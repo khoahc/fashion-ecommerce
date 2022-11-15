@@ -2,17 +2,22 @@ package com.lizi.admin.service;
 
 import com.lizi.admin.dto.product.ProductOptionReqDto;
 import com.lizi.admin.dto.product.ProductOptionResDto;
+import com.lizi.common.entity.Product;
+import com.lizi.common.entity.ProductOption;
 import java.util.List;
+import java.util.Set;
 
 public interface ProductOptionService {
 
-  List<ProductOptionResDto> getAllOptionOfProduct(Long productId);
+  List<ProductOption> getAllOptionOfProduct(Long productId);
 
-  List<ProductOptionResDto> getProductOption(Long productId, Long optionId);
+  ProductOption getProductOption(Long optionId);
 
-  ProductOptionResDto createProductOption(Long productID, ProductOptionReqDto productOptionReqDto);
+  ProductOption createProductOption(Long productId, ProductOptionReqDto productOptionReqDto);
+  ProductOption createProductOption(Product product, ProductOptionReqDto productOptionReqDto);
+  Set<ProductOption> createProductOptions(Product product, List<ProductOptionReqDto> productOptionReqDtos);
 
-  ProductOptionResDto updateProductOption(Long optionId, ProductOptionReqDto productOptionReqDto);
+  ProductOption updateProductOption(Long optionId, ProductOptionReqDto productOptionReqDto);
 
   void deleteProductOption(Long optionId);
 }
