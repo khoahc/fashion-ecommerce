@@ -1,0 +1,16 @@
+.is-title-bar {
+  @apply p-4 border-b border-gray-100;
+}
+
+.is-title-bar li {
+  @apply inline-block pr-1 text-base text-gray-500;
+}
+
+.is-title-bar li:not(:last-child):after {
+  content: '/';
+  @apply inline-block pl-1;
+}
+
+.is-title-bar li:last-child {
+  @apply pr-0 font-semibold text-black;
+}
