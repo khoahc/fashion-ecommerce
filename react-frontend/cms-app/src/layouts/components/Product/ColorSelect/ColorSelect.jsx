@@ -57,7 +57,7 @@ const ColorSelect = () => {
                 >
                   <div
                     className="w-6 h-6 mr-2 w-100 border rounded-md"
-                    style={{ background: color.hexCode }}
+                    style={{ background: `#${color.hexCode}` }}
                   ></div>
                   <div className="">{color.name}</div>
                 </div>

@@ -76,26 +76,54 @@ const ProductForm = ({ product }) => {
   }
 
   const productReqDto = {
-    id: 0,
-    name: '', 
-    description: '',
-    enabled: false,
-    cost: 0,
-    price: 0,
-    categoryId: 0,
-    options: [
-      {
-        id: 0,
-        size: '',
-        productColor: {
-          id: 0,
-          colorId: 0,
-          mainImageId: 0,
-          productImageColorIds: [0]
+    "name": "áo thun đen moi1moi12moi12",
+    "description": "áo thun",
+    "enabled": true,
+    "cost": 123123,
+    "price": "123123",
+    "categoryId": 10,
+    "options": [
+        {
+            "size": "S",
+            "productColor": {
+                "colorId": 12,
+                "quantity": 12,
+                "mainImageId": 4,
+                "imageIds": [
+                    27,
+                    28,
+                    29
+                ]
+            }
+        },
+        {
+            "size": "M",
+            "productColor": {
+                "colorId": 13,
+                "quantity": 12,
+                "mainImageId": 4,
+                "imageIds": [
+                    27,
+                    28,
+                    29
+                ]
+            }
+        },
+        {
+            "size": "L",
+            "productColor": {
+                "colorId": 14,
+                "quantity": 12,
+                "mainImageId": 4,
+                "imageIds": [
+                    27,
+                    28,
+                    29
+                ]
+            }
         }
-      }
     ],
-    voucherIds: [0]
+    "vouchersId": []
   }
 
   const onSubmitHandle = (e) => {

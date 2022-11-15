@@ -48,6 +48,9 @@ const userSlice = createSlice({
     [getUserDetails.rejected]: (state, { payload }) => {
       state.loading = false;
       state.error = payload;
+      localStorage.removeItem("userToken"); // deletes token from storage
+      state.userInfo = null;
+      state.userToken = null;
     },
   },
 });

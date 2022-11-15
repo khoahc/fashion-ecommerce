@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useState } from "react";
+import ChooseImages from "../ChooseImages/ChooseImages";
 import ColorSelect from "../ColorSelect/ColorSelect";
 
 const ProductOptionForm = () => {
@@ -100,6 +101,7 @@ const ProductOptionRow = ({ productOption, handleRemoveOptionClick }) => {
             </div>
           </div>
         </div>
+        
         <button type="button" className="button red" onClick={(e) => handleRemoveOptionClick(index)}>
           -
         </button>

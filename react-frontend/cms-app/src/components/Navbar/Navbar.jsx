@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserDetails } from "../../redux/user/userAction";
 import { logout } from "../../redux/user/userSlice";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const { userInfo, userToken } = useSelector((state) => state.user)
@@ -63,15 +64,15 @@ const Navbar = () => {
               </span>
             </div>
             <div className="navbar-dropdown user-actions">
-              <a
-                href="profile.html"
+              <Link
+                href="#"
                 className="navbar-item --set-active-profile-html"
               >
                 <span className="icon">
                   <i className="mdi mdi-account"></i>
                 </span>
                 <span>Trang Cá nhân</span>
-              </a>
+              </Link>
               <hr className="navbar-divider"></hr>
               <button
                 className="navbar-item"
