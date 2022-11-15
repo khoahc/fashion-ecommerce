@@ -18,7 +18,7 @@ const CategoryBanner = (props) => {
             <h4 className={clsx(styles.title)}>
               {"Shop " + props.category.name}
             </h4>
-            <h6 className={clsx(styles.slogan)}>Thể hiển bản lĩnh </h6>
+            <h6 className={clsx(styles.slogan)}>Thể hiển chất riêng</h6>
             <Link
               className={clsx(styles.btnDetail)}
               to={"/c/" + props.category.slug}
