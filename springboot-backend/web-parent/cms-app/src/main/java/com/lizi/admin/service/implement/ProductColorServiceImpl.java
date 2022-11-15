@@ -17,8 +17,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional(rollbackFor = {Exception.class, Throwable.class})
 public class ProductColorServiceImpl implements ProductColorService {
 
   @Autowired
@@ -46,19 +48,28 @@ public class ProductColorServiceImpl implements ProductColorService {
 
   @Override
   public ProductColor createProductColor(ProductColorReqDto dto) {
+
+    // get color
     Color color = colorService.getColorById(dto.getColorId());
+
+    // get image
     Image mainImage = imageService.getImageById(dto.getMainImageId());
 
+    // init product color
     ProductColor productColor = ProductColorMapper.INSTANCE.toEntity(dto);
     productColor.setMainImage(mainImage);
     productColor.setColor(color);
+
+    // save product color
     productColorRepo.save(productColor);
 
+    // create product image colors
     Set<ProductImageColor> productImageColors = dto.getImageIds().stream()
         .map(id -> productImageColorService.createProductImageColor(id, productColor)).collect(
             Collectors.toSet());
 
-    productColor.setProductImageColors(productImageColors);
+    // set product image color for product color
+     productColor.setProductImageColors(productImageColors);
 
     return productColor;
   }

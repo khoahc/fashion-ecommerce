@@ -1,10 +1,9 @@
 package com.lizi.admin.mapper;
 
 import com.lizi.admin.dto.product.ProductOptionResDto;
-import com.lizi.common.entity.Image;
 import com.lizi.common.entity.ProductImageColor;
 import com.lizi.common.entity.ProductOption;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.mapstruct.Mapper;
@@ -31,6 +30,9 @@ public interface ProductOptionMapper {
 
   @Named("imagesToUrlImage")
   public static Set<String> imagesToUrlImage(Set<ProductImageColor> productImageColors) {
+    if (productImageColors == null) {
+      return new HashSet<>();
+    }
     return productImageColors.stream().map(productImage -> productImage.getImage().getUrl())
         .collect(Collectors.toSet());
   }

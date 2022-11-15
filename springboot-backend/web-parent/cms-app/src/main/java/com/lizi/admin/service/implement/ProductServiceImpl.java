@@ -4,22 +4,25 @@ import com.lizi.admin.dto.product.ProductReqDto;
 import com.lizi.admin.dto.product.ProductResDto;
 import com.lizi.admin.mapper.ProductMapper;
 import com.lizi.admin.repository.CategoryRepository;
-import com.lizi.admin.repository.ProductOptionRepository;
 import com.lizi.admin.repository.ProductRepository;
 import com.lizi.admin.service.ProductOptionService;
 import com.lizi.admin.service.ProductService;
 import com.lizi.admin.util.Util;
 import com.lizi.common.entity.Category;
 import com.lizi.common.entity.Product;
+import com.lizi.common.entity.ProductOption;
+import com.lizi.common.entity.Voucher;
 import com.lizi.common.exception.ResourceAlreadyExistsException;
 import com.lizi.common.exception.ResourceNotFoundException;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
-import org.apache.commons.lang3.RandomStringUtils;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional(rollbackFor = {Exception.class, Throwable.class})
 public class ProductServiceImpl implements ProductService {
 
   @Autowired
@@ -56,14 +59,19 @@ public class ProductServiceImpl implements ProductService {
     // generate slug
     String slug = Util.toSlug(productReqDto.getName());
 
-    Product newProduct = ProductMapper.INSTANCE.dtoToProduct(productReqDto);
-    newProduct.setCategory(category);
-    newProduct.setSlug(slug);
-    productRepo.save(newProduct);
+    Product product = ProductMapper.INSTANCE.dtoToProduct(productReqDto);
+    product.setCategory(category);
+    product.setSlug(slug);
 
-    productOptionService.createProductOptions(newProduct, productReqDto.getOptions());
+    // save product
+    productRepo.save(product);
 
-    return ProductMapper.INSTANCE.productToDto(newProduct);
+    // create product options
+    Set<ProductOption> productOptions = productOptionService.createProductOptions(product,
+        productReqDto.getOptions());
+    product.setOptions(productOptions);
+
+    return ProductMapper.INSTANCE.productToDto(product);
   }
 
   @Override
