@@ -188,10 +188,10 @@ const Product = () => {
         <div className={clsx(styles.right)}>
           <div className="mb-2">
             <div>
-              <h2 className="mb-2">{productDetail.name}</h2>
+              <h2 className="mb-2 font-weight-3">{productDetail.name}</h2>
             </div>
             <div>
-              <span>
+              <span className="font-weight-bold">
                 {numberWithCommas(Number(productDetail.price)) + " đ"}
               </span>
             </div>
