@@ -7,6 +7,7 @@ import java.util.List;
 public interface CategoryService {
 
   List<CategoryResDto> getAll();
+  List<CategoryResDto> getAllLevel3Category();
 
   CategoryResDto getCategory(Long id);
 

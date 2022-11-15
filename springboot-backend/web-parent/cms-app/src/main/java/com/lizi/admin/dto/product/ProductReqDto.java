@@ -4,6 +4,7 @@ import com.lizi.common.entity.Category;
 import com.lizi.common.entity.Voucher;
 import java.math.BigDecimal;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,7 +25,7 @@ public class ProductReqDto {
   private boolean enabled;
   private BigDecimal cost;
   private BigDecimal price;
-  private Long mainImageId;
   private Long categoryId;
-  private Set<Long> vouchersId;
+  private List<ProductOptionReqDto> options;
+  private List<Long> vouchersId;
 }

@@ -1,6 +1,7 @@
 package com.lizi.common.entity;
 
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -42,7 +43,7 @@ public class ProductOption {
   @JoinColumn(name = "product_id")
   private Product product;
 
-  @OneToOne
+  @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "product_color_id")
   private ProductColor productColor;
 
