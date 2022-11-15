@@ -379,17 +379,15 @@ const Catalog = () => {
 
             {/* list product */}
             <div className={clsx(styles.right)}>
-              {products.length > 0 ? (
-                <div className={clsx(styles.listProduct)}>
-                  {isLoading ? (
-                    <InfinityListSkeleton />
-                  ) : (
-                    <InfinityList data={products} />
-                  )}
-                </div>
-              ) : (
-                <h2 className="text-center">Không tìm thấy sản phẩm nào!</h2>
-              )}
+              <div className={clsx(styles.listProduct)}>
+                {isLoading ? (
+                  <InfinityListSkeleton />
+                ) : products.length > 0 ? (
+                  <InfinityList data={products} />
+                ) : (
+                  <h2 className="text-center">Không tìm thấy sản phẩm nào!</h2>
+                )}
+              </div>
             </div>
           </div>
         </div>
