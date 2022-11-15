@@ -45,6 +45,7 @@ public class ProductResDto {
   private long numberOfOrder;
   private String mainImage;
   private CategoryResDto category;
+  private Set<ProductOptionResDto> options;
   private Set<Voucher> vouchers;
 
   private Date createTime;

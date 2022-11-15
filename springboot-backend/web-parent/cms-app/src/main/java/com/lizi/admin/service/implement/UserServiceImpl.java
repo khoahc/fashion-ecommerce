@@ -12,12 +12,14 @@ import com.lizi.common.entity.Role;
 import com.lizi.common.entity.User;
 import com.lizi.common.exception.ResourceAlreadyExistsException;
 import com.lizi.common.exception.ResourceNotFoundException;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,7 +36,7 @@ public class UserServiceImpl implements UserService {
   private RoleRepository roleRepo;
 
   @Autowired
-  private BCryptPasswordEncoder passwordEncoder;
+  private PasswordEncoder passwordEncoder;
 
   @Override
   public List<UserResDto> getAll() {
@@ -48,14 +50,25 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  public UserResDto getUser(String email) {
+    return UserMapper.INSTANCE.userToDto(
+        userRepo.findByEmail(email)
+            .orElseThrow(() -> new ResourceNotFoundException("user", "email", email)));
+  }
+
+
+  @Override
   @Transactional
   public UserResDto createUser(UserReqDto userReqDto) {
     if (userRepo.findByEmail(userReqDto.getEmail()).isPresent()) {
       throw new ResourceAlreadyExistsException("user", "email", userReqDto.getEmail());
     }
 
-    Image photo = imageRepo.findById(userReqDto.getPhotoId())
-        .orElseThrow(() -> new ResourceNotFoundException("image", "id", userReqDto.getPhotoId()));
+    Image photo = null;
+    if (userReqDto.getPhotoId() != null) {
+      photo = imageRepo.findById(userReqDto.getPhotoId())
+          .orElseThrow(() -> new ResourceNotFoundException("image", "id", userReqDto.getPhotoId()));
+    }
 
     Set<Role> roles = userReqDto.getRoleIds().stream().map(rId -> roleRepo.findById(rId)
             .orElseThrow(() -> new ResourceNotFoundException("role", "id", rId)))
@@ -84,8 +97,11 @@ public class UserServiceImpl implements UserService {
       }
     }
 
-    Image photo = imageRepo.findById(userReqDto.getPhotoId())
-        .orElseThrow(() -> new ResourceNotFoundException("image", "id", userReqDto.getPhotoId()));
+    Image photo = null;
+    if (userReqDto.getPhotoId() != null) {
+      photo = imageRepo.findById(userReqDto.getPhotoId())
+          .orElseThrow(() -> new ResourceNotFoundException("image", "id", userReqDto.getPhotoId()));
+    }
 
     Set<Role> roles = userReqDto.getRoleIds().stream().map(rId -> roleRepo.findById(rId)
             .orElseThrow(() -> new ResourceNotFoundException("role", "id", rId)))
