@@ -17,8 +17,8 @@ const Order = () => {
   ];
 
   const getData = async () => {
-    getAllOrder().then(resp => {
-      return resp.data;
+    getAllOrder().then(res => {
+      return res.data;
     }).then(data => {
       console.log(data);
       setListOrder(data);
