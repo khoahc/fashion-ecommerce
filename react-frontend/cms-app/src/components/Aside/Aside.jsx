@@ -14,15 +14,15 @@ const Aside = () => {
       <div className="menu is-menu-main">
         <ul className="menu-list">
           {/* <li className="active"> */}
-          <li className={ pathName === '/' ? 'active' : '' }>
+          {/* <li className={ pathName === '/' ? 'active' : '' }>
             <Link to={"/"}>
               <span className="icon">
                 <i className="mdi mdi-view-dashboard-outline"></i>
               </span>
               <span className="menu-item-label">Dashboard</span>
             </Link>
-          </li>
-          <li className={ pathName.startsWith('/category') ? 'active' : '' }>
+          </li> */}
+          <li className={ pathName === '/' || pathName.startsWith('/category') ? 'active' : '' }>
             <Link to={"/category"}>
               <span className="icon">
                 <i className="mdi mdi-hanger"></i>
