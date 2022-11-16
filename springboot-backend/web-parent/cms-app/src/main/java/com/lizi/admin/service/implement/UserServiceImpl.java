@@ -108,12 +108,18 @@ public class UserServiceImpl implements UserService {
         .collect(Collectors.toSet());
 
     user.setEmail(userReqDto.getEmail());
-    user.setPassword(passwordEncoder.encode(userReqDto.getPassword()));
     user.setFirstName(userReqDto.getFirstName());
     user.setLastName(userReqDto.getLastName());
     user.setEnabled(userReqDto.isEnabled());
 
-    user.setPhoto(photo);
+    if (userReqDto.getPassword() != null) {
+      user.setPassword(passwordEncoder.encode(userReqDto.getPassword()));
+    }
+
+    if (photo != null) {
+      user.setPhoto(photo);
+    }
+
     user.setRoles(roles);
 
     return UserMapper.INSTANCE.userToDto(userRepo.save(user));
