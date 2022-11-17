@@ -2,9 +2,7 @@ import { useEffect, useState } from "react";
 import Pagination from "../../components/Pagination";
 import Titlebar from "../../components/Titlebar";
 import OrderTable from "../../layouts/components/Order/OrderTable";
-import orderApi from "../../services/axios/orderApi";
-
-const { getAllOrder } = orderApi;
+import { getAllOrder } from "../../services/axios/orderApi";
 
 const Order = () => {
   const [listOrder, setListOrder] = useState([]);
@@ -17,12 +15,14 @@ const Order = () => {
   ];
 
   const getData = async () => {
-    getAllOrder().then(res => {
-      return res.data;
-    }).then(data => {
-      console.log(data);
-      setListOrder(data);
-    })
+    getAllOrder()
+      .then((res) => {
+        return res.data;
+      })
+      .then((data) => {
+        console.log(data);
+        setListOrder(data);
+      });
   };
 
   useEffect(() => {
@@ -46,7 +46,7 @@ const Order = () => {
         </div>
       </section>
     </div>
-  )
-}
+  );
+};
 
-export default Order
+export default Order;
