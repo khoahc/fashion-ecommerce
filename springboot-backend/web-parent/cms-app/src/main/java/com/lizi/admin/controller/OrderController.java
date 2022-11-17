@@ -31,17 +31,19 @@ public class OrderController {
   }
 
   @GetMapping(value = "/{id}")
-  public ResponseEntity<ResponseObject> getOrder(@PathVariable(name = "id") Long id) {
-    return null;
+  public ResponseEntity<ResponseObject> getOrderDetailByOrderId(@PathVariable(name = "id") String id) {
+    return ResponseEntity.ok().body(
+            ResponseObject.builder().status(HttpStatus.OK).message(Constant.SUCCESS)
+                    .data(orderService.getOrderDetailByOrderId(id)).build());
   }
 
   @PutMapping(value = "/{id}")
-  public ResponseEntity<ResponseObject> updateOrder(@PathVariable(name = "id") Long id) {
+  public ResponseEntity<ResponseObject> updateOrder(@PathVariable(name = "id") String id) {
     return null;
   }
 
   @DeleteMapping(value = "/{id}")
-  public ResponseEntity<ResponseObject> deleteOrder(@PathVariable(name = "id") Long id) {
+  public ResponseEntity<ResponseObject> deleteOrder(@PathVariable(name = "id") String id) {
     return null;
   }
 }

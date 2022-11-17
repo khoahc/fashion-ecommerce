@@ -1,6 +1,7 @@
 package com.lizi.admin.exception;
 
 import com.lizi.common.entity.ResponseObject;
+import com.lizi.common.exception.ResourceNotFoundException;
 import io.jsonwebtoken.ExpiredJwtException;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +36,14 @@ public class GlobalExceptionHandler {
   protected ResponseObject handleException(RuntimeException e) {
     e.printStackTrace();
     return ResponseObject.builder().status(HttpStatus.BAD_REQUEST).message(e.getMessage()).build();
+  }
+
+  @ExceptionHandler(ResourceNotFoundException.class)
+  @ResponseStatus(HttpStatus.OK)
+  @ResponseBody
+  protected ResponseObject handlerResourceNotFoundException(
+          RuntimeException e) {
+    return ResponseObject.builder().status(HttpStatus.NOT_FOUND).message(e.getMessage()).build();
   }
 
 }
