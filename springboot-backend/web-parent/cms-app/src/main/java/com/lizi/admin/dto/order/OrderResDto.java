@@ -2,9 +2,11 @@ package com.lizi.admin.dto.order;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lizi.admin.dto.customer.CustomerResDto;
+import com.lizi.admin.dto.orderTrack.OrderTrackResDto;
 import com.lizi.admin.dto.voucher.VoucherResDto;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import com.lizi.admin.util.Constant;
@@ -41,6 +43,15 @@ public class OrderResDto {
   private BigDecimal totalPrice;
 
   private String paymentMethod;
+
+  // latestOrderStatus
+  private String orderStatus;
+
+  private boolean verified;
+
+  private boolean shipping;
+
+  private boolean cancelled;
 
   private CustomerResDto customer;
 

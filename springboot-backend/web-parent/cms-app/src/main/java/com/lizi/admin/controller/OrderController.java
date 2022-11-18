@@ -37,13 +37,4 @@ public class OrderController {
                     .data(orderService.getOrderDetailByOrderId(id)).build());
   }
 
-  @PutMapping(value = "/{id}")
-  public ResponseEntity<ResponseObject> updateOrder(@PathVariable(name = "id") String id) {
-    return null;
-  }
-
-  @DeleteMapping(value = "/{id}")
-  public ResponseEntity<ResponseObject> deleteOrder(@PathVariable(name = "id") String id) {
-    return null;
-  }
 }

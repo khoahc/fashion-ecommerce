@@ -15,4 +15,10 @@ public interface OrderTrackRepository extends JpaRepository<OrderTrack, Long> {
     @Query(value = "SELECT o_t.notes FROM tbl_tracks o_t WHERE o_t.order_id = :orderId order by o_t.update_time desc limit 1", nativeQuery = true)
     String findStatusOrderTrackByOrderId(@Param(value = "orderId") String orderId);
 
+    @Query(value = "SELECT * FROM tbl_tracks o_t WHERE o_t.order_id = :orderId order by o_t.update_time asc", nativeQuery = true)
+    List<OrderTrack> findByOrderId(@Param(value = "orderId") String orderId);
+
+    @Query(value = "SELECT EXISTS(SELECT * FROM tbl_tracks o_t WHERE o_t.order_id = :orderId AND o_t.status = :status)", nativeQuery = true)
+    Integer checkStatusOrderTrackByOrderId(@Param(value = "orderId") String orderId, @Param(value = "status") String status);
+
 }

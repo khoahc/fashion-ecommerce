@@ -12,7 +12,15 @@ public enum OrderStatus {
   NEW {
     @Override
     public String defaultDescription() {
-      return "Order was verify by the customer";
+      return "Chưa xác nhận";
+    }
+
+  },
+
+  VERIFIED {
+    @Override
+    public String defaultDescription() {
+      return "Đã xác nhận";
     }
 
   },
@@ -20,7 +28,7 @@ public enum OrderStatus {
   CANCELLED {
     @Override
     public String defaultDescription() {
-      return "Order was rejected";
+      return "Đã hủy";
     }
   },
 
@@ -38,17 +46,10 @@ public enum OrderStatus {
     }
   },
 
-  PICKED {
-    @Override
-    public String defaultDescription() {
-      return "Shipper picked the package";
-    }
-  },
-
   SHIPPING {
     @Override
     public String defaultDescription() {
-      return "Shipper is delivering the package";
+      return "Đã gửi hàng";
     }
   },
 

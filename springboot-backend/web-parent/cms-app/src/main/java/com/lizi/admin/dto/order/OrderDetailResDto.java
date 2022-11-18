@@ -2,6 +2,7 @@ package com.lizi.admin.dto.order;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lizi.admin.dto.customer.CustomerResDto;
+import com.lizi.admin.dto.orderTrack.OrderTrackResDto;
 import com.lizi.admin.dto.product.ProductOrderResDto;
 import com.lizi.admin.dto.voucher.VoucherResDto;
 import com.lizi.admin.util.Constant;
@@ -29,6 +30,9 @@ public class OrderDetailResDto {
   private BigDecimal totalPrice;
   private String paymentMethod;
   private String orderStatus;
+
+  private List<OrderTrackResDto> orderTrackResDtoList;
+
   private CustomerResDto customer = null;
   private VoucherResDto voucher = null;
 
