@@ -10,12 +10,17 @@ export const getOrderDetailByOrderId = async (id) => {
   return await axiosClient.get(url);
 };
 
-export const browserOrder = async (requestOption) => {
-  const url = `/api/v1/orders`;
-  return await axiosClient.post(url, requestOption);
+export const addOrderTrackShippingByOrderId = async (requestOrderId) => {
+  const url = `/api/v1/order-track/shipping`;
+  return await axiosClient.post(url, requestOrderId);
 };
 
-export const cancelOrder = async (id) => {
-  const url = `/api/v1/orders/${id}`;
-  return await axiosClient.get(url);
+export const addOrderTrackVerifiedByOrderId = async (requestOrderId) => {
+  const url = `/api/v1/order-track/verified`;
+  return await axiosClient.post(url, requestOrderId);
+};
+
+export const addOrderTrackCancelledByOrderId = async (requestOrderId) => {
+  const url = `/api/v1/order-track/cancelled`;
+  return await axiosClient.post(url, requestOrderId);
 };

@@ -13,10 +13,10 @@ const OrderTable = ({ list }) => {
           </th>
           <th>STT</th>
           <th>Người mua</th>
-          <th>Số điện thoại</th>          
+          <th>Số điện thoại</th>
           <th>Thời gian đặt</th>
-          <th>Tổng tiền</th>        
-          {/* <th className="text-center">Trạng thái</th> */}
+          <th>Tổng tiền</th>
+          <th className="text-center">Trạng thái</th>
           <th className="text-center">Chức năng</th>
         </tr>
       </thead>

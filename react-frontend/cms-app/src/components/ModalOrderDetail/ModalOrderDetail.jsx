@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import TrackList from "../../components/TrackList";
 import { getOrderDetailByOrderId } from "../../services/axios/orderApi";
 import numberWithDot from "../../utils/numberWithDot";
 import ProductOrder from "../ProductOrder/ProductOrder";
@@ -25,7 +26,7 @@ const ModalOrderDetail = (props) => {
   }, [props.orderId]);
 
   const handleClickClose = () => {
-    props.setShowModalViewOrderDetail(false);    
+    props.setShowModalViewOrderDetail(false);
   };
 
   console.log("orderDetail.products", orderDetail.products);
@@ -121,6 +122,11 @@ const ModalOrderDetail = (props) => {
                   {orderDetail.products.map((item, index) => (
                     <ProductOrder key={index} data={item} />
                   ))}
+
+                  <div className="flex flex-row gap-6 mb-4">
+                    <div className="font-bold">Theo dõi đơn hàng: </div>
+                  </div>
+                  <TrackList data={orderDetail.orderTrackResDtoList} />
                 </div>
 
                 <div className="flex items-center justify-center p-6  rounded-b">
