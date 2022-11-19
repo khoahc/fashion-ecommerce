@@ -12,22 +12,22 @@ const OrderTableContent = (props) => {
     {
       key: 1,
       status: "Đã gửi hàng",
-      style: "text-orange-500 font-bold",
+      style: "bg-orange-500 text-white font-bold rounded-full p-2",
     },
     {
       key: 2,
       status: "Đã xác nhận",
-      style: "text-green-500",
+      style: "bg-green-500 text-white rounded-full p-2",
     },
     {
       key: 3,
       status: "Chưa xác nhận",
-      style: "text-back-500 font-bold",
+      style: "bg-back-500 font-bold text-white rounded-full p-2",
     },
     {
       key: 4,
       status: "Đã hủy",
-      style: "text-red-500",
+      style: "bg-red-500  text-white rounded-full p-2",
     },
   ];
 
@@ -106,7 +106,7 @@ const OrderTableContent = (props) => {
                   _.isEqual(item.orderStatus, elem.status)
                 ).style
               }`}
-                title={item.createTime}
+                title={item.orderStatus}
               >
                 {item.orderStatus}
               </small>
