@@ -8,11 +8,12 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        roboto: ['"Roboto"', 'sans-serif']
-      }
+        roboto: ['"Roboto"', "sans-serif"],
+      },
     },
   },
   plugins: [
-    require('tw-elements/dist/plugin')
+    require('tw-elements/dist/plugin'),
+    require("flowbite/plugin")
   ],
-}
+};

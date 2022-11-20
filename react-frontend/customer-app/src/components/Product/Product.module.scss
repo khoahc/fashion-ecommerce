@@ -1,0 +1,29 @@
+.container {
+  height: 300px;
+  display: flex;
+  margin: 30px 0px;
+  
+  .image {
+    height: 250px;
+    width: 250px;
+
+    img {
+      height: 100%;
+      width: 100%;
+      vertical-align: middle;
+    }
+  }
+
+  .content {
+    margin: auto 16px;
+
+    .name {
+      font-weight: 500;
+      color: #9e3500;
+    }
+    
+    .price {
+      font-weight: 600;
+    }
+  }
+}

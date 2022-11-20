@@ -1,0 +1,31 @@
+.container {
+  display: flex;
+  margin: 38px 0;
+  padding: 12px 0;
+  justify-content: space-between;
+  justify-items: stretch;
+  border-radius: 10px;
+  background-color: #fff;
+  border: 0.5px solid #999;
+  
+  .info {
+    width: 400px;
+  }
+  .image {
+    width: 150px;
+    height: 150px;
+    margin-left: 20px;
+  }
+
+  .exit {
+    top: 0px;
+    margin-right: 20px;
+  }
+}
+
+.container:hover {
+  -webkit-box-shadow: 0px 1px 1px #F2C94C;
+  -moz-box-shadow: 0px 1px 1px #F2C94C;
+  box-shadow: 1px 1px 10px 2px #F2C94C;
+  border: 0.5px solid #fff;
+}
