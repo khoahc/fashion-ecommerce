@@ -32,9 +32,13 @@ export const getUserDetails = createAsyncThunk(
         },
       };
 
-      const { data } = await getInfo(config);
-      console.log(data);
-      return data;
+      // const { data } = await getInfo(config);
+      const resp = await getInfo(config);
+      console.log(resp);
+      if (resp.status === 'OK') {
+        return resp.data;
+      }
+      return undefined;
     } catch (error) {
       console.log(error);
       if (error.response && error.response.data.message) {

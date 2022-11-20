@@ -10,7 +10,6 @@ const Order = () => {
   const listTitle = [
     {
       title: "Đơn hàng",
-      link: "/order",
     },
   ];
 

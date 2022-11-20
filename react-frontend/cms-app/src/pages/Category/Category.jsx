@@ -13,7 +13,6 @@ const Category = () => {
   const listTitle = [
     {
       title: "Loại sản phẩm",
-      link: "/category",
     },
   ];
 

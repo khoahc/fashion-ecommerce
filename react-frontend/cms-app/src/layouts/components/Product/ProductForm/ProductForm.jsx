@@ -19,136 +19,42 @@ const ProductForm = ({ product }) => {
   const navigate = useNavigate();
   const [listLevel3Category, setListLevel3Category] = useState([]);
 
-  const [options, setOptions] = useState([]);
-
-  const productEntity = {
-    id: 0,
-    name: "",
-    slug: "",
-    description: "",
-    enabled: false,
-    cost: 0,
-    price: 0,
-    numberOfOrder: 0,
-    category: {
-      id: 0,
-      name: "",
-      slug: "",
-    },
-    options: [
-      {
-        id: 0,
-        size: "",
-        productColor: {
-          id: 0,
-          color: {
-            id: 0,
-            name: "",
-            slug: "",
-            hexCode: "",
-          },
-          mainImage: {
-            id: 0,
-            url: "",
-            cloudinaryId: "",
-          },
-          productImageColors: [
-            {
-              id: 0,
-              image: {
-                id: 0,
-                url: "",
-                cloudinaryId: "",
-              },
-            },
-          ],
-        },
-        quantity: 0,
-      },
-    ],
-    vouchers: [
-      {
-        id: 0,
-      },
-    ],
-  };
-
-  const productReqDto = {
-    name: "áo thun đen moi1moi12moi12",
-    description: "áo thun",
-    enabled: true,
-    cost: 123123,
-    price: "123123",
-    categoryId: 10,
-    options: [
-      {
-        size: "S",
-        productColor: {
-          colorId: 12,
-          quantity: 12,
-          mainImageId: 4,
-          imageIds: [27, 28, 29],
-        },
-      },
-      {
-        size: "M",
-        productColor: {
-          colorId: 13,
-          quantity: 12,
-          mainImageId: 4,
-          imageIds: [27, 28, 29],
-        },
-      },
-      {
-        size: "L",
-        productColor: {
-          colorId: 14,
-          quantity: 12,
-          mainImageId: 4,
-          imageIds: [27, 28, 29],
-        },
-      },
-    ],
-    vouchersId: [],
-  };
-
   const onSubmitHandle = (e) => {
     e.preventDefault();
 
     console.log(form);
 
-    // switch (mode) {
-    //   case "create":
-    //     createProduct({
-    //       name,
-    //       description,
-    //       enabled,
-    //       cost,
-    //       price,
-    //       categoryId,
-    //       vouchersId,
-    //     }).then((resp) => {
-    //       if (resp.status === "OK") {
-    //         toast.success("Thêm sản phẩm thành công!", {
-    //           position: toast.POSITION.TOP_RIGHT,
-    //           autoClose: 1900,
-    //         });
-    //         navigate("/product");
-    //       } else {
-    //         toast.success("Thêm sản phẩm không thành công!", {
-    //           position: toast.POSITION.TOP_RIGHT,
-    //           autoClose: 1900,
-    //         });
-    //       }
-    //     });
-    //     break;
+    switch (mode) {
+      case "create":
+        createProduct({
+          name: form.name,
+          description: form.description,
+          enabled: form.enabled,
+          cost: form.cost,
+          price: form.price,
+          categoryId: form.categoryId,
+        }).then((resp) => {
+          if (resp.status === "OK") {
+            toast.success("Thêm sản phẩm thành công!", {
+              position: toast.POSITION.TOP_RIGHT,
+              autoClose: 1900,
+            });
+            navigate("/product");
+          } else {
+            toast.success("Thêm sản phẩm không thành công!", {
+              position: toast.POSITION.TOP_RIGHT,
+              autoClose: 1900,
+            });
+          }
+        });
+        break;
 
-    //   case "update":
-    //     break;
+      case "update":
+        break;
 
-    //   default:
-    //     break;
-    // }
+      default:
+        break;
+    }
   };
 
   const getData = async () => {
@@ -165,14 +71,14 @@ const ProductForm = ({ product }) => {
     if (product) {
       console.log(product);
       setMode("update");
-      setName(product.name);
-      setCategoryId(product.category ? product.category.id : null);
-      setDescription(product.description);
-      setEnabled(product.enabled);
-      setCost(product.cost);
-      setPrice(product.price);
+      dispatch(setName(product.name));
+      dispatch(setCategoryId(product.category ? product.category.id : null));
+      dispatch(setDescription(product.description));
+      dispatch(setEnabled(product.enabled));
+      dispatch(setCost(product.cost));
+      dispatch(setPrice(product.price));
     }
-  }, [product]);
+  }, [dispatch, product]);
 
   useEffect(() => {
     getData();
@@ -334,7 +240,7 @@ const ProductForm = ({ product }) => {
                 aria-labelledby="tabs-profile-tab"
               >
                 <div className="productOptionGroup">
-                  <ProductOptionForm options={options} setOptions={setOptions} />
+                  <ProductOptionForm />
                 </div>
               </div>
             </div>

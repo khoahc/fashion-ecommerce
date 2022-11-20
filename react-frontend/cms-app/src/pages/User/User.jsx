@@ -13,7 +13,6 @@ const User = () => {
   const listTitle = [
     {
       title: "Nhân viên",
-      link: "/user",
     },
   ];
 

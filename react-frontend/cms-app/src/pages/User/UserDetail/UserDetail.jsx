@@ -29,7 +29,6 @@ const UserDetail = () => {
     },
     {
       title: `${user.firstName}`,
-      link: `/user/${user.id}`,
     },
   ];
 

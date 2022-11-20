@@ -46,14 +46,14 @@ const Aside = () => {
               <span className="menu-item-label">Đơn hàng</span>
             </Link>
           </li>
-          <li className={ pathName.startsWith('/voucher') ? 'active' : '' }>
+          {/* <li className={ pathName.startsWith('/voucher') ? 'active' : '' }>
             <Link to={"/voucher"}>
               <span className="icon">
                 <i className="mdi mdi-brightness-percent"></i>
               </span>
               <span className="menu-item-label">Voucher</span>
             </Link>
-          </li>
+          </li> */}
           <li className={ pathName.startsWith('/delivery') ? 'active' : '' }>
             <Link to={"/delivery"}>
               <span className="icon">
@@ -70,14 +70,14 @@ const Aside = () => {
               <span className="menu-item-label">Nhân viên</span>
             </Link>
           </li>
-          <li className={ pathName.startsWith('/customer') ? 'active' : '' }>
+          {/* <li className={ pathName.startsWith('/customer') ? 'active' : '' }>
             <Link to={"/customer"}>
               <span className="icon">
                 <i className="mdi mdi-account-group"></i>
               </span>
               <span className="menu-item-label">Khách hàng</span>
             </Link>
-          </li>
+          </li> */}
           <li className={ pathName.startsWith('/statis') ? 'active' : '' }>
             <Link to={"/statis"}>
               <span className="icon">

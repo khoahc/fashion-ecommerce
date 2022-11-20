@@ -28,7 +28,6 @@ const ProductDetail = () => {
     },
     {
       title: `${product.name}`,
-      link: `/product/${product.id}`,
     },
   ];
 

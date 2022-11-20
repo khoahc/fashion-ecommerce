@@ -13,7 +13,6 @@ const Product = () => {
   const listTitle = [
     {
       title: "Sản phẩm",
-      link: "/product",
     },
   ];
 
