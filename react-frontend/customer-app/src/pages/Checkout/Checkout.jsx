@@ -81,6 +81,8 @@ const Checkout = () => {
 
   const [loading, setLoading] = useState(false);
 
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
   // textInput for coupon
   const textInput = useRef(null);
 
@@ -163,7 +165,7 @@ const Checkout = () => {
     type === 1
       ? toast.success(message, {
           position: "bottom-left",
-          autoClose: 1500,
+          autoClose: 1000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -173,7 +175,7 @@ const Checkout = () => {
         })
       : toast.warn(message, {
           position: "bottom-left",
-          autoClose: 1500,
+          autoClose: 1000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -198,12 +200,13 @@ const Checkout = () => {
     order
       .postOrder(dataPost)
       .then((response) => {
-        navigate("/order/verify");
         notify(1, "Đặt hàng thành công");
+        navigate("/order/verify");    
         console.log(response);
       })
       .catch(function (error) {
         notify(0, "Đặt hàng thất bại!");
+        // setModalIsOpen(true);
         console.log(error);
       });
   };
@@ -473,7 +476,7 @@ const Checkout = () => {
           </div>
           <ToastContainer
             position="bottom-right"
-            autoClose={2000}
+            autoClose={1000}
             hideProgressBar={false}
             newestOnTop={false}
             closeOnClick

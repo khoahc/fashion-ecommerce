@@ -36,7 +36,7 @@ const Product = () => {
     if (type === 1) {
       toast.success(message, {
         position: "bottom-left",
-        autoClose: 1500,
+        autoClose: 500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -47,7 +47,7 @@ const Product = () => {
     } else {
       toast.warn(message, {
         position: "bottom-left",
-        autoClose: 1500,
+        autoClose: 500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -338,7 +338,7 @@ const Product = () => {
 
             <ToastContainer
               position="bottom-right"
-              autoClose={2000}
+              autoClose={500}
               hideProgressBar={false}
               newestOnTop={false}
               closeOnClick
