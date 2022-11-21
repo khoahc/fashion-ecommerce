@@ -3,7 +3,7 @@ import {
   FormControlLabel,
   FormLabel,
   Radio,
-  RadioGroup,
+  RadioGroup
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
@@ -11,6 +11,13 @@ import PriceStatisCard from "../../components/PriceStatisCard/PriceStatisCard";
 
 import StatusCard from "../../components/StatisCard/StatisCard";
 import Titlebar from "../../components/Titlebar";
+import {
+  getQuantityProduct,
+  getQuantityOrder,
+  getRevenueOfMonth,
+  getRevenueOfYear,
+  getTotalRevenue
+} from "../../services/axios/statisticApi";
 import numberWithDot from "../../utils/numberWithDot";
 
 const Statis = () => {
@@ -20,60 +27,26 @@ const Statis = () => {
       link: "/statis",
     },
   ];
+  const currentTime = new Date();
 
-  const [chartOptionsWeek, setChartOptionsWeek] = useState({
-    series: [
-      {
-        name: "Tuần trước",
-        data: [40, 7, 20, 90, 36, 1],
-      },
-      {
-        name: "Tuần này",
-        data: [10, 30, 70, 80],
-      },
-    ],
-    options: {
-      color: ["#6ab04c", "#2980b9"],
-      chart: {
-        background: "transparent",
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      stroke: {
-        curve: "smooth",
-      },
-      xaxis: {
-        categories: [
-          "Thứ 2",
-          "Thứ 3",
-          "Thứ 4",
-          "Thứ 5",
-          "Thứ 6",
-          "Thứ 7",
-          "CN",
-        ],
-      },
-      legend: {
-        position: "top",
-      },
-      grid: {
-        show: false,
-      },
-    },
-  });
+  // returns the month (from 0 to 11)
+  const month = currentTime.getMonth() + 1;
+  // returns the year (four digits)
+  var year = currentTime.getFullYear();
+
+  const [dataChart, setDataChart] = useState([]);
+  const [dataChartPrev, setDataChartPrev] = useState([]);
+
+  const [maxRevenue, setMaxRevenue] = useState(0);
+  const [minRevenue, setMinRevenue] = useState(0);
+  const [totalRevenue, setTotalRevenue] = useState(0);
+  const [efficiency, setEfficiency] = useState(0);
+  const [quantityProduct, setQuantityProduct] = useState(0);
+  const [quantityOrder, setQuantityOrder] = useState(0);
+  const [totalAllRevenue, setTotalAllRevenue] = useState(0);
 
   const [chartOptionsMonth, setChartOptionsMonth] = useState({
-    series: [
-      {
-        name: "Tháng trước",
-        data: [40, 70, 20, 90, 36, 80, 30, 91, 60],
-      },
-      {
-        name: "Tháng này",
-        data: [110, 30, 70, 80, 40, 50, 40, 20, 51, 90, 91, 91, 32],
-      },
-    ],
+    series: [],
     options: {
       color: ["#6ab04c", "#2980b9"],
       chart: {
@@ -131,16 +104,7 @@ const Statis = () => {
   });
 
   const [chartOptionsYear, setChartOptionsYear] = useState({
-    series: [
-      {
-        name: "Năm trước",
-        data: [40, 70, 20, 90, 36, 80, 30, 91, 60],
-      },
-      {
-        name: "Năm nay",
-        data: [110, 30, 70, 80, 40, 16, 40, 120, 51, 90, 91, 91, 32],
-      },
-    ],
+    series: [],
     options: {
       color: ["#6ab04c", "#2980b9"],
       chart: {
@@ -178,11 +142,235 @@ const Statis = () => {
     },
   });
 
-  const [chooseRadio, setChooseRadio] = useState("week");
+  const handleChooseTypeStatistic = (e) => {
+    setChooseRadio(e.target.value);
+    let dataChartTmp = [];
+    let dataChartPrevTmp = [];
+    let totalRevenueCurrent = 0;
+    let totalRevenuePrev = 0;
+    switch (e.target.value) {
+      case "year":
+        Promise.all([
+          getRevenueOfYear(year)
+            .then((data) => {
+              if (data.status === "OK") {
+                let value = [];
+                data.data.map((item, index) => {
+                  value.push(item.value);
+                });
+                dataChartTmp = value;
+                setMaxRevenue(value.reduce((a, b) => Math.max(a, b), 0));
+                setMinRevenue(value.reduce((a, b) => Math.min(a, b), 0));
+                setTotalRevenue(value.reduce((a, b) => a + b));
+                totalRevenueCurrent = value.reduce((a, b) => a + b);
+                setDataChart(value);
+              } else {
+                return Promise.reject(new Error(data.message));
+              }
+            })
+            .catch((error) => {
+              console.log("error :>> ", error);
+            }),
+          getRevenueOfYear(year - 1)
+            .then((data) => {
+              // console.log('data.status :>> ', data.status);
+              if (data.status === "OK") {
+                let value = [];
+                data.data.map((item, index) => {
+                  value.push(item.value);
+                });
+                dataChartPrevTmp = value;
+                setDataChartPrev(value);
+
+                totalRevenuePrev =
+                  value.reduce((a, b) => a + b) === 0
+                    ? 1
+                    : value.reduce((a, b) => a + b);
+                setEfficiency((totalRevenueCurrent / totalRevenuePrev) * 100);
+                setChartOptionsYear((prev) => ({
+                  ...prev,
+                  series: [
+                    {
+                      name: "Năm trước",
+                      data: dataChartPrevTmp,
+                    },
+                    {
+                      name: "Năm nay",
+                      data: dataChartTmp,
+                    },
+                  ],
+                }));
+              } else {
+                return Promise.reject(new Error(data.message));
+              }
+            })
+            .catch((error) => {
+              console.log("error :>> ", error);
+            }),
+        ]);
+        break;
+      case "month":
+        Promise.all([
+          getRevenueOfMonth(month, year)
+            .then((data) => {
+              if (data.status === "OK") {
+                let value = [];
+                data.data.map((item) => {
+                  value.push(item.value);
+                });
+                dataChartTmp = value;
+                setMaxRevenue(value.reduce((a, b) => Math.max(a, b), 0));
+                setMinRevenue(value.reduce((a, b) => Math.min(a, b), 0));
+                setTotalRevenue(value.reduce((a, b) => a + b));
+                totalRevenueCurrent = value.reduce((a, b) => a + b);
+                setDataChart(value);
+              } else {
+                return Promise.reject(new Error(data.message));
+              }
+            })
+            .catch((error) => {
+              console.log("error :>> ", error);
+            }),
+          getRevenueOfMonth(month - 1, year)
+            .then((data) => {
+              // console.log('data.status :>> ', data.status);
+              if (data.status === "OK") {
+                let value = [];
+                data.data.map((item, index) => {
+                  value.push(item.value);
+                });
+                dataChartPrevTmp = value;
+                setDataChartPrev(value);
+
+                totalRevenuePrev =
+                  value.reduce((a, b) => a + b) === 0
+                    ? 1
+                    : value.reduce((a, b) => a + b);
+                setEfficiency((totalRevenueCurrent / totalRevenuePrev) * 100);
+                setChartOptionsMonth((prev) => ({
+                  ...prev,
+                  series: [
+                    {
+                      name: "Tháng trước",
+                      data: dataChartPrevTmp,
+                    },
+                    {
+                      name: "Tháng này",
+                      data: dataChartTmp,
+                    },
+                  ],
+                }));
+              } else {
+                return Promise.reject(new Error(data.message));
+              }
+            })
+            .catch((error) => {
+              console.log("error :>> ", error);
+            }),
+        ]);
+        break;
+    }
+  };
+  const [chooseRadio, setChooseRadio] = useState("month");
 
   useEffect(() => {
     document.title = "Quản lý thống kê";
-  });
+    let dataChartTmp = [];
+    let dataChartPrevTmp = [];
+    let totalRevenueCurrent = 0;
+    let totalRevenuePrev = 0;
+    Promise.all([
+      getRevenueOfMonth(month, year)
+        .then((data) => {
+          if (data.status === "OK") {
+            let value = [];
+            data.data.map((item) => {
+              value.push(item.value);
+            });
+            dataChartTmp = value;
+            setMaxRevenue(value.reduce((a, b) => Math.max(a, b), 0));
+            setMinRevenue(value.reduce((a, b) => Math.min(a, b), 0));
+            setTotalRevenue(value.reduce((a, b) => a + b));
+            totalRevenueCurrent = value.reduce((a, b) => a + b);
+            setDataChart(value);
+          } else {
+            return Promise.reject(new Error(data.message));
+          }
+        })
+        .catch((error) => {
+          console.log("error :>> ", error);
+        }),
+      getRevenueOfMonth(month - 1, year)
+        .then((data) => {
+          // console.log('data.status :>> ', data.status);
+          if (data.status === "OK") {
+            let value = [];
+            data.data.map((item, index) => {
+              value.push(item.value);
+            });
+            dataChartPrevTmp = value;
+            setDataChartPrev(value);
+
+            totalRevenuePrev = value.reduce((a, b) => a + b);
+            setEfficiency((totalRevenueCurrent / totalRevenuePrev) * 100);
+            setChartOptionsMonth((prev) => ({
+              ...prev,
+              series: [
+                {
+                  name: "Tháng trước",
+                  data: dataChartPrevTmp,
+                },
+                {
+                  name: "Tháng này",
+                  data: dataChartTmp,
+                },
+              ],
+            }));
+          } else {
+            return Promise.reject(new Error(data.message));
+          }
+        })
+        .catch((error) => {
+          console.log("error :>> ", error);
+        }),
+
+      getQuantityProduct()
+        .then((data) => {
+          if (data.status === "OK") {
+            setQuantityProduct(data.data);
+          } else {
+            return Promise.reject(new Error(data.message));
+          }
+        })
+        .catch((error) => {
+          console.log("error :>> ", error);
+        }),
+
+      getQuantityOrder()
+        .then((data) => {
+          if (data.status === "OK") {
+            setQuantityOrder(data.data);
+          } else {
+            return Promise.reject(new Error(data.message));
+          }
+        })
+        .catch((error) => {
+          console.log("error :>> ", error);
+        }),
+
+      getTotalRevenue()
+        .then((data) => {
+          if (data.status === "OK") {
+            setTotalAllRevenue(data.data);
+          } else {
+            return Promise.reject(new Error(data.message));
+          }
+        })
+        .catch((error) => {
+          console.log("error :>> ", error);
+        }),
+    ]);
+  }, []);
 
   return (
     <div>
@@ -193,11 +381,11 @@ const Statis = () => {
           <div className="card-content">
             <div className="">
               <div className="flex justify-center gap-4 mb-6">
-                <StatusCard title={"Tổng sản phẩm"} value={190} />
-                <StatusCard title={"Tổng đơn hàng"} value={100} />
+                <StatusCard title={"Tổng sản phẩm"} value={quantityProduct} />
+                <StatusCard title={"Tổng đơn hàng"} value={quantityOrder} />
                 <StatusCard
                   title={"Tổng doanh thu"}
-                  value={numberWithDot(Number(1300000)) + " đ"}
+                  value={numberWithDot(Number(totalAllRevenue)) + " đ"}
                 />
               </div>
             </div>
@@ -214,18 +402,11 @@ const Statis = () => {
                   aria-labelledby="demo-radio-buttons-group-label"
                   defaultValue="week"
                   name="radio-buttons-group"
-                  onChange={(e) => {
-                    console.log("value :>> ", e.target.value);
-                    setChooseRadio(e.target.value)
-                  }}
+                  onChange={handleChooseTypeStatistic}
                   row
                 >
                   <FormControlLabel
-                    value="week"
-                    control={<Radio />}
-                    label="Tuần"
-                  />
-                  <FormControlLabel
+                    checked={chooseRadio === "month"}
                     value="month"
                     control={<Radio />}
                     label="Tháng"
@@ -243,12 +424,7 @@ const Statis = () => {
                   {/* chart */}
                   <Chart
                     options={
-                      chooseRadio === "week"
-                        ? {
-                            ...chartOptionsWeek.options,
-                            theme: { mode: "light" },
-                          }
-                        : chooseRadio === "month"
+                      chooseRadio === "month"
                         ? {
                             ...chartOptionsMonth.options,
                             theme: { mode: "light" },
@@ -259,9 +435,7 @@ const Statis = () => {
                           }
                     }
                     series={
-                      chooseRadio === "week"
-                        ? chartOptionsWeek.series
-                        : chooseRadio === "month"
+                      chooseRadio === "month"
                         ? chartOptionsMonth.series
                         : chartOptionsYear.series
                     }
@@ -273,17 +447,20 @@ const Statis = () => {
                 <div className="flex flex-col ">
                   <PriceStatisCard
                     title="Cao nhất"
-                    value={numberWithDot(Number(40000)) + " đ"}
+                    value={numberWithDot(Number(maxRevenue)) + " đ"}
                   />
                   <PriceStatisCard
                     title="Thấp nhất"
-                    value={numberWithDot(Number(40000)) + " đ"}
+                    value={numberWithDot(Number(minRevenue)) + " đ"}
                   />
                   <PriceStatisCard
                     title="Tổng doanh thu"
-                    value={numberWithDot(Number(40000)) + " đ"}
+                    value={numberWithDot(Number(totalRevenue)) + " đ"}
                   />
-                  <PriceStatisCard title="Hiệu suất" value="85%" />
+                  <PriceStatisCard
+                    title="Hiệu suất"
+                    value={efficiency.toFixed(2) + " %"}
+                  />
                 </div>
               </div>
             </div>
