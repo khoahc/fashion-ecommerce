@@ -4,6 +4,7 @@ import com.lizi.admin.dto.order.OrderDetailResDto;
 import com.lizi.admin.dto.order.OrderResDto;
 import com.lizi.admin.dto.orderTrack.OrderTrackResDto;
 import com.lizi.admin.dto.product.ProductOrderResDto;
+import com.lizi.admin.dto.statistic.StatisticPriceDataResDto;
 import com.lizi.admin.mapper.OrderMapper;
 import com.lizi.admin.mapper.OrderTrackMapper;
 import com.lizi.admin.repository.OrderDetailRepository;
@@ -11,6 +12,11 @@ import com.lizi.admin.repository.OrderRepository;
 import com.lizi.admin.repository.OrderTrackRepository;
 import com.lizi.admin.service.OrderService;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.Year;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,6 +29,7 @@ import com.lizi.common.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -38,8 +45,13 @@ public class OrderServiceImpl implements OrderService {
     private OrderTrackRepository orderTrackRepo;
 
     @Override
+    public long getQuantityOrder() {
+        return orderRepo.count();
+    }
+
+    @Override
     public List<OrderResDto> getAllOrders() {
-        List<OrderResDto> orderResDtoList = OrderMapper.INSTANCE.entitiesToDtos(orderRepo.findAll());
+        List<OrderResDto> orderResDtoList = OrderMapper.INSTANCE.entitiesToDtos(orderRepo.findAll(Sort.by(Sort.Direction.DESC, "orderTime")));
 
         return orderResDtoList.stream().map(orderResDto -> {
                     orderResDto.setOrderStatus(orderTrackRepo.findStatusOrderTrackByOrderId(orderResDto.getId()));
@@ -75,5 +87,73 @@ public class OrderServiceImpl implements OrderService {
                 .orderTrackResDtoList(orderTrackResDtoList)
                 .products(productOrderResDtoList)
                 .build();
+    }
+
+    @Override
+    public List<StatisticPriceDataResDto> getRevenueOfYear(String year) {
+        List<StatisticPriceDataResDto> statisticPriceDataResDtoList = new ArrayList<StatisticPriceDataResDto>();
+        LocalDate currentdate = LocalDate.now();
+        Month currentMonth = currentdate.getMonth();
+        Integer currentYear = currentdate.getYear();
+
+        Integer maxMonth = 12;
+        if(currentYear == Integer.parseInt(year)) {
+            maxMonth = currentMonth.getValue();
+        } else if(currentYear < Integer.parseInt(year)) {
+            maxMonth = 0;
+        }
+
+        for (Integer month = 1; month <= maxMonth; month++) {
+            BigDecimal revenueOfMonthAndYear = orderRepo.findRevenueOfMonthAndYear(month.toString(), year);
+            if(revenueOfMonthAndYear == null) {
+                if(Integer.parseInt(year) < currentYear || (Integer.parseInt(year) == currentYear && month <= currentMonth.getValue())) {
+                    revenueOfMonthAndYear = BigDecimal.valueOf(0);
+                }
+            }
+            StatisticPriceDataResDto statisticPriceDataResDto = StatisticPriceDataResDto.builder()
+                    .title("Tháng " + month)
+                    .value(revenueOfMonthAndYear)
+                    .build();
+            statisticPriceDataResDtoList.add(statisticPriceDataResDto);
+        }
+
+        return statisticPriceDataResDtoList;
+    }
+
+    @Override
+    public List<StatisticPriceDataResDto> getRevenueOfMonth(String month, String year) {
+        List<StatisticPriceDataResDto> statisticPriceDataResDtoList = new ArrayList<StatisticPriceDataResDto>();
+        LocalDate currentdate = LocalDate.now();
+        Month currentMonth = currentdate.getMonth();
+        int currentDay = currentdate.getDayOfMonth();
+
+        int maxDay = 31;
+        if(currentMonth.getValue() == Integer.parseInt(month)) {
+            maxDay = currentDay;
+        } else if(currentMonth.getValue() < Integer.parseInt(month)) {
+            maxDay = 0;
+        }
+
+        for (int day = 1; day <= maxDay; day++) {
+            BigDecimal revenueOfDayAndMonthAndYear = orderRepo.findRevenueOfDayAndMonthAndYear(Integer.toString(day), month, year);
+            if(revenueOfDayAndMonthAndYear == null) {
+                if(Integer.parseInt(month) < currentMonth.getValue() || (Integer.parseInt(month) == currentMonth.getValue()
+                        && day <= currentDay)) {
+                    revenueOfDayAndMonthAndYear = BigDecimal.valueOf(0);
+                }
+            }
+            StatisticPriceDataResDto statisticPriceDataResDto = StatisticPriceDataResDto.builder()
+                    .title("Ngày " + day)
+                    .value(revenueOfDayAndMonthAndYear)
+                    .build();
+            statisticPriceDataResDtoList.add(statisticPriceDataResDto);
+        }
+
+        return statisticPriceDataResDtoList;
+    }
+
+    @Override
+    public BigDecimal getTotalRevenue() {
+        return orderRepo.findTotalRevenue();
     }
 }

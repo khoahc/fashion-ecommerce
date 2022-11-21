@@ -108,4 +108,9 @@ public class ProductServiceImpl implements ProductService {
   public void deleteCategory(Long id) {
     productRepo.deleteById(id);
   }
+
+  @Override
+  public long getQuantityProduct() {
+    return productRepo.count();
+  }
 }

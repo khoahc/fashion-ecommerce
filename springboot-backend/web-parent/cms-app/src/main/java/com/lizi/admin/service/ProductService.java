@@ -16,4 +16,7 @@ public interface ProductService {
   ProductResDto updateProduct(Long id, ProductReqDto productReqDto);
 
   void deleteCategory(Long id);
+
+  long getQuantityProduct();
+
 }
