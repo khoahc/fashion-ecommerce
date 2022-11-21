@@ -48,6 +48,10 @@ public interface ProductMapper {
     List<ProductOption> optionList = new ArrayList<>(options);
     List<ProductOption> optionSortList = optionList.stream().sorted((o1, o2) -> Long.compare(o1.getId(),
         o2.getId())).collect(Collectors.toList());
-    return optionSortList.get(0).getProductColor().getMainImage().getUrl();
+
+    if (optionSortList.size() > 0) {
+      return optionSortList.get(0).getProductColor().getMainImage().getUrl();
+    }
+   return null;
   }
 }
