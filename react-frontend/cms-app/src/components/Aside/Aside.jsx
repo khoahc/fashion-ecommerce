@@ -22,6 +22,7 @@ const Aside = () => {
               <span className="menu-item-label">Dashboard</span>
             </Link>
           </li> */}
+          <h3 className="pl-4 pt-4 text-slate-400 uppercase">Quản lý</h3>
           <li className={ pathName === '/' || pathName.startsWith('/category') ? 'active' : '' }>
             <Link to={"/category"}>
               <span className="icon">
@@ -54,14 +55,14 @@ const Aside = () => {
               <span className="menu-item-label">Voucher</span>
             </Link>
           </li>
-          <li className={ pathName.startsWith('/delivery') ? 'active' : '' }>
+          {/* <li className={ pathName.startsWith('/delivery') ? 'active' : '' }>
             <Link to={"/delivery"}>
               <span className="icon">
                 <i className="mdi mdi-truck-delivery"></i>
               </span>
               <span className="menu-item-label">Giao hàng</span>
             </Link>
-          </li>
+          </li> */}
           <li className={ pathName.startsWith('/user') ? 'active' : '' }>
             <Link to={"/user"}>
               <span className="icon">
@@ -78,6 +79,8 @@ const Aside = () => {
               <span className="menu-item-label">Khách hàng</span>
             </Link>
           </li>
+          <h3 className="pl-4 pt-4 text-slate-400 uppercase">Thống kê</h3>
+
           <li className={ pathName.startsWith('/statis') ? 'active' : '' }>
             <Link to={"/statis"}>
               <span className="icon">

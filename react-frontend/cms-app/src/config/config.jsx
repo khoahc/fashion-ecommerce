@@ -11,7 +11,7 @@ const routes = {
 
     order: '/order',
     voucher: '/voucher',
-    delivery: '/delivery',
+    // delivery: '/delivery',
 
     user: '/user',
     addUser: '/user/new',

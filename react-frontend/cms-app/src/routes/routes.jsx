@@ -34,7 +34,7 @@ const publicRoutes = [
 
     { path: config.routes.order, element: Order },
     { path: config.routes.voucher, element: Voucher },
-    { path: config.routes.delivery, element: Delivery },
+    // { path: config.routes.delivery, element: Delivery },
 
     { path: config.routes.user, element: User },
     { path: config.routes.addUser, element: AddUser },
