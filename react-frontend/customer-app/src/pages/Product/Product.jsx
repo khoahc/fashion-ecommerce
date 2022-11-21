@@ -191,9 +191,9 @@ const Product = () => {
               <h2 className="mb-2 font-weight-3">{productDetail.name}</h2>
             </div>
             <div>
-              <span className="font-weight-bold">
+              <h3 className="font-weight-bold">
                 {numberWithCommas(Number(productDetail.price)) + " đ"}
-              </span>
+              </h3>
             </div>
           </div>
 

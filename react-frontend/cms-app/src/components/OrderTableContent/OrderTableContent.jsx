@@ -22,7 +22,7 @@ const OrderTableContent = (props) => {
     {
       key: 3,
       status: "Chưa xác nhận",
-      style: "bg-back-500 font-bold text-white rounded-full p-2",
+      style: "bg-black font-bold text-white rounded-full p-2",
     },
     {
       key: 4,
