@@ -48,8 +48,9 @@ public class OrderTrack {
   @JoinColumn(name = "order_id")
   private Order order;
 
-  public OrderTrack(OrderStatus status, Date updateTime) {
+  public OrderTrack(OrderStatus status, String notes, Date updateTime) {
     this.status = status;
+    this.notes = notes;
     this.updateTime = updateTime;
   }
 

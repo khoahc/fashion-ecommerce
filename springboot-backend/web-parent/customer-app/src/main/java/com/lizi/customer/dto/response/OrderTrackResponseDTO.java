@@ -13,7 +13,7 @@ import java.util.Date;
 @Builder
 public class OrderTrackResponseDTO {
   private String status;
-
+  private String notes;
   @JsonFormat(pattern="dd-MM-yyyy hh:mm:ss", timezone = Constant.MY_TIME_ZONE)
   private Date updateTime;
 }

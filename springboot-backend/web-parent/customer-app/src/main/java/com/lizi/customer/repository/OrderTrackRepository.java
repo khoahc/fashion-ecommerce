@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface OrderTrackRepository extends JpaRepository<OrderTrack, Long> {
 
-  @Query(value = "SELECT new OrderTrack(t.status, t.updateTime) " +
+  @Query(value = "SELECT new OrderTrack(t.status, t.notes, t.updateTime) " +
           "from OrderTrack t\n" +
           "where t.order.id = :orderId")
   List<OrderTrack> findByOrderId(@Param(value = "orderId") String orderId);

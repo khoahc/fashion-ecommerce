@@ -16,6 +16,7 @@ public interface OrderTrackMapper {
   OrderTrackMapper INSTANCE = Mappers.getMapper(OrderTrackMapper.class);
 
   @Mapping(target = "status", source = "entity.status")
+  @Mapping(target = "notes", source = "entity.notes")
   @Mapping(target = "updateTime", source = "entity.updateTime")
   OrderTrackResponseDTO orderTrackToOrderTrackResponseDTO(OrderTrack entity);
 

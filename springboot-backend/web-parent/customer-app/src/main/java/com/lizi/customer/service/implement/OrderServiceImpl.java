@@ -70,7 +70,7 @@ public class OrderServiceImpl implements OrderService {
     });
 
     //add orderTrack
-    OrderTrack orderTrack = OrderTrack.builder().status(OrderStatus.VERIFICATION).order(orderSaved).notes(OrderStatus.VERIFICATION.defaultDescription()).build();
+    OrderTrack orderTrack = OrderTrack.builder().status(OrderStatus.NEW).order(orderSaved).notes(OrderStatus.NEW.defaultDescription()).build();
     orderTrackRepository.save(orderTrack);
 
     sendVerificationOrder(orderSaved, siteURL);
