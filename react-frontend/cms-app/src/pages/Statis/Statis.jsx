@@ -24,7 +24,6 @@ const Statis = () => {
   const listTitle = [
     {
       title: "Thống kê",
-      link: "/statis",
     },
   ];
   const currentTime = new Date();
