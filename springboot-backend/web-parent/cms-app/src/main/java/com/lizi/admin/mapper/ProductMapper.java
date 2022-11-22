@@ -4,10 +4,15 @@ import com.lizi.admin.dto.category.CategoryResDto;
 import com.lizi.admin.dto.product.ProductReqDto;
 import com.lizi.admin.dto.product.ProductResDto;
 import com.lizi.common.entity.Product;
+import com.lizi.common.entity.ProductOption;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
 @Mapper
@@ -20,6 +25,7 @@ public interface ProductMapper {
       target = "category")
   @Mapping(expression = "java(ProductOptionMapper.INSTANCE.toDtos(product.getOptions()))",
       target = "options")
+  @Mapping(source = "options", target = "mainImage", qualifiedByName = "getMainImage")
   ProductResDto productToDto(Product product);
 
   List<ProductResDto> productsToDtos(List<Product> product);
@@ -36,4 +42,16 @@ public interface ProductMapper {
 
   @Mapping(ignore = true, target = "id")
   void updateProductFromDto(ProductReqDto productReqDto, @MappingTarget Product product);
+
+  @Named("getMainImage")
+  public static String getMainImage(Set<ProductOption> options) {
+    List<ProductOption> optionList = new ArrayList<>(options);
+    List<ProductOption> optionSortList = optionList.stream().sorted((o1, o2) -> Long.compare(o1.getId(),
+        o2.getId())).collect(Collectors.toList());
+
+    if (optionSortList.size() > 0) {
+      return optionSortList.get(0).getProductColor().getMainImage().getUrl();
+    }
+   return null;
+  }
 }
