@@ -24,8 +24,11 @@ const User = () => {
     document.title = "Quản lý nhân viên";
   });
 
-  const getData = async () => {
-    getAllUser().then(resp => {
+  const getData = async ({params}) => {
+    getAllUser({params}).then(resp => {
+      if (resp.totalCount) {
+        setTotalCount(resp.totalCount);
+      }
       return resp.data;
     }).then(data => {
       console.log(data);
@@ -34,8 +37,12 @@ const User = () => {
   };
 
   useEffect(() => {
-    getData();
+    getData({params: {page: 1, size: PageSize}});
   }, []);
+
+  useEffect(() => {
+    getData({params: { page: currentPage, size: PageSize}});
+  }, [currentPage]);
 
   return (
     <div>
