@@ -18,6 +18,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,16 @@ public class UserServiceImpl implements UserService {
   @Override
   public List<UserResDto> getAll() {
     return UserMapper.INSTANCE.usersToDtos(userRepo.findAll());
+  }
+
+  @Override
+  public List<UserResDto> getAll(Pageable pageable) {
+    return UserMapper.INSTANCE.usersToDtos(userRepo.findAll(pageable).getContent());
+  }
+
+  @Override
+  public Long getTotalCount(Pageable pageable) {
+    return userRepo.findAll(pageable).getTotalElements();
   }
 
   @Override
