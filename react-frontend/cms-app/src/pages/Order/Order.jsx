@@ -4,19 +4,25 @@ import Titlebar from "../../components/Titlebar";
 import OrderTable from "../../layouts/components/Order/OrderTable";
 import { getAllOrder } from "../../services/axios/orderApi";
 
+let PageSize = 10;
+
 const Order = () => {
   const [listOrder, setListOrder] = useState([]);
+  const [totalCount, setTotalCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const listTitle = [
     {
       title: "Đơn hàng",
-      link: "/order",
     },
   ];
 
-  const getData = async () => {
-    getAllOrder()
+  const getData = async ({params}) => {
+    getAllOrder({params})
       .then((res) => {
+        if (res.totalCount) {
+          setTotalCount(res.totalCount);
+        }
         return res.data;
       })
       .then((data) => {
@@ -26,8 +32,12 @@ const Order = () => {
   };
 
   useEffect(() => {
-    getData();
+    getData({params: {page: 1, size: PageSize}});
   }, []);
+
+  useEffect(() => {
+    getData({params: { page: currentPage, size: PageSize}});
+  }, [currentPage]);
 
   useEffect(() => {
     document.title = "Quản lý đơn hàng";
@@ -41,7 +51,13 @@ const Order = () => {
         <div className="card has-table">
           <div className="card-content">
             <OrderTable list={listOrder} />
-            <Pagination />
+            <Pagination
+              className="pagination-bar"
+              currentPage={currentPage}
+              totalCount={totalCount}
+              pageSize={PageSize}
+              onPageChange={(page) => setCurrentPage(page)}
+            />
           </div>
         </div>
       </section>

@@ -10,7 +10,6 @@ const AddUser = () => {
     },
     {
       title: "Thêm mới",
-      link: "/user/new",
     },
   ];
 

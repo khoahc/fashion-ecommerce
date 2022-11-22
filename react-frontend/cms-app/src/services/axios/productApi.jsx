@@ -1,9 +1,9 @@
 import { axiosClient, axiosClientMultipart } from "./axiosClient";
 
 const productApi = {
-    getAllProducts: async () => {
+    getAllProducts: async ({params}) => {
         const url = `/api/v1/products`;
-        return await axiosClient.get(url);
+        return await axiosClient.get(url, {params});
     },
 
     createProduct: async (requestOption) => {

@@ -5,15 +5,18 @@ import Titlebar from "../../components/Titlebar";
 import UserTable from "../../layouts/components/User/UserTable";
 import userApi from "../../services/axios/userApi";
 
+let PageSize = 10;
+
 const { getAllUser } = userApi;
 
 const User = () => {
   const [listUser, setListUser] = useState([]);
+  const [totalCount, setTotalCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const listTitle = [
     {
       title: "Nhân viên",
-      link: "/user",
     },
   ];
 
@@ -21,8 +24,11 @@ const User = () => {
     document.title = "Quản lý nhân viên";
   });
 
-  const getData = async () => {
-    getAllUser().then(resp => {
+  const getData = async ({params}) => {
+    getAllUser({params}).then(resp => {
+      if (resp.totalCount) {
+        setTotalCount(resp.totalCount);
+      }
       return resp.data;
     }).then(data => {
       console.log(data);
@@ -31,8 +37,12 @@ const User = () => {
   };
 
   useEffect(() => {
-    getData();
+    getData({params: {page: 1, size: PageSize}});
   }, []);
+
+  useEffect(() => {
+    getData({params: { page: currentPage, size: PageSize}});
+  }, [currentPage]);
 
   return (
     <div>
@@ -49,7 +59,12 @@ const User = () => {
         <div className="card has-table">
           <div className="card-content">
             <UserTable list={listUser} />
-            <Pagination />
+            <Pagination
+              className="pagination-bar"
+              currentPage={currentPage}
+              totalCount={totalCount}
+              pageSize={PageSize}
+              onPageChange={(page) => setCurrentPage(page)} />
           </div>
         </div>
       </section>

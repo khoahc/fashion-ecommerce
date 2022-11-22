@@ -13,7 +13,6 @@ const Delivery = () => {
   const listTitle = [
     {
       title: "Giao hàng",
-      link: "/delivery",
     },
   ];
 

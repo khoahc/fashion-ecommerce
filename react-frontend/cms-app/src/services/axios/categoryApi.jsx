@@ -1,7 +1,12 @@
 import { axiosClient, axiosClientMultipart } from "./axiosClient";
 
 const categoryApi = {
-    getAllCategories: async () => {
+    getAllCategories: async ({params}) => {
+        const url = `/api/v1/categories`;
+        return await axiosClient.get(url, {params});
+    },
+
+    getAllCategoriesPagination: async () => {
         const url = `/api/v1/categories`;
         return await axiosClient.get(url);
     },

@@ -11,7 +11,6 @@ const AddCategory = () => {
     },
     {
       title: "Thêm mới",
-      link: "/category/new",
     },
   ];
 

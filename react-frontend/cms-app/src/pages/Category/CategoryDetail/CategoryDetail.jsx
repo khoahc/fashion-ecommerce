@@ -34,7 +34,6 @@ const CategoryDetail = () => {
     },
     {
       title: `${category.name}`,
-      link: `/category/${categoryId}`,
     },
   ];
 
