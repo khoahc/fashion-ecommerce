@@ -38,6 +38,7 @@ export const getUserDetails = createAsyncThunk(
       if (resp.status === 'OK') {
         return resp.data;
       }
+      rejectWithValue(resp.message);
       return undefined;
     } catch (error) {
       console.log(error);

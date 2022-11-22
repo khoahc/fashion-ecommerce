@@ -7,8 +7,12 @@ import productApi from "../../services/axios/productApi";
 
 const { getAllProducts } = productApi;
 
+let PageSize = 5;
+
 const Product = () => {
   const [listProduct, setListProduct] = useState([]);
+  const [totalCount, setTotalCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const listTitle = [
     {
@@ -16,8 +20,11 @@ const Product = () => {
     },
   ];
 
-  const getData = async () => {
-    getAllProducts().then(resp => {
+  const getData = async ({params}) => {
+    getAllProducts({params}).then(resp => {
+      if (resp.totalCount) {
+        setTotalCount(resp.totalCount);
+      }
       return resp.data;
     }).then(data => {
       console.log(data);
@@ -26,11 +33,15 @@ const Product = () => {
   };
 
   useEffect(() => {
-    getData();
+    getData({params: {page: 1, size: PageSize}});
   }, []);
 
   useEffect(() => {
-    document.title = "Quản lý loại sản phẩm";
+    getData({params: { page: currentPage, size: PageSize}});
+  }, [currentPage]);
+
+  useEffect(() => {
+    document.title = "Quản lý sản phẩm";
   });
 
   return (
@@ -48,7 +59,12 @@ const Product = () => {
         <div className="card has-table">
           <div className="card-content">
             <ProductTable list={listProduct} />
-            <Pagination />
+            <Pagination
+              className="pagination-bar"
+              currentPage={currentPage}
+              totalCount={totalCount}
+              pageSize={PageSize}
+              onPageChange={(page) => setCurrentPage(page)} />
           </div>
         </div>
       </section>

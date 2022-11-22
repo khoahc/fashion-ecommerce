@@ -3,13 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import BackButton from "../../../../components/BackButton/BackButton";
-import { setCategoryId, setCost, setDescription, setEnabled, setName, setPrice } from "../../../../redux/product/productForm/productFormSlice";
+import { clear, setCategoryId, setCost, setDescription, setEnabled, setName, setPrice } from "../../../../redux/product/productForm/productFormSlice";
 import categoryApi from "../../../../services/axios/categoryApi";
 import productApi from "../../../../services/axios/productApi";
 import ProductOptionForm from "../ProductOptionForm/ProductOptionForm";
 
 const { getAllLevel3Categories } = categoryApi;
-const { createProduct } = productApi;
+const { createProduct, uploadImageProduct } = productApi;
 
 const ProductForm = ({ product }) => {
   const { form } = useSelector((state) => state.productForm);
@@ -26,6 +26,8 @@ const ProductForm = ({ product }) => {
 
     switch (mode) {
       case "create":
+        uploadImageProduct()
+
         createProduct({
           name: form.name,
           description: form.description,
@@ -68,6 +70,7 @@ const ProductForm = ({ product }) => {
   };
 
   useEffect(() => {
+    dispatch(clear());
     if (product) {
       console.log(product);
       setMode("update");
@@ -133,7 +136,7 @@ const ProductForm = ({ product }) => {
                 <div className="field">
                   <div className="field-body">
                     <div className="field">
-                      <label class="label">Tên sản phẩm</label>
+                      <label className="label">Tên sản phẩm</label>
                       <div className="control">
                         <input
                           className="input"
@@ -173,7 +176,7 @@ const ProductForm = ({ product }) => {
                         <textarea
                           class="textarea"
                           placeholder="Mô tả sản phẩm"
-                          defaultValue={form.description}
+                          value={form.description}
                           onChange={(e) => {
                             dispatch(setDescription(e.target.value));
                           }}

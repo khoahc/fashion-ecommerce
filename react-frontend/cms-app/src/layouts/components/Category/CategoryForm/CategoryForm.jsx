@@ -63,7 +63,7 @@ const CategoryFrom = ({ category }) => {
               if (resp.status === "OK") {
                 return resp.data;
               } else {
-                toast.error("Thêm nhân viên không thành công!", {
+                toast.error("Thêm loại sản phẩm không thành công!", {
                   position: toast.POSITION.TOP_RIGHT,
                   autoClose: 1900,
                 });

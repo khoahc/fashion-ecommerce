@@ -5,10 +5,14 @@ import Titlebar from "../../components/Titlebar";
 import UserTable from "../../layouts/components/User/UserTable";
 import userApi from "../../services/axios/userApi";
 
+let PageSize = 10;
+
 const { getAllUser } = userApi;
 
 const User = () => {
   const [listUser, setListUser] = useState([]);
+  const [totalCount, setTotalCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const listTitle = [
     {
@@ -48,7 +52,12 @@ const User = () => {
         <div className="card has-table">
           <div className="card-content">
             <UserTable list={listUser} />
-            <Pagination />
+            <Pagination
+              className="pagination-bar"
+              currentPage={currentPage}
+              totalCount={totalCount}
+              pageSize={PageSize}
+              onPageChange={(page) => setCurrentPage(page)} />
           </div>
         </div>
       </section>

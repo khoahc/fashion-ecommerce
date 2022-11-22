@@ -1,32 +1,41 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const initialForm = {
+  id: null,
+  name: "",
+  description: "",
+  enabled: false,
+  cost: 0,
+  price: 0,
+  categoryId: null,
+  options: [
+    {
+      id: null,
+      colorId: null,
+      sizes: [
+        {
+          size: "",
+          quantity: 0,
+        },
+      ],
+      mainImageId: null,
+      imageIds: [],
+    },
+  ],
+  voucherIds: [],
+};
+
+const initialImagesOptions = [
+  {
+    mainImage: null,
+    images: []
+  }
+]
+
 const initialState = {
   loading: false,
-  form: {
-    id: null,
-    name: "",
-    description: "",
-    enabled: false,
-    cost: 0,
-    price: 0,
-    categoryId: null,
-    options: [
-      {
-        id: null,
-        colorId: null,
-        sizes: [
-          {
-            size: "",
-            quantity: 0,
-          },
-        ],
-        mainImageId: null,
-        imageIds: [],
-      },
-    ],
-    voucherIds: [],
-  },
-  imagesOptions: [],
+  form: initialForm,
+  imagesOptions: initialImagesOptions,
   error: null,
   success: false,
 };
@@ -102,6 +111,12 @@ const productFormSlice = createSlice({
         );
       }
     },
+    clear: (state) => {
+      state.form = initialForm;
+    },
+    setMainImage: (state, action) => {
+      state.imagesOptions[action.payload.optionIndex].mainImage = action.payload.image;
+    }
   },
   extraReducers: {},
 });
@@ -120,5 +135,7 @@ export const {
   removeOption,
   addSizeToOption,
   removeSizeInOption,
+  clear,
+  setMainImage,
 } = productFormSlice.actions;
 export default productFormSlice.reducer;

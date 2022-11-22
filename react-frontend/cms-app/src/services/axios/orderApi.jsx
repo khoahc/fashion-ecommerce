@@ -1,8 +1,8 @@
 import { axiosClient } from "./axiosClient";
 
-export const getAllOrder = async () => {
+export const getAllOrder = async ({params}) => {
   const url = `/api/v1/orders`;
-  return await axiosClient.get(url);
+  return await axiosClient.get(url, {params});
 };
 
 export const getOrderDetailByOrderId = async (id) => {

@@ -7,8 +7,12 @@ import categoryApi from "../../services/axios/categoryApi";
 
 const { getAllCategories } = categoryApi;
 
+let PageSize = 10;
+
 const Category = () => {
   const [listCategory, setListCategory] = useState([]);
+  const [totalCount, setTotalCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const listTitle = [
     {
@@ -16,15 +20,20 @@ const Category = () => {
     },
   ];
 
-  const getData = async () => {
-    const resp = await getAllCategories();
+  const getData = async ({params}) => {
+    const resp = await getAllCategories({params});
     console.log(resp);
     setListCategory(resp.data);
+    setTotalCount(resp.totalCount);
   };
 
   useEffect(() => {
     getData();
   }, []);
+
+  useEffect(() => {
+    getData({params: { page: currentPage}});
+  }, [currentPage]);
 
   useEffect(() => {
     document.title = "Quản lý loại sản phẩm";
@@ -46,7 +55,13 @@ const Category = () => {
         <div className="card has-table">
           <div className="card-content">
             <CategoryTable list={listCategory} />
-            <Pagination />
+            <Pagination
+              className="pagination-bar"
+              currentPage={currentPage}
+              totalCount={totalCount}
+              pageSize={PageSize}
+              onPageChange={(page) => setCurrentPage(page)}
+            />
           </div>
         </div>
       </section>
