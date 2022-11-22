@@ -17,7 +17,6 @@ const Statis = () => {
   const listTitle = [
     {
       title: "Thống kê",
-      link: "/statis",
     },
   ];
 
