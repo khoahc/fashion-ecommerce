@@ -6,12 +6,15 @@ import com.lizi.admin.dto.statistic.StatisticPriceDataResDto;
 
 import java.math.BigDecimal;
 import java.util.List;
+import org.springframework.data.domain.Pageable;
 
 public interface OrderService {
 
  long getQuantityOrder();
 
  List<OrderResDto> getAllOrders();
+ List<OrderResDto> getAllOrders(Pageable pageable);
+ Long getTotalCount(Pageable pageable);
 
  OrderDetailResDto getOrderDetailByOrderId(String orderId);
 

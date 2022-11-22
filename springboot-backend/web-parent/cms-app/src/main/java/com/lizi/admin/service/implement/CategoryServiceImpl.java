@@ -12,6 +12,7 @@ import com.lizi.common.entity.Image;
 import com.lizi.common.exception.ResourceNotFoundException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +29,16 @@ public class CategoryServiceImpl implements CategoryService {
   @Override
   public List<CategoryResDto> getAll() {
     return CategoryMapper.INSTANCE.categoriesToDtos(categoryRepo.findAll());
+  }
+
+  @Override
+  public List<CategoryResDto> getAll(Pageable pageable) {
+    return CategoryMapper.INSTANCE.categoriesToDtos(categoryRepo.findAll(pageable).getContent());
+  }
+
+  @Override
+  public Long getTotalCount(Pageable pageable) {
+    return categoryRepo.findAll(pageable).getTotalElements();
   }
 
   @Override

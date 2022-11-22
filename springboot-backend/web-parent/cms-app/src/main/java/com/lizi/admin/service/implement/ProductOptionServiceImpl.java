@@ -1,5 +1,6 @@
 package com.lizi.admin.service.implement;
 
+import com.lizi.admin.dto.product.ProductColorReqDto;
 import com.lizi.admin.dto.product.ProductOptionReqDto;
 import com.lizi.admin.dto.product.ProductOptionResDto;
 import com.lizi.admin.mapper.ProductOptionMapper;
@@ -12,6 +13,8 @@ import com.lizi.common.entity.ProductColor;
 import com.lizi.common.entity.ProductImageColor;
 import com.lizi.common.entity.ProductOption;
 import com.lizi.common.exception.ResourceNotFoundException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -28,6 +31,7 @@ public class ProductOptionServiceImpl implements ProductOptionService {
 
   @Autowired
   private ProductColorService productColorService;
+  private ProductColorReqDto productColorReqDto;
 
   @Override
   public List<ProductOption> getAllOptionOfProduct(Long productId) {
@@ -47,32 +51,35 @@ public class ProductOptionServiceImpl implements ProductOptionService {
   }
 
   @Override
-  public ProductOption createProductOption(Product product,
+  public Set<ProductOption> createProductOption(Product product,
       ProductOptionReqDto productOptionReqDto) {
 
     // create product color
-    ProductColor productColor = productColorService.createProductColor(
-        productOptionReqDto.getProductColor());
-
-    // init product option
-    ProductOption productOption = ProductOption.builder()
-        .size(productOptionReqDto.getSize())
-        .quantity(productOptionReqDto.getQuantity())
-        .product(product)
-        .productColor(productColor)
+    ProductColorReqDto productColorReqDto = ProductColorReqDto.builder()
+        .colorId(productOptionReqDto.getColorId())
+        .mainImageId(productOptionReqDto.getMainImageId())
+        .imageIds(productOptionReqDto.getImageIds())
         .build();
+    ProductColor productColor = productColorService.createProductColor(productColorReqDto);
 
-    // save product option
-    productOptionRepo.save(productOption);
+    Set<ProductOption> rs = productOptionReqDto.getSizes().stream()
+        .map(size -> productOptionRepo.save(ProductOption.builder()
+            .size(size.getSize()).quantity(size.getQuantity()).product(product)
+            .productColor(productColor).build())).collect(Collectors.toSet());
 
-    return productOption;
+    return rs;
   }
 
   @Override
   public Set<ProductOption> createProductOptions(Product product,
       List<ProductOptionReqDto> productOptionReqDtos) {
-    return productOptionReqDtos.stream().map(dto -> createProductOption(product, dto)).collect(
-        Collectors.toSet());
+    Set<ProductOption> productOptions = new HashSet<>();
+
+    for (ProductOptionReqDto productOptionReqDto : productOptionReqDtos) {
+      productOptions.addAll(createProductOption(product, productOptionReqDto));
+    }
+
+    return productOptions;
   }
 
   @Override

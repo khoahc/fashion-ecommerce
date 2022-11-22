@@ -1,10 +1,14 @@
 package com.lizi.admin.controller;
 
 import com.lizi.admin.dto.product.ProductReqDto;
+import com.lizi.admin.service.CloudinaryService;
 import com.lizi.admin.service.ProductService;
 import com.lizi.admin.util.Constant;
 import com.lizi.common.entity.ResponseObject;
+import com.lizi.common.entity.ResponsePaginationObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,7 +19,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping(value = "/api/v1/products")
@@ -25,11 +31,18 @@ public class ProductController {
   @Autowired
   private ProductService productService;
 
+  @Autowired
+  private CloudinaryService cloudinaryService;
+
   @GetMapping(value = "")
-  public ResponseEntity<ResponseObject> getAll() {
+  public ResponseEntity<ResponsePaginationObject> getAll(
+      @RequestParam(name = "page", required = false, defaultValue = Constant.PAGE_DEFAULT) int page,
+      @RequestParam(name = "size", required = false, defaultValue = Constant.SIZE_DEFAULT) int size) {
+    Pageable pageable = PageRequest.of(page - 1, size);
     return ResponseEntity.ok().body(
-        ResponseObject.builder().status(HttpStatus.OK).message(Constant.SUCCESS)
-            .data(productService.getAll()).build());
+        ResponsePaginationObject.builder().status(HttpStatus.OK).message(Constant.SUCCESS)
+            .data(productService.getAll(pageable))
+            .totalCount(productService.getTotalCount(pageable)).build());
   }
 
   @GetMapping(value = "/{id}")
@@ -59,5 +72,12 @@ public class ProductController {
     productService.deleteCategory(id);
     return ResponseEntity.ok().body(
         ResponseObject.builder().status(HttpStatus.OK).message(Constant.SUCCESS).build());
+  }
+
+  @PostMapping(value = "/image")
+  public ResponseEntity<ResponseObject> uploadImageProduct(
+      @RequestParam(name = "image") MultipartFile multipartFile) {
+    return ResponseEntity.ok().body(ResponseObject.builder().message(Constant.SUCCESS).status(
+        HttpStatus.OK).data(cloudinaryService.uploadImageProduct(multipartFile)).build());
   }
 }

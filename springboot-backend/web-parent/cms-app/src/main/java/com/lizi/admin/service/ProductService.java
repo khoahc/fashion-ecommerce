@@ -4,10 +4,13 @@ import com.lizi.admin.dto.category.CategoryReqDto;
 import com.lizi.admin.dto.product.ProductReqDto;
 import com.lizi.admin.dto.product.ProductResDto;
 import java.util.List;
+import org.springframework.data.domain.Pageable;
 
 public interface ProductService {
 
   List<ProductResDto> getAll();
+  List<ProductResDto> getAll(Pageable pageable);
+  Long getTotalCount(Pageable pageable);
 
   ProductResDto getProduct(Long id);
 

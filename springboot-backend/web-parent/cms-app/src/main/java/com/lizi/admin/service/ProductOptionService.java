@@ -14,7 +14,7 @@ public interface ProductOptionService {
   ProductOption getProductOption(Long optionId);
 
   ProductOption createProductOption(Long productId, ProductOptionReqDto productOptionReqDto);
-  ProductOption createProductOption(Product product, ProductOptionReqDto productOptionReqDto);
+  Set<ProductOption> createProductOption(Product product, ProductOptionReqDto productOptionReqDto);
   Set<ProductOption> createProductOptions(Product product, List<ProductOptionReqDto> productOptionReqDtos);
 
   ProductOption updateProductOption(Long optionId, ProductOptionReqDto productOptionReqDto);
