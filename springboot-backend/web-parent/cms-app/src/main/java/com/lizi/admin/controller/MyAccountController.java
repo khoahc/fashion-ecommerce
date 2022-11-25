@@ -1,5 +1,6 @@
 package com.lizi.admin.controller;
 
+import com.lizi.admin.service.MyAccountService;
 import com.lizi.admin.service.UserService;
 import com.lizi.admin.util.Constant;
 import com.lizi.common.entity.ResponseObject;
@@ -20,11 +21,14 @@ public class MyAccountController {
   @Autowired
   private UserService userService;
 
+  @Autowired
+  private MyAccountService myAccountService;
+
   @GetMapping
-  public ResponseEntity<ResponseObject> getInfo(Principal principal) {
+  public ResponseEntity<ResponseObject> getInfo() {
     return ResponseEntity.ok().body(
         ResponseObject.builder().status(HttpStatus.OK).message(Constant.SUCCESS)
-            .data(userService.getUser(principal.getName())).build());
+            .data(myAccountService.getUserInfo()).build());
   }
 
 }
