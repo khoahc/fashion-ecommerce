@@ -79,9 +79,8 @@ const Aside = () => {
               </span>
               <span className="menu-item-label">Khách hàng</span>
             </Link>
-          </li>
-          <h3 className="pl-4 pt-4 text-slate-400 uppercase">Thống kê</h3>
           </li> */}
+          <h3 className="pl-4 pt-4 text-slate-400 uppercase">Thống kê</h3>
           <li className={ pathName.startsWith('/statis') ? 'active' : '' }>
             <Link to={"/statis"}>
               <span className="icon">

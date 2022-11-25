@@ -310,7 +310,7 @@ const Statis = () => {
             dataChartPrevTmp = value;
             setDataChartPrev(value);
 
-            totalRevenuePrev = value.reduce((a, b) => a + b);
+            totalRevenuePrev = value.reduce((a, b) => a + b) === 0 ? 1 : value.reduce((a, b) => a + b);
             setEfficiency((totalRevenueCurrent / totalRevenuePrev) * 100);
             setChartOptionsMonth((prev) => ({
               ...prev,
