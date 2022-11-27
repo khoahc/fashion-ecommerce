@@ -41,7 +41,7 @@ public class UserController {
     Pageable pageable = PageRequest.of(page - 1, size);
     return ResponseEntity.ok()
         .body(ResponsePaginationObject.builder().status(HttpStatus.OK).message(
-                Constant.SUCCESS).data(userService.getAll())
+                Constant.SUCCESS).data(userService.getAll(pageable))
             .totalCount(userService.getTotalCount(pageable)).build());
   }
 
