@@ -1,15 +1,17 @@
 import { LoadingButton } from "@mui/lab";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import BackButton from "../../../../components/BackButton/BackButton";
-import roleApi from "../../../../services/axios/roleApi";
+import { getRoles } from "../../../../redux/role/roleAction";
 import userApi from "../../../../services/axios/userApi";
 import notify from "../../../../utils/notify";
 
-const { getAllRole } = roleApi;
 const { createUser, uploadPhotoUser, updateUser } = userApi;
 
 const UserForm = ({ user }) => {
+  const { roles } = useSelector((state) => state.role);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [mode, setMode] = useState("create");
 
@@ -25,23 +27,15 @@ const UserForm = ({ user }) => {
     "https://res.cloudinary.com/hauhc/image/upload/v1667738857/lizi/users/default_najhrt.webp"
   );
 
-  const [listRole, setListRole] = useState([]);
+  const [checkedState, setCheckedState] = useState(new Array(5).fill(false));
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const getData = async () => {
-    getAllRole()
-      .then((resp) => {
-        return resp.data;
-      })
-      .then((data) => {
-        setListRole(data);
-      });
-  };
-
   useEffect(() => {
-    getData();
-  }, []);
+    if (!roles) {
+      dispatch(getRoles());
+    }
+  }, [roles, dispatch]);
 
   useEffect(() => {
     if (user) {
@@ -50,13 +44,59 @@ const UserForm = ({ user }) => {
       setFirstName(user.firstName);
       setLastName(user.lastName);
       setEmail(user.email);
-      setRoleIds(user.roles ? user.roles.map((role) => role.id) : []);
       setEnabled(user.enabled);
+      setRoleIds(user.roles ? user.roles.map((role) => role.id) : []);
+
+      if (user.roles) {
+        console.log();
+        let updatedCheckedState = [];
+
+        for (let item of checkedState) {
+          updatedCheckedState.push(item);
+        }
+
+        console.log(updatedCheckedState);
+        for (let role of user.roles) {
+          const position = roles.findIndex(
+            (currentValue) => role.id === currentValue.id
+          );
+          console.log(role, updatedCheckedState);
+          for (let i = 0; i< updatedCheckedState.length; i++) {
+            if (i == position) {
+              updatedCheckedState[i] = true;
+            }
+          }
+        }
+        console.log(updatedCheckedState);
+        setCheckedState(updatedCheckedState);
+      }
+
       if (user.photo) {
         setPreview(user.photo);
       }
     }
   }, [user]);
+
+  // useEffect(() => {
+  //   let updatedCheckedState = [];
+
+  //   for (let item of checkedState) {
+  //     updatedCheckedState.push(item);
+  //   }
+
+  //   console.log(updatedCheckedState);
+  //   for (let roleId of roleIds) {
+  //     const position = roles.findIndex(
+  //       (currentValue) => roleId === currentValue.id
+  //     );
+  //     console.log(roleId, updatedCheckedState);
+  //     updatedCheckedState = updatedCheckedState.map((item, index) =>
+  //       index == position ? true : false
+  //     );
+  //   }
+  //   console.log(updatedCheckedState);
+  //   setCheckedState(updatedCheckedState);
+  // }, [roles, roleIds, user]);
 
   const onSelectFile = (e) => {
     console.log("select file");
@@ -67,6 +107,23 @@ const UserForm = ({ user }) => {
 
     setFile(e.target.files[0]);
     setPreview(URL.createObjectURL(e.target.files[0]));
+  };
+
+  const onCheckRoleHandle = (position) => {
+    const updatedCheckedState = checkedState.map((item, index) =>
+      index === position ? !item : item
+    );
+
+    setCheckedState(updatedCheckedState);
+
+    const roleId = roles[position].id;
+    if (roleIds.includes(roleId)) {
+      const i = roleIds.indexOf(roleId);
+      roleIds.splice(i, 1);
+    } else {
+      roleIds.push(roleId);
+    }
+    console.log(roleIds);
   };
 
   const onSubmitHandle = (e) => {
@@ -135,7 +192,7 @@ const UserForm = ({ user }) => {
         setIsLoading(true);
 
         if (file) {
-          uploadPhotoUser({photo: file})
+          uploadPhotoUser({ photo: file })
             .then((resp) => {
               if (resp.status === "OK") {
                 return resp.data.id;
@@ -214,6 +271,7 @@ const UserForm = ({ user }) => {
                       onChange={(e) => {
                         setLastName(e.target.value);
                       }}
+                      required
                     />
                   </div>
                 </div>
@@ -227,6 +285,7 @@ const UserForm = ({ user }) => {
                       onChange={(e) => {
                         setFirstName(e.target.value);
                       }}
+                      required
                     />
                   </div>
                 </div>
@@ -240,6 +299,7 @@ const UserForm = ({ user }) => {
                       onChange={(e) => {
                         setEmail(e.target.value);
                       }}
+                      required
                     />
                   </div>
                 </div>
@@ -253,6 +313,7 @@ const UserForm = ({ user }) => {
                       onChange={(e) => {
                         setPassword(e.target.value);
                       }}
+                      required={mode === "create"}
                     />
                   </div>
                 </div>
@@ -260,23 +321,25 @@ const UserForm = ({ user }) => {
                   <label class="label">Quyền</label>
                   <div class="field-body">
                     <div class="field grouped multiline">
-                      {listRole.map((role) => (
+                      {roles.map((role, index) => (
                         <div class="control">
                           <label class="checkbox">
                             <input
+                              key={role.id}
                               type="checkbox"
+                              id={`role-checkbox-${index}`}
                               value={role.id}
-                              checked={user && roleIds.includes(role.id)}
+                              checked={checkedState[index]}
                               onChange={(e) => {
-                                let v = e.target.value;
-                                if (e.target.checked) {
-                                  if (!roleIds.includes(v)) {
-                                    roleIds.push(v);
-                                  }
-                                } else if (roleIds.includes(v)) {
-                                  roleIds.splice(roleIds.indexOf(v), 1);
-                                }
-                                console.log(roleIds);
+                                // let v = Number(e.target.value);
+                                // if (e.target.checked) {
+                                //   if (!roleIds.includes(v)) {
+                                //     roleIds.push(v);
+                                //   }
+                                // } else if (roleIds.includes(v)) {
+                                //   roleIds.splice(roleIds.indexOf(v), 1);
+                                // }
+                                onCheckRoleHandle(index);
                               }}
                             />
                             <span class="check"></span>
