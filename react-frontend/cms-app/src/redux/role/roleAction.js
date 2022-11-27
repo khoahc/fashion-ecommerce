@@ -4,7 +4,7 @@ import roleApi from "../../services/axios/roleApi";
 const { getAllRole } = roleApi;
 
 export const getRoles = createAsyncThunk(
-  "color/getAll",
+  "role/getAll",
   async (arg, { getState, rejectWithValue }) => {
     try {
       const { user } = getState();

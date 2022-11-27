@@ -32,7 +32,8 @@ const UserForm = ({ user }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (!roles) {
+    console.log(roles);
+    if (roles.length === 0) {
       dispatch(getRoles());
     }
   }, [roles, dispatch]);
@@ -48,26 +49,22 @@ const UserForm = ({ user }) => {
       setRoleIds(user.roles ? user.roles.map((role) => role.id) : []);
 
       if (user.roles) {
-        console.log();
         let updatedCheckedState = [];
 
         for (let item of checkedState) {
           updatedCheckedState.push(item);
         }
 
-        console.log(updatedCheckedState);
         for (let role of user.roles) {
           const position = roles.findIndex(
             (currentValue) => role.id === currentValue.id
           );
-          console.log(role, updatedCheckedState);
           for (let i = 0; i< updatedCheckedState.length; i++) {
-            if (i == position) {
+            if (i === position) {
               updatedCheckedState[i] = true;
             }
           }
         }
-        console.log(updatedCheckedState);
         setCheckedState(updatedCheckedState);
       }
 
@@ -76,27 +73,6 @@ const UserForm = ({ user }) => {
       }
     }
   }, [user]);
-
-  // useEffect(() => {
-  //   let updatedCheckedState = [];
-
-  //   for (let item of checkedState) {
-  //     updatedCheckedState.push(item);
-  //   }
-
-  //   console.log(updatedCheckedState);
-  //   for (let roleId of roleIds) {
-  //     const position = roles.findIndex(
-  //       (currentValue) => roleId === currentValue.id
-  //     );
-  //     console.log(roleId, updatedCheckedState);
-  //     updatedCheckedState = updatedCheckedState.map((item, index) =>
-  //       index == position ? true : false
-  //     );
-  //   }
-  //   console.log(updatedCheckedState);
-  //   setCheckedState(updatedCheckedState);
-  // }, [roles, roleIds, user]);
 
   const onSelectFile = (e) => {
     console.log("select file");

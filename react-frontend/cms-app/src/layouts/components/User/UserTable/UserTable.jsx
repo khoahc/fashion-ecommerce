@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import EmptyBodyTable from "../../../../components/EmptyBodyTable/EmptyBodyTable";
 import _ from "underscore";
 import LoadingTableContent from "../../../../components/LoadingTableContent/LoadingTableContent";
+import { useState } from "react";
+import ModalDeleteUser from "../ModalDeleteUser/ModalDeleteUser";
 
 const UserTable = ({ list, isLoading }) => {
   return (
@@ -35,6 +37,8 @@ const UserTable = ({ list, isLoading }) => {
 };
 
 const UserTableContent = ({ list }) => {
+  const [userIdChoose, setUserIdChoose] = useState(null);
+  const [showModalDeleteUser, setShowModalDeleteUser] = useState(false);
   if (list && list.length !== 0) {
     return list.map((user) => {
       return (
@@ -86,11 +90,26 @@ const UserTableContent = ({ list }) => {
                 class="button small red --jb-modal"
                 data-target="sample-modal"
                 type="button"
+                onClick={() => {
+                  setShowModalDeleteUser(true);
+                  setUserIdChoose(user.id);
+                }}
               >
                 <span class="icon">
                   <i class="mdi mdi-trash-can"></i>
                 </span>
               </button>
+              {userIdChoose != null && (
+                <>
+                  {showModalDeleteUser && (
+                    <ModalDeleteUser
+                      userId={userIdChoose}
+                      showModalDeleteUser={showModalDeleteUser}
+                      setShowModalDeleteUser={setShowModalDeleteUser}
+                    />
+                  )}
+                </>
+              )}
             </div>
           </td>
         </tr>

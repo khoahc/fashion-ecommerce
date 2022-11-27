@@ -5,7 +5,7 @@ import Titlebar from "../../components/Titlebar";
 import UserTable from "../../layouts/components/User/UserTable";
 import userApi from "../../services/axios/userApi";
 
-let PageSize = 10;
+let PageSize = 9;
 
 const { getAllUser } = userApi;
 

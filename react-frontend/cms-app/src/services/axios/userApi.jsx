@@ -1,3 +1,4 @@
+import authHeader from './authHeader';
 import { axiosClient, axiosClientMultipart } from './axiosClient';
 
 const userApi = {
@@ -22,9 +23,9 @@ const userApi = {
 
     // ========================================= //
 
-    getAllUser: async () => {
+    getAllUser: async ({params}) => {
       const url = `/api/v1/users`;
-      return await axiosClient.get(url);
+      return await axiosClient.get(url, {params});
     },
 
     getUserDetail: async (id) => {
@@ -45,6 +46,11 @@ const userApi = {
     updateUser: async (id, requestOption) => {
       const url = `/api/v1/users/${id}`;
       return await axiosClient.put(url, requestOption);
+    },
+
+    deleteUser: async (id) => {
+      const url = `/api/v1/users/${id}`;
+      return await axiosClient.delete(url, { headers: authHeader});
     },
   };
   

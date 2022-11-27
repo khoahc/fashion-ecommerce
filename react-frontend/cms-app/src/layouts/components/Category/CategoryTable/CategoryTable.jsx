@@ -15,10 +15,10 @@ const CategoryTable = ({ list, isLoading }) => {
           </th>
           <th>Tên</th>
           <th>Tất cả loại sản phẩm cha</th>
-          <th>Trạng thái</th>
-          <th>Tạo ngày</th>
-          <th>Cập nhật ngày</th>
-          <th></th>
+          <th className="text-center">Trạng thái</th>
+          {/* <th>Tạo ngày</th> */}
+          {/* <th>Cập nhật ngày</th> */}
+          <th className="text-center">Chức năng</th>
         </tr>
       </thead>
       <tbody>
@@ -46,28 +46,30 @@ const CategoryTableContent = ({ list }) => {
           <td data-label="Name">{category.name}</td>
           <td data-label="allParentIds">{category.allParentNames}</td>
           <td data-label="Status">
-            {category.enabled ? (
-              <span className="icon text-green-600 text-2xl">
-                <i className="mdi mdi-check-circle"></i>
-              </span>
-            ) : (
-              <span className="icon text-red-600 text-2xl">
-                <i className="mdi mdi-close-circle "></i>
-              </span>
-            )}
+            <div className="flex items-center justify-center">
+              {category.enabled ? (
+                <span className="icon text-green-600 text-2xl">
+                  <i className="mdi mdi-check-circle"></i>
+                </span>
+              ) : (
+                <span className="icon text-red-600 text-2xl">
+                  <i className="mdi mdi-close-circle "></i>
+                </span>
+              )}
+            </div>
           </td>
-          <td data-label="Created">
+          {/* <td data-label="Created">
             <small class="text-gray-500" title={category.createTime}>
               {category.createTime}
             </small>
-          </td>
-          <td data-label="Created">
+          </td> */}
+          {/* <td data-label="Created">
             <small class="text-gray-500" title={category.updateTime}>
               {category.updateTime}
             </small>
-          </td>
+          </td> */}
           <td class="actions-cell">
-            <div class="buttons right nowrap">
+            <div class="buttons justify-center nowrap">
               <Link
                 to={`/category/${category.id}`}
                 class="button small green --jb-modal"

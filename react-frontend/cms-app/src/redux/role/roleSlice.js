@@ -3,7 +3,7 @@ import { getRoles } from "./roleAction";
 
 const initialState = {
     loading: false,
-    roles: null,
+    roles: [],
     error: null,
     success: false,
   };
