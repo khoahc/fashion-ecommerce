@@ -6,7 +6,7 @@ body {
   @apply w-screen transition-all lg:w-auto;
 }
 
-.container {
+.mainContainer {
   @apply lg:pl-60 pt-14;
 }
 

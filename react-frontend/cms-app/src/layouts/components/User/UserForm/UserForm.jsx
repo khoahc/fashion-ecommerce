@@ -1,3 +1,4 @@
+import { LoadingButton } from "@mui/lab";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -25,6 +26,8 @@ const UserForm = ({ user }) => {
   );
 
   const [listRole, setListRole] = useState([]);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const getData = async () => {
     getAllRole()
@@ -71,6 +74,7 @@ const UserForm = ({ user }) => {
 
     switch (mode) {
       case "create":
+        setIsLoading(true);
         if (file) {
           uploadPhotoUser({
             photo: file,
@@ -170,10 +174,13 @@ const UserForm = ({ user }) => {
                   });
                   navigate("/user");
                 } else {
-                  toast.error("Cập nhật thông tin nhân viên không thành công!", {
-                    position: toast.POSITION.TOP_RIGHT,
-                    autoClose: 1900,
-                  });
+                  toast.error(
+                    "Cập nhật thông tin nhân viên không thành công!",
+                    {
+                      position: toast.POSITION.TOP_RIGHT,
+                      autoClose: 1900,
+                    }
+                  );
                 }
               });
             });
@@ -337,9 +344,20 @@ const UserForm = ({ user }) => {
 
             <div className="field grouped mt-10">
               <div className="control">
-                <button type="submit" className="button green">
+                <LoadingButton
+                  className="button green"
+                  type="submit"
+                  sx={{
+                    height: "100%",
+                    fontSize: "100%",
+                    textTransform: "none",
+                  }}
+                  loading={isLoading}
+                  variant="contained"
+                >
                   Lưu
-                </button>
+                </LoadingButton>
+                {/* <button type="submit" className="button green">Lưu</button> */}
               </div>
               <div className="control">
                 <BackButton text={"Hủy"} />

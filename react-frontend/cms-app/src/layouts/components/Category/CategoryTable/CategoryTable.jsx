@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import EmptyBodyTable from "../../../../components/EmptyBodyTable/EmptyBodyTable";
+import LoadingTableContent from "../../../../components/LoadingTableContent/LoadingTableContent";
 
-const CategoryTable = ({ list }) => {
+const CategoryTable = ({ list, isLoading }) => {
   return (
     <table>
       <thead>
@@ -21,7 +22,11 @@ const CategoryTable = ({ list }) => {
         </tr>
       </thead>
       <tbody>
-        <CategoryTableContent list={list} />
+        {isLoading ? (
+          <LoadingTableContent colSpan={11} />
+        ) : (
+          <CategoryTableContent list={list} />
+        )}
       </tbody>
     </table>
   );

@@ -14,6 +14,8 @@ const Category = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const listTitle = [
     {
       title: "Loại sản phẩm",
@@ -21,10 +23,12 @@ const Category = () => {
   ];
 
   const getData = async ({params}) => {
+    setIsLoading(true);
     const resp = await getAllCategories({params});
     console.log(resp);
     setListCategory(resp.data);
     setTotalCount(resp.totalCount);
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -47,14 +51,13 @@ const Category = () => {
           <Link to={"/category/new"} className="button blue">
             Thêm mới
           </Link>
-          {/* <button className="button blue">Thêm mới</button> */}
         </div>
       </section>
 
       <section className="section main-section">
         <div className="card has-table">
           <div className="card-content">
-            <CategoryTable list={listCategory} />
+            <CategoryTable list={listCategory} isLoading={isLoading} />
             <Pagination
               className="pagination-bar"
               currentPage={currentPage}
