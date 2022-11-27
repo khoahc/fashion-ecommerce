@@ -1,10 +1,10 @@
 import { LoadingButton } from "@mui/lab";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import BackButton from "../../../../components/BackButton/BackButton";
 import roleApi from "../../../../services/axios/roleApi";
 import userApi from "../../../../services/axios/userApi";
+import notify from "../../../../utils/notify";
 
 const { getAllRole } = roleApi;
 const { createUser, uploadPhotoUser, updateUser } = userApi;
@@ -81,106 +81,86 @@ const UserForm = ({ user }) => {
           })
             .then((resp) => {
               if (resp.status === "OK") {
-                return resp.data;
-              } else {
-                toast.error("Thêm nhân viên không thành công!", {
-                  position: toast.POSITION.TOP_RIGHT,
-                  autoClose: 1900,
-                });
+                return resp.data.id;
               }
-              console.log(resp);
+
+              notify(0, "Thêm nhân viên không thành công!");
+              setIsLoading(false);
             })
-            .then((data) => {
+            .then((id) => {
               createUser({
                 email,
                 password,
                 firstName,
                 lastName,
                 enabled,
-                photoId: data.id,
+                photoId: id,
                 roleIds,
               }).then((resp) => {
                 if (resp.status === "OK") {
-                  toast.success("Thêm nhân viên thành công!", {
-                    position: toast.POSITION.TOP_RIGHT,
-                    autoClose: 1900,
-                  });
+                  notify(1, "Thêm nhân viên thành công!");
+                  setIsLoading(false);
                   navigate("/user");
                 } else {
-                  toast.error("Thêm nhân viên không thành công!", {
-                    position: toast.POSITION.TOP_RIGHT,
-                    autoClose: 1900,
-                  });
+                  notify(0, "Thêm nhân viên không thành công!");
+                  setIsLoading(false);
                 }
               });
             });
         } else {
-          createUser({
-            email,
-            password,
-            firstName,
-            lastName,
-            enabled,
-            photoId: null,
-            roleIds,
-          }).then((resp) => {
-            if (resp.status === "OK") {
-              toast.success("Thêm nhân viên thành công!", {
-                position: toast.POSITION.TOP_RIGHT,
-                autoClose: 1900,
-              });
-              navigate("/user");
-            } else {
-              toast.error("Thêm nhân viên không thành công!", {
-                position: toast.POSITION.TOP_RIGHT,
-                autoClose: 1900,
-              });
-            }
-          });
+          Promise.all([
+            createUser({
+              email,
+              password,
+              firstName,
+              lastName,
+              enabled,
+              roleIds,
+            }).then((resp) => {
+              if (resp.status === "OK") {
+                notify(1, "Thêm nhân viên thành công!");
+                setIsLoading(false);
+                navigate("/user");
+              } else {
+                notify(0, "Thêm nhân viên không thành công!");
+                setIsLoading(false);
+              }
+            }),
+          ]);
         }
         break;
 
       case "update":
         console.log(file);
+        setIsLoading(true);
+
         if (file) {
-          uploadPhotoUser({
-            photo: file,
-          })
+          uploadPhotoUser({photo: file})
             .then((resp) => {
               if (resp.status === "OK") {
-                return resp.data;
-              } else {
-                toast.error("Thêm nhân viên không thành công!", {
-                  position: toast.POSITION.TOP_RIGHT,
-                  autoClose: 1900,
-                });
+                return resp.data.id;
               }
-              console.log(resp);
+
+              notify(0, "Cập nhật thông nhân viên không thành công!");
+              setIsLoading(false);
             })
-            .then((data) => {
+            .then((id) => {
               updateUser(user.id, {
                 email,
                 password,
                 firstName,
                 lastName,
                 enabled,
-                photoId: data.id,
+                photoId: id,
                 roleIds,
               }).then((resp) => {
                 if (resp.status === "OK") {
-                  toast.success("Cập nhật thông tin nhân viên thành công!", {
-                    position: toast.POSITION.TOP_RIGHT,
-                    autoClose: 1900,
-                  });
+                  notify(1, "Cập nhật thông tin nhân viên thành công!");
+                  setIsLoading(false);
                   navigate("/user");
                 } else {
-                  toast.error(
-                    "Cập nhật thông tin nhân viên không thành công!",
-                    {
-                      position: toast.POSITION.TOP_RIGHT,
-                      autoClose: 1900,
-                    }
-                  );
+                  notify(0, "Cập nhật thông nhân viên không thành công!");
+                  setIsLoading(false);
                 }
               });
             });
@@ -191,20 +171,15 @@ const UserForm = ({ user }) => {
             firstName,
             lastName,
             enabled,
-            photoId: null,
             roleIds,
           }).then((resp) => {
             if (resp.status === "OK") {
-              toast.success("Cập nhật thông tin nhân viên thành công!", {
-                position: toast.POSITION.TOP_RIGHT,
-                autoClose: 1900,
-              });
+              notify(1, "Cập nhật thông tin nhân viên thành công!");
+              setIsLoading(false);
               navigate("/user");
             } else {
-              toast.error("Cập nhật thông tin nhân viên không thành công!", {
-                position: toast.POSITION.TOP_RIGHT,
-                autoClose: 1900,
-              });
+              notify(0, "Cập nhật thông nhân viên không thành công!");
+              setIsLoading(false);
             }
           });
         }
@@ -357,7 +332,6 @@ const UserForm = ({ user }) => {
                 >
                   Lưu
                 </LoadingButton>
-                {/* <button type="submit" className="button green">Lưu</button> */}
               </div>
               <div className="control">
                 <BackButton text={"Hủy"} />
