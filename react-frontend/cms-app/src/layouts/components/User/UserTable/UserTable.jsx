@@ -21,8 +21,8 @@ const UserTable = ({ list, isLoading }) => {
           <th>Tên</th>
           <th>Email</th>
           <th>Quyền</th>
-          <th>Trạng thái</th>
-          <th></th>
+          <th className="text-center">Trạng thái</th>
+          <th className="text-center">Chức năng</th>
         </tr>
       </thead>
       <tbody>
@@ -66,15 +66,17 @@ const UserTableContent = ({ list }) => {
           <td data-label="Email">{user.email}</td>
           <td data-label="Roles">{_.pluck(user.roles, "name").join(", ")}</td>
           <td data-label="Status">
-            {user.enabled ? (
-              <span className="icon text-green-600 text-2xl">
-                <i className="mdi mdi-check-circle"></i>
-              </span>
-            ) : (
-              <span className="icon text-red-600 text-2xl">
-                <i className="mdi mdi-close-circle "></i>
-              </span>
-            )}
+            <div className="flex items-center justify-center">
+              {user.enabled ? (
+                <span className="icon text-green-600 text-2xl">
+                  <i className="mdi mdi-check-circle"></i>
+                </span>
+              ) : (
+                <span className="icon text-red-600 text-2xl">
+                  <i className="mdi mdi-close-circle "></i>
+                </span>
+              )}
+            </div>
           </td>
           <td class="actions-cell">
             <div class="buttons justify-center nowrap">

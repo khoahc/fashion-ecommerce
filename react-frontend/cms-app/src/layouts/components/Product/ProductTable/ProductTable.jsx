@@ -21,8 +21,8 @@ const ProductTable = ({ list, isLoading }) => {
           <th>Số lượng đã bán</th>
           <th>Loại sản phẩm</th>
           {/* <th>Voucher</th> */}
-          <th>Trạng thái</th>
-          <th></th>
+          <th className="text-center">Trạng thái</th>
+          <th className="text-center">Chức năng</th>
         </tr>
       </thead>
       <tbody>
@@ -68,15 +68,17 @@ const ProductTableContent = ({ list }) => {
           <td data-label="Created">{product.category.name}</td>
           {/* <td data-label="Voucher">{}</td> */}
           <td data-label="Status">
-            {product.enabled ? (
-              <span className="icon text-green-600 text-2xl">
-                <i className="mdi mdi-check-circle"></i>
-              </span>
-            ) : (
-              <span className="icon text-red-600 text-2xl">
-                <i className="mdi mdi-close-circle "></i>
-              </span>
-            )}
+            <div className="flex items-center justify-center">
+              {product.enabled ? (
+                <span className="icon text-green-600 text-2xl">
+                  <i className="mdi mdi-check-circle"></i>
+                </span>
+              ) : (
+                <span className="icon text-red-600 text-2xl">
+                  <i className="mdi mdi-close-circle "></i>
+                </span>
+              )}
+            </div>
           </td>
           <td className="actions-cell">
             <div className="buttons justify-center nowrap">

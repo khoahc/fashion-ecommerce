@@ -16,6 +16,11 @@ const categoryApi = {
         return await axiosClient.get(url);
     },
 
+    getAllLevel1And2Categories: async () => {
+        const url = `/api/v1/categories/level-1-2`;
+        return await axiosClient.get(url);
+    },
+
     createCategory: async (requestOption) => {
         const url = `/api/v1/categories`;
         return await axiosClient.post(url, requestOption);
@@ -31,8 +36,9 @@ const categoryApi = {
         return await axiosClient.put(url, requestOption);
     },
 
-    deleteCategory: async () => {
-
+    deleteCategory: async (id) => {
+        const url = `/api/v1/categories/${id}`;
+        return await axiosClient.delete(url);
     },
 
     uploadImageCategory: async (requestOption) => {
