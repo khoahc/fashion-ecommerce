@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
 import EmptyBodyTable from "../../../../components/EmptyBodyTable/EmptyBodyTable";
-import _ from 'underscore';
+import _ from "underscore";
+import LoadingTableContent from "../../../../components/LoadingTableContent/LoadingTableContent";
+import { useState } from "react";
+import ModalDeleteUser from "../ModalDeleteUser/ModalDeleteUser";
 
-const UserTable = ({ list }) => {
+const UserTable = ({ list, isLoading }) => {
   return (
     <table>
       <thead>
@@ -23,13 +26,19 @@ const UserTable = ({ list }) => {
         </tr>
       </thead>
       <tbody>
-        <ProductTableContent list={list} />
+        {isLoading ? (
+          <LoadingTableContent colSpan={8} />
+        ) : (
+          <UserTableContent list={list} />
+        )}
       </tbody>
     </table>
-  )
-}
+  );
+};
 
-const ProductTableContent = ({ list }) => {
+const UserTableContent = ({ list }) => {
+  const [userIdChoose, setUserIdChoose] = useState(null);
+  const [showModalDeleteUser, setShowModalDeleteUser] = useState(false);
   if (list && list.length !== 0) {
     return list.map((user) => {
       return (
@@ -42,13 +51,20 @@ const ProductTableContent = ({ list }) => {
           </td>
           <td className="image-cell">
             <div className="image w-32 h-32">
-              <img src={user.photo || 'https://res.cloudinary.com/hauhc/image/upload/v1667738857/lizi/users/default_najhrt.webp'} class="rounded-full w-32 h-32 object-cover" alt="" />
+              <img
+                src={
+                  user.photo ||
+                  "https://res.cloudinary.com/hauhc/image/upload/v1667738857/lizi/users/default_najhrt.webp"
+                }
+                class="rounded-full w-32 h-32 object-cover"
+                alt=""
+              />
             </div>
           </td>
           <td data-label="LastName">{user.lastName}</td>
           <td data-label="FirstName">{user.firstName}</td>
           <td data-label="Email">{user.email}</td>
-          <td data-label="Roles">{_.pluck(user.roles, 'name').join(', ')}</td>
+          <td data-label="Roles">{_.pluck(user.roles, "name").join(", ")}</td>
           <td data-label="Status">
             {user.enabled ? (
               <span className="icon text-green-600 text-2xl">
@@ -61,7 +77,7 @@ const ProductTableContent = ({ list }) => {
             )}
           </td>
           <td class="actions-cell">
-            <div class="buttons right nowrap">
+            <div class="buttons justify-center nowrap">
               <Link
                 to={`/user/${user.id}`}
                 class="button small green --jb-modal"
@@ -74,11 +90,26 @@ const ProductTableContent = ({ list }) => {
                 class="button small red --jb-modal"
                 data-target="sample-modal"
                 type="button"
+                onClick={() => {
+                  setShowModalDeleteUser(true);
+                  setUserIdChoose(user.id);
+                }}
               >
                 <span class="icon">
                   <i class="mdi mdi-trash-can"></i>
                 </span>
               </button>
+              {userIdChoose != null && (
+                <>
+                  {showModalDeleteUser && (
+                    <ModalDeleteUser
+                      userId={userIdChoose}
+                      showModalDeleteUser={showModalDeleteUser}
+                      setShowModalDeleteUser={setShowModalDeleteUser}
+                    />
+                  )}
+                </>
+              )}
             </div>
           </td>
         </tr>
@@ -89,4 +120,4 @@ const ProductTableContent = ({ list }) => {
   }
 };
 
-export default UserTable
+export default UserTable;

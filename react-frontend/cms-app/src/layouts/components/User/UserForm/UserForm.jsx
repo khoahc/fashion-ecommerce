@@ -1,14 +1,17 @@
+import { LoadingButton } from "@mui/lab";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import BackButton from "../../../../components/BackButton/BackButton";
-import roleApi from "../../../../services/axios/roleApi";
+import { getRoles } from "../../../../redux/role/roleAction";
 import userApi from "../../../../services/axios/userApi";
+import notify from "../../../../utils/notify";
 
-const { getAllRole } = roleApi;
 const { createUser, uploadPhotoUser, updateUser } = userApi;
 
 const UserForm = ({ user }) => {
+  const { roles } = useSelector((state) => state.role);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [mode, setMode] = useState("create");
 
@@ -24,21 +27,16 @@ const UserForm = ({ user }) => {
     "https://res.cloudinary.com/hauhc/image/upload/v1667738857/lizi/users/default_najhrt.webp"
   );
 
-  const [listRole, setListRole] = useState([]);
+  const [checkedState, setCheckedState] = useState(new Array(5).fill(false));
 
-  const getData = async () => {
-    getAllRole()
-      .then((resp) => {
-        return resp.data;
-      })
-      .then((data) => {
-        setListRole(data);
-      });
-  };
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    getData();
-  }, []);
+    console.log(roles);
+    if (roles.length === 0) {
+      dispatch(getRoles());
+    }
+  }, [roles, dispatch]);
 
   useEffect(() => {
     if (user) {
@@ -47,8 +45,29 @@ const UserForm = ({ user }) => {
       setFirstName(user.firstName);
       setLastName(user.lastName);
       setEmail(user.email);
-      setRoleIds(user.roles ? user.roles.map((role) => role.id) : []);
       setEnabled(user.enabled);
+      setRoleIds(user.roles ? user.roles.map((role) => role.id) : []);
+
+      if (user.roles) {
+        let updatedCheckedState = [];
+
+        for (let item of checkedState) {
+          updatedCheckedState.push(item);
+        }
+
+        for (let role of user.roles) {
+          const position = roles.findIndex(
+            (currentValue) => role.id === currentValue.id
+          );
+          for (let i = 0; i< updatedCheckedState.length; i++) {
+            if (i === position) {
+              updatedCheckedState[i] = true;
+            }
+          }
+        }
+        setCheckedState(updatedCheckedState);
+      }
+
       if (user.photo) {
         setPreview(user.photo);
       }
@@ -66,114 +85,115 @@ const UserForm = ({ user }) => {
     setPreview(URL.createObjectURL(e.target.files[0]));
   };
 
+  const onCheckRoleHandle = (position) => {
+    const updatedCheckedState = checkedState.map((item, index) =>
+      index === position ? !item : item
+    );
+
+    setCheckedState(updatedCheckedState);
+
+    const roleId = roles[position].id;
+    if (roleIds.includes(roleId)) {
+      const i = roleIds.indexOf(roleId);
+      roleIds.splice(i, 1);
+    } else {
+      roleIds.push(roleId);
+    }
+    console.log(roleIds);
+  };
+
   const onSubmitHandle = (e) => {
     e.preventDefault();
 
     switch (mode) {
       case "create":
+        setIsLoading(true);
         if (file) {
           uploadPhotoUser({
             photo: file,
           })
             .then((resp) => {
               if (resp.status === "OK") {
-                return resp.data;
-              } else {
-                toast.error("Thêm nhân viên không thành công!", {
-                  position: toast.POSITION.TOP_RIGHT,
-                  autoClose: 1900,
-                });
+                return resp.data.id;
               }
-              console.log(resp);
+
+              notify(0, "Thêm nhân viên không thành công!");
+              setIsLoading(false);
             })
-            .then((data) => {
+            .then((id) => {
               createUser({
                 email,
                 password,
                 firstName,
                 lastName,
                 enabled,
-                photoId: data.id,
+                photoId: id,
                 roleIds,
               }).then((resp) => {
                 if (resp.status === "OK") {
-                  toast.success("Thêm nhân viên thành công!", {
-                    position: toast.POSITION.TOP_RIGHT,
-                    autoClose: 1900,
-                  });
+                  notify(1, "Thêm nhân viên thành công!");
+                  setIsLoading(false);
                   navigate("/user");
                 } else {
-                  toast.error("Thêm nhân viên không thành công!", {
-                    position: toast.POSITION.TOP_RIGHT,
-                    autoClose: 1900,
-                  });
+                  notify(0, "Thêm nhân viên không thành công!");
+                  setIsLoading(false);
                 }
               });
             });
         } else {
-          createUser({
-            email,
-            password,
-            firstName,
-            lastName,
-            enabled,
-            photoId: null,
-            roleIds,
-          }).then((resp) => {
-            if (resp.status === "OK") {
-              toast.success("Thêm nhân viên thành công!", {
-                position: toast.POSITION.TOP_RIGHT,
-                autoClose: 1900,
-              });
-              navigate("/user");
-            } else {
-              toast.error("Thêm nhân viên không thành công!", {
-                position: toast.POSITION.TOP_RIGHT,
-                autoClose: 1900,
-              });
-            }
-          });
+          Promise.all([
+            createUser({
+              email,
+              password,
+              firstName,
+              lastName,
+              enabled,
+              roleIds,
+            }).then((resp) => {
+              if (resp.status === "OK") {
+                notify(1, "Thêm nhân viên thành công!");
+                setIsLoading(false);
+                navigate("/user");
+              } else {
+                notify(0, "Thêm nhân viên không thành công!");
+                setIsLoading(false);
+              }
+            }),
+          ]);
         }
         break;
 
       case "update":
         console.log(file);
+        setIsLoading(true);
+
         if (file) {
-          uploadPhotoUser({
-            photo: file,
-          })
+          uploadPhotoUser({ photo: file })
             .then((resp) => {
               if (resp.status === "OK") {
-                return resp.data;
-              } else {
-                toast.error("Thêm nhân viên không thành công!", {
-                  position: toast.POSITION.TOP_RIGHT,
-                  autoClose: 1900,
-                });
+                return resp.data.id;
               }
-              console.log(resp);
+
+              notify(0, "Cập nhật thông nhân viên không thành công!");
+              setIsLoading(false);
             })
-            .then((data) => {
+            .then((id) => {
               updateUser(user.id, {
                 email,
                 password,
                 firstName,
                 lastName,
                 enabled,
-                photoId: data.id,
+                photoId: id,
                 roleIds,
               }).then((resp) => {
                 if (resp.status === "OK") {
-                  toast.success("Cập nhật thông tin nhân viên thành công!", {
-                    position: toast.POSITION.TOP_RIGHT,
-                    autoClose: 1900,
-                  });
+                  notify(1, "Cập nhật thông tin nhân viên thành công!");
+                  setIsLoading(false);
                   navigate("/user");
                 } else {
-                  toast.error("Cập nhật thông tin nhân viên không thành công!", {
-                    position: toast.POSITION.TOP_RIGHT,
-                    autoClose: 1900,
-                  });
+                  notify(0, "Cập nhật thông nhân viên không thành công!");
+                  setIsLoading(false);
                 }
               });
             });
@@ -184,20 +204,15 @@ const UserForm = ({ user }) => {
             firstName,
             lastName,
             enabled,
-            photoId: null,
             roleIds,
           }).then((resp) => {
             if (resp.status === "OK") {
-              toast.success("Cập nhật thông tin nhân viên thành công!", {
-                position: toast.POSITION.TOP_RIGHT,
-                autoClose: 1900,
-              });
+              notify(1, "Cập nhật thông tin nhân viên thành công!");
+              setIsLoading(false);
               navigate("/user");
             } else {
-              toast.error("Cập nhật thông tin nhân viên không thành công!", {
-                position: toast.POSITION.TOP_RIGHT,
-                autoClose: 1900,
-              });
+              notify(0, "Cập nhật thông nhân viên không thành công!");
+              setIsLoading(false);
             }
           });
         }
@@ -232,6 +247,7 @@ const UserForm = ({ user }) => {
                       onChange={(e) => {
                         setLastName(e.target.value);
                       }}
+                      required
                     />
                   </div>
                 </div>
@@ -245,6 +261,7 @@ const UserForm = ({ user }) => {
                       onChange={(e) => {
                         setFirstName(e.target.value);
                       }}
+                      required
                     />
                   </div>
                 </div>
@@ -258,6 +275,7 @@ const UserForm = ({ user }) => {
                       onChange={(e) => {
                         setEmail(e.target.value);
                       }}
+                      required
                     />
                   </div>
                 </div>
@@ -271,6 +289,7 @@ const UserForm = ({ user }) => {
                       onChange={(e) => {
                         setPassword(e.target.value);
                       }}
+                      required={mode === "create"}
                     />
                   </div>
                 </div>
@@ -278,23 +297,25 @@ const UserForm = ({ user }) => {
                   <label class="label">Quyền</label>
                   <div class="field-body">
                     <div class="field grouped multiline">
-                      {listRole.map((role) => (
+                      {roles.map((role, index) => (
                         <div class="control">
                           <label class="checkbox">
                             <input
+                              key={role.id}
                               type="checkbox"
+                              id={`role-checkbox-${index}`}
                               value={role.id}
-                              checked={user && roleIds.includes(role.id)}
+                              checked={checkedState[index]}
                               onChange={(e) => {
-                                let v = e.target.value;
-                                if (e.target.checked) {
-                                  if (!roleIds.includes(v)) {
-                                    roleIds.push(v);
-                                  }
-                                } else if (roleIds.includes(v)) {
-                                  roleIds.splice(roleIds.indexOf(v), 1);
-                                }
-                                console.log(roleIds);
+                                // let v = Number(e.target.value);
+                                // if (e.target.checked) {
+                                //   if (!roleIds.includes(v)) {
+                                //     roleIds.push(v);
+                                //   }
+                                // } else if (roleIds.includes(v)) {
+                                //   roleIds.splice(roleIds.indexOf(v), 1);
+                                // }
+                                onCheckRoleHandle(index);
                               }}
                             />
                             <span class="check"></span>
@@ -337,9 +358,19 @@ const UserForm = ({ user }) => {
 
             <div className="field grouped mt-10">
               <div className="control">
-                <button type="submit" className="button green">
+                <LoadingButton
+                  className="button green"
+                  type="submit"
+                  sx={{
+                    height: "100%",
+                    fontSize: "100%",
+                    textTransform: "none",
+                  }}
+                  loading={isLoading}
+                  variant="contained"
+                >
                   Lưu
-                </button>
+                </LoadingButton>
               </div>
               <div className="control">
                 <BackButton text={"Hủy"} />

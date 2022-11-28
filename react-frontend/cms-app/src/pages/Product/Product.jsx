@@ -14,6 +14,8 @@ const Product = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const listTitle = [
     {
       title: "Sản phẩm",
@@ -21,6 +23,7 @@ const Product = () => {
   ];
 
   const getData = async ({params}) => {
+    setIsLoading(true);
     getAllProducts({params}).then(resp => {
       if (resp.totalCount) {
         setTotalCount(resp.totalCount);
@@ -29,6 +32,7 @@ const Product = () => {
     }).then(data => {
       console.log(data);
       setListProduct(data);
+      setIsLoading(false);
     })
   };
 
@@ -58,7 +62,7 @@ const Product = () => {
       <section className="section main-section">
         <div className="card has-table">
           <div className="card-content">
-            <ProductTable list={listProduct} />
+            <ProductTable list={listProduct} isLoading={isLoading} />
             <Pagination
               className="pagination-bar"
               currentPage={currentPage}

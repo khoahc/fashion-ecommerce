@@ -11,6 +11,8 @@ const Order = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const listTitle = [
     {
       title: "Đơn hàng",
@@ -18,6 +20,7 @@ const Order = () => {
   ];
 
   const getData = async ({params}) => {
+    setIsLoading(true);
     getAllOrder({params})
       .then((res) => {
         if (res.totalCount) {
@@ -28,6 +31,7 @@ const Order = () => {
       .then((data) => {
         console.log(data);
         setListOrder(data);
+        setIsLoading(false);
       });
   };
 
@@ -50,7 +54,7 @@ const Order = () => {
       <section className="section main-section">
         <div className="card has-table">
           <div className="card-content">
-            <OrderTable list={listOrder} />
+            <OrderTable list={listOrder} isLoading={isLoading} />
             <Pagination
               className="pagination-bar"
               currentPage={currentPage}
