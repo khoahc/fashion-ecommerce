@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import EmptyBodyTable from "../../../../components/EmptyBodyTable/EmptyBodyTable";
 import LoadingTableContent from "../../../../components/LoadingTableContent/LoadingTableContent";
+import ModalDeleteCategory from "../ModalDeleteCategory";
 
 const CategoryTable = ({ list, isLoading }) => {
   return (
@@ -33,6 +35,8 @@ const CategoryTable = ({ list, isLoading }) => {
 };
 
 const CategoryTableContent = ({ list }) => {
+  const [categoryIdChoose, setCategoryIdChoose] = useState(null);
+  const [showModalDeleteCategory, setShowModalDeleteCategory] = useState(false);
   if (list && list.length !== 0) {
     return list.map((category) => {
       return (
@@ -82,11 +86,28 @@ const CategoryTableContent = ({ list }) => {
                 class="button small red --jb-modal"
                 data-target="sample-modal"
                 type="button"
+                onClick={() => {
+                  setShowModalDeleteCategory(true);
+                  setCategoryIdChoose(category.id);
+                }}
               >
                 <span class="icon">
                   <i class="mdi mdi-trash-can"></i>
                 </span>
               </button>
+              {
+                categoryIdChoose != null && (
+                  <>
+                  {showModalDeleteCategory && (
+                    <ModalDeleteCategory
+                      categoryId={categoryIdChoose}
+                      showModalDeleteCategory={showModalDeleteCategory}
+                      setShowModalDeleteCategory={setShowModalDeleteCategory}
+                     />
+                  )}
+                  </>
+                )
+              }
             </div>
           </td>
         </tr>
