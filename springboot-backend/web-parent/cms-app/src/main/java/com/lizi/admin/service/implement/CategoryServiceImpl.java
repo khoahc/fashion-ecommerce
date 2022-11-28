@@ -47,6 +47,11 @@ public class CategoryServiceImpl implements CategoryService {
   }
 
   @Override
+  public List<CategoryResDto> getAllLevel1And2Category() {
+    return CategoryMapper.INSTANCE.categoriesToDtos(categoryRepo.findAllLevel1And2());
+  }
+
+  @Override
   public CategoryResDto getCategory(Long id) {
     return CategoryMapper.INSTANCE.categoryToDto(categoryRepo.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("category", "id", id)));

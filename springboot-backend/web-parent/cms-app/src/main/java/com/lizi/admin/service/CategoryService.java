@@ -11,6 +11,7 @@ public interface CategoryService {
   List<CategoryResDto> getAll(Pageable pageable);
   Long getTotalCount(Pageable pageable);
   List<CategoryResDto> getAllLevel3Category();
+  List<CategoryResDto> getAllLevel1And2Category();
 
   CategoryResDto getCategory(Long id);
 

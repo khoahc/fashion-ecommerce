@@ -121,7 +121,7 @@ public class CloudinaryServiceImpl implements CloudinaryService {
   private boolean isImageFile(MultipartFile file) {
     String fileExtension = FilenameUtils.getExtension(file.getOriginalFilename());
     assert fileExtension != null;
-    return Arrays.asList(new String[]{"png", "jpg", "jpeg", "bmp"})
+    return Arrays.asList(new String[]{"png", "jpg", "jpeg", "bmp", "webp"})
         .contains(fileExtension.trim().toLowerCase());
   }
 
