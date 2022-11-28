@@ -13,4 +13,7 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
   @Query("SELECT c3 FROM Category c1 JOIN c1.children c2 JOIN c2.children c3")
   List<Category> findAllLevel3();
+
+  @Query("SELECT c FROM Category c WHERE c.allParentIds IS NULL OR LENGTH(c.allParentIds) = 3")
+  List<Category> findAllLevel1And2();
 }

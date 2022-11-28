@@ -10,6 +10,8 @@ import com.lizi.common.entity.ResponsePaginationObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -39,7 +41,8 @@ public class CategoryController {
   public ResponseEntity<ResponsePaginationObject> getAll(
       @RequestParam(name = "page", required = false, defaultValue = Constant.PAGE_DEFAULT) int page,
       @RequestParam(name = "size", required = false, defaultValue = Constant.SIZE_DEFAULT) int size) {
-    Pageable pageable = PageRequest.of(page - 1, size);
+    Sort sort = Sort.by(Direction.DESC, "createTime");
+    Pageable pageable = PageRequest.of(page - 1, size, sort);
     return ResponseEntity.ok().body(
         ResponsePaginationObject.builder().status(HttpStatus.OK).message(Constant.SUCCESS)
             .data(categoryService.getAll(pageable))
@@ -51,6 +54,13 @@ public class CategoryController {
     return ResponseEntity.ok().body(
         ResponseObject.builder().status(HttpStatus.OK).message(Constant.SUCCESS)
             .data(categoryService.getAllLevel3Category()).build());
+  }
+
+  @GetMapping(value = "/level-1-2")
+  public ResponseEntity<ResponseObject> getAllLevel1And2Category() {
+    return ResponseEntity.ok().body(
+        ResponseObject.builder().status(HttpStatus.OK).message(Constant.SUCCESS)
+            .data(categoryService.getAllLevel1And2Category()).build());
   }
 
   @GetMapping(value = "/{id}")
