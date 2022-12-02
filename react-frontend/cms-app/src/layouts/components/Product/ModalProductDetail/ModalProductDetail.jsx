@@ -1,12 +1,36 @@
-import React, { useState } from "react";
-import { ToastContainer } from "react-toastify";
+import React, { useEffect, useState } from "react";
 import SkeletonModal from "../../../../components/SkeletonModal";
-import notify from "../../utils/notify";
+import productApi from "../../../../services/axios/productApi";
+import notify from "../../../../utils/notify";
+
+const { getProductDetails } = productApi;
 
 const ModalProductDetail = (props) => {
   const [productDetail, setProductDetail] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  const handleClickClose = () => {};
+
+  useEffect(() => {
+    getProductDetails(props.id)
+      .then((resp) => {
+        setIsLoading(false);
+        if (resp.status === "OK") {
+          return resp.data;
+        } else {
+          return Promise.reject(new Error(resp.message));
+        }
+      })
+      .then((data) => {
+        setProductDetail(data);
+      })
+      .catch((error) => {
+        notify(0, error);
+      });
+  }, [props.id]);
+
+  const handleClickClose = () => {
+    setIsLoading(true);
+    props.setShowModal(false);
+  };
   return (
     <>
       {props.showModal ? (
@@ -22,23 +46,41 @@ const ModalProductDetail = (props) => {
                   </h3>
                   <button
                     className="bg-transparent border-0 text-black float-right"
-                    onClick={() => props.setShowModalViewOrderDetail(false)}
+                    onClick={handleClickClose}
                   >
                     <span className="icon text-xl ">
                       <i className="mdi mdi-close-circle-outline hover:text-red-600"></i>
                     </span>
                   </button>
                 </div>
+
                 <div className=" overflow-auto relative p-6 flex-auto">
-                  <div className="flex items-center justify-center p-6  rounded-b">
-                    <button
-                      className="hover:bg-black hover:text-white  text-red-500 font-bold rounded-xl border-2 border-[#999] uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1"
-                      type="button"
-                      onClick={handleClickClose}
-                    >
-                      Thoát
-                    </button>
+                  <div className="flex flex-row gap-6 mb-4">
+                    <div className="font-bold">ID:</div>
+                    <div className="">{productDetail.id}</div>
                   </div>
+                  <div className="flex flex-row gap-6 mb-4">
+                    <div className="font-bold">Tên:</div>
+                    <div className="">{productDetail.name}</div>
+                  </div>
+                  <div className="flex flex-row gap-6 mb-4">
+                    <div className="font-bold">Loại:</div>
+                    <div className="">{productDetail.category.name}</div>
+                  </div>
+                  <div className="flex flex-row gap-6">
+                    <div className="font-bold">Mô tả:</div>
+                  </div>
+                  <p className="mb-4">{productDetail.description}</p>
+                </div>
+
+                <div className="flex items-center justify-center p-6  rounded-b">
+                  <button
+                    className="hover:bg-black hover:text-white  text-red-500 font-bold rounded-xl border-2 border-[#999] uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1"
+                    type="button"
+                    onClick={handleClickClose}
+                  >
+                    Thoát
+                  </button>
                 </div>
               </div>
             </div>
