@@ -1,3 +1,5 @@
+@import "../../sass/mixins";
+@import "../../sass/variables";
 .header {
   .container {
     color: $txt-white;
@@ -13,14 +15,25 @@
     width: 100%;
     height: 100%;   /* Fallback color */
     background-color: rgba(0,0,0, 0.2); /* Black w/opacity/see-through */      
-
+    @include tablet {
+      height: 300px;
+    }
     &__slogan {
       margin: 50px auto 50px auto;
       height: 100%;
+      @include tablet {
+        height: 50px;
+      }
     }
 
     &__wrap1 {
-      display: flex;         
+      display: flex;     
+      
+      &__logo {
+        @include tablet {
+          height: 120px;
+        }
+      }
     }
 
     &__wrap2 {
@@ -29,9 +42,17 @@
       justify-content: start;
       align-items: center;
       gap: 100px;
+      @include tablet {
+        gap: 50px;
+      }
 
       &__year {
         margin: 0px 135px;
+        @include tablet {
+          margin: 0px 60px;
+          height: 20px;
+          width: 80px;
+        }        
       }
 
       &__btn {
@@ -43,6 +64,9 @@
         font-weight: 700;
         border: 1px solid #000;
         letter-spacing: 0.1em;
+        @include tablet {
+          font-size: 0.85rem;
+        }
       }
     }
   }
@@ -51,6 +75,9 @@
     width: 33%;
     height: 100vh;
     background-color: #f2c94c;
+    @include tablet {
+      height: 300px;
+    }
   }
 
   &__right {
@@ -59,7 +86,10 @@
 
     img {
       width: 100%;
-      height: 100vh;    
+      height: 100vh; 
+      @include tablet {
+        height: 300px;
+      }   
     }
   }
 }

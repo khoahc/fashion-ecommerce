@@ -57,10 +57,10 @@ const OrderTracker = () => {
     <>
       {!isShowOrderTrackerDetail ? (
         <div className={clsx(styles.container)}>
-          <div className="uppercase font-weight-5 font-size-2">
+          <div className="uppercase font-weight-5 font-size-1-5">
             Theo dõi đơn hàng của bạn
           </div>
-          <div className="flex flex-column flex-gap-2">
+          <div className="flex flex-column flex-gap-1">
             <div className="">
               <TextField
                 required

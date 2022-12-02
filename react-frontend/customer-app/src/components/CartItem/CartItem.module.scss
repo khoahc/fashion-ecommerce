@@ -1,3 +1,5 @@
+@import "../../sass/mixins";
+@import "../../sass/variables";
 .container {
   display: flex;
   margin: 38px 0;
@@ -7,14 +9,29 @@
   border-radius: 10px;
   background-color: #fff;
   border: 0.5px solid #999;
-  
+
   .info {
     width: 400px;
+
+    @include tablet {
+      width: 250px;
+    }
+
+    @include mobile {
+      width: 120px;
+    }
   }
   .image {
     width: 150px;
     height: 150px;
     margin-left: 20px;
+
+    @include mobile {
+      width: 100px;
+      height: 150px;
+      margin-left: 5px;
+      margin-right: 5px;
+    }
   }
 
   .exit {
@@ -24,8 +41,8 @@
 }
 
 .container:hover {
-  -webkit-box-shadow: 0px 1px 1px #F2C94C;
-  -moz-box-shadow: 0px 1px 1px #F2C94C;
-  box-shadow: 1px 1px 10px 2px #F2C94C;
+  -webkit-box-shadow: 0px 1px 1px #f2c94c;
+  -moz-box-shadow: 0px 1px 1px #f2c94c;
+  box-shadow: 1px 1px 10px 2px #f2c94c;
   border: 0.5px solid #fff;
 }

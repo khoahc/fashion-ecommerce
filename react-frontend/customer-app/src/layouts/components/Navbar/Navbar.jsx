@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import Logo from "../../../assets/images/logo_dark.png";
 import * as catalogCategory from "../../../services/catalogCategory";
@@ -58,13 +58,15 @@ const Navbar = () => {
       e.target.value !== "" &&
       navigate(`/search?keyword=${e.target.value}`);
   };
+  const menuLeft = useRef(null);
 
+  const menuToggle = () => menuLeft.current.classList.toggle("active");
   return (
     <div className={`navbar ${scrollDirection === "down" ? "hide" : "show"}`}>
-      <div className="flex-row flex-row-right white container">
+      <div className="flex-row flex-row-right white">
         <div className="navbar__top flex-row flex-gap-1">
           <Link
-            className="py-1 font-weight-3 font-size-0-85"
+            className="py-1 px-1 font-weight-3 font-size-0-85"
             to={"/order-tracker"}
           >
             {" "}
@@ -80,46 +82,56 @@ const Navbar = () => {
           </Link> */}
         </div>
       </div>
-      <div className="container flex-center mb-1">
+      <div className="container mb-1">
         <Link to="/">
           <img className="navbar__logo" src={Logo} alt="logo"></img>
         </Link>
 
         <div className="navbar__menu">
-          {categoryData !== null &&
-            categoryData.map((item, index) => (
-              <div
-                key={index}
-                className={`navbar__menu__item ${
-                  index === activeNav ? "active" : ""
-                }`}
-              >
-                <Link to={"/c/" + item.slug}>
-                  <span>{item.name}</span>
-                </Link>
-              </div>
-            ))}
-        </div>
-
-        <div className="navbar__items">
-          <div className="navbar__items__item navbar__items__item__search">
-            <i className="bx bx-search bx-sm"></i>
-            <input
-              type="search"
-              placeholder="Tìm kiếm"
-              onKeyPress={handleSearch}
-            />
+          <div className="navbar__menu__left" ref={menuLeft}>
+            <div className="navbar__menu__left__close" onClick={menuToggle}>
+              <i className="bx bx-chevron-left"></i>
+            </div>
+            {categoryData !== null &&
+              categoryData.map((item, index) => (
+                <div
+                  key={index}
+                  className={`navbar__menu__item navbar__menu__left__item ${
+                    index === activeNav ? "active" : ""
+                  }`}
+                  onClick={menuToggle}
+                >
+                  <Link to={"/c/" + item.slug}>
+                    <span>{item.name}</span>
+                  </Link>
+                </div>
+              ))}
           </div>
-          {/* <div className="navbar__items__item">
+          <div className="navbar__menu__mobile-toggle" onClick={menuToggle}>
+            <i className="bx bx-menu-alt-left"></i>
+          </div>
+          <div className="header__menu__right">
+            <div className="navbar__items">
+              <div className="navbar__items__item navbar__items__item__search">
+                <i className="bx bx-search bx-sm"></i>
+                <input
+                  type="search"
+                  placeholder="Tìm kiếm"
+                  onKeyPress={handleSearch}
+                />
+              </div>
+              {/* <div className="navbar__items__item">
             <Link to="/login">
               <i className="bx bx-user bx-sm"></i>
             </Link>
           </div> */}
-          <div className="navbar__items__item cart">
-            <Link to="/cart">
-              <i className="bx bx-shopping-bag bx-sm"></i>
-              <span className="notification">{cartItems.length}</span>
-            </Link>
+              <div className="navbar__items__item cart">
+                <Link to="/cart">
+                  <i className="bx bx-shopping-bag bx-sm"></i>
+                  <span className="notification">{cartItems.length}</span>
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </div>

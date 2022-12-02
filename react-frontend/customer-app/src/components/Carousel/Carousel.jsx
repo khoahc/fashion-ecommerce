@@ -34,6 +34,22 @@ export default (props) => {
       autoplay={{ delay: 2000 }}
       navigation
       pagination={{ clickable: true }}
+      breakpoints={
+        {
+          0: {
+            // width: 576,
+            slidesPerView: 1,
+          },
+          768: {
+            // width: 768,
+            slidesPerView: 2,
+          },
+          1024: {
+            // width: 1024,
+            slidesPerView: 3,
+          },
+        }
+      }
     >
       {listItems}
     </Swiper>
