@@ -53,7 +53,7 @@ const OrderTableContent = (props) => {
               data-label="stt"
               className={`${item.cancelled && "line-through"} `}
             >
-              {index}
+              {index + (props.pageSize * (props.currentPage - 1)) + 1}
             </td>
             <td
               data-label="name"

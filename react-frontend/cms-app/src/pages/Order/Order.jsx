@@ -19,9 +19,9 @@ const Order = () => {
     },
   ];
 
-  const getData = async ({params}) => {
+  const getData = async ({ params }) => {
     setIsLoading(true);
-    getAllOrder({params})
+    getAllOrder({ params })
       .then((res) => {
         if (res.totalCount) {
           setTotalCount(res.totalCount);
@@ -36,11 +36,11 @@ const Order = () => {
   };
 
   useEffect(() => {
-    getData({params: {page: 1, size: PageSize}});
+    getData({ params: { page: 1, size: PageSize } });
   }, []);
 
   useEffect(() => {
-    getData({params: { page: currentPage, size: PageSize}});
+    getData({ params: { page: currentPage, size: PageSize } });
   }, [currentPage]);
 
   useEffect(() => {
@@ -54,7 +54,12 @@ const Order = () => {
       <section className="section main-section">
         <div className="card has-table">
           <div className="card-content">
-            <OrderTable list={listOrder} isLoading={isLoading} />
+            <OrderTable
+              list={listOrder}
+              isLoading={isLoading}
+              pageSize={PageSize}
+              currentPage={currentPage}
+            />
             <Pagination
               className="pagination-bar"
               currentPage={currentPage}
