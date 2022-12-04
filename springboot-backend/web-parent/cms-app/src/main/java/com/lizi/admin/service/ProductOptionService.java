@@ -20,4 +20,6 @@ public interface ProductOptionService {
   ProductOption updateProductOption(Long optionId, ProductOptionReqDto productOptionReqDto);
 
   void deleteProductOption(Long optionId);
+
+  void decreasingQuantity(long id, int quantity);
 }

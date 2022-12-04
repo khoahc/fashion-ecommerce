@@ -5,6 +5,8 @@ import com.lizi.admin.mapper.OrderTrackMapper;
 import com.lizi.admin.repository.OrderRepository;
 import com.lizi.admin.repository.OrderTrackRepository;
 import com.lizi.admin.service.OrderTrackService;
+import com.lizi.admin.service.ProductOptionService;
+import com.lizi.admin.service.ProductService;
 import com.lizi.admin.util.Constant;
 import com.lizi.admin.util.DateFormat;
 import com.lizi.common.entity.Order;
@@ -20,49 +22,59 @@ import java.util.Date;
 @Service
 public class OrderTrackServiceImpl implements OrderTrackService {
 
-    @Autowired
-    private OrderTrackRepository orderTrackRepository;
+  @Autowired
+  private OrderTrackRepository orderTrackRepository;
 
-    @Autowired
-    private OrderRepository orderRepository;
+  @Autowired
+  private OrderRepository orderRepository;
 
-    @Override
-    public OrderTrackResDto addOrderTrackVerifiedByOrderId(String orderId) {
-        Order order = orderRepository.findById(orderId).orElseThrow(
-                () -> new ResourceNotFoundException(Constant.NOT_FOUND));
+  @Autowired
+  private ProductOptionService productOptionService;
 
-        OrderTrack orderTrack = OrderTrack.builder()
-                .notes(OrderStatus.VERIFIED.defaultDescription())
-                .status(OrderStatus.VERIFIED)
-                .order(order)
-                .build();
-        return OrderTrackMapper.INSTANCE.OrderTrackToOrderTrackResDto(orderTrackRepository.save(orderTrack));
-    }
+  @Override
+  public OrderTrackResDto addOrderTrackVerifiedByOrderId(String orderId) {
+    Order order = orderRepository.findById(orderId).orElseThrow(
+        () -> new ResourceNotFoundException(Constant.NOT_FOUND));
 
-    @Override
-    public OrderTrackResDto addOrderTrackShippingByOrderId(String orderId) {
-        Order order = orderRepository.findById(orderId).orElseThrow(
-                    () -> new ResourceNotFoundException(Constant.NOT_FOUND));
+    order.getOrderDetails().stream().forEach(
+        odt -> productOptionService.decreasingQuantity(odt.getProductOption().getId(),
+            odt.getQuantity()));
 
-        OrderTrack orderTrack = OrderTrack.builder()
-                .notes(OrderStatus.SHIPPING.defaultDescription())
-                .status(OrderStatus.SHIPPING)
-                .order(order)
-                .build();
-        return OrderTrackMapper.INSTANCE.OrderTrackToOrderTrackResDto(orderTrackRepository.save(orderTrack));
-    }
+    OrderTrack orderTrack = OrderTrack.builder()
+        .notes(OrderStatus.VERIFIED.defaultDescription())
+        .status(OrderStatus.VERIFIED)
+        .order(order)
+        .build();
+    return OrderTrackMapper.INSTANCE.OrderTrackToOrderTrackResDto(
+        orderTrackRepository.save(orderTrack));
+  }
 
-    @Override
-    public OrderTrackResDto addOrderTrackCancelledByOrderId(String orderId) {
-        Order order = orderRepository.findById(orderId).orElseThrow(
-                () -> new ResourceNotFoundException(Constant.NOT_FOUND));
+  @Override
+  public OrderTrackResDto addOrderTrackShippingByOrderId(String orderId) {
+    Order order = orderRepository.findById(orderId).orElseThrow(
+        () -> new ResourceNotFoundException(Constant.NOT_FOUND));
 
-        OrderTrack orderTrack = OrderTrack.builder()
-                .notes(OrderStatus.CANCELLED.defaultDescription())
-                .status(OrderStatus.CANCELLED)
-                .order(order)
-                .build();
-        return OrderTrackMapper.INSTANCE.OrderTrackToOrderTrackResDto(orderTrackRepository.save(orderTrack));
-    }
+    OrderTrack orderTrack = OrderTrack.builder()
+        .notes(OrderStatus.SHIPPING.defaultDescription())
+        .status(OrderStatus.SHIPPING)
+        .order(order)
+        .build();
+    return OrderTrackMapper.INSTANCE.OrderTrackToOrderTrackResDto(
+        orderTrackRepository.save(orderTrack));
+  }
+
+  @Override
+  public OrderTrackResDto addOrderTrackCancelledByOrderId(String orderId) {
+    Order order = orderRepository.findById(orderId).orElseThrow(
+        () -> new ResourceNotFoundException(Constant.NOT_FOUND));
+
+    OrderTrack orderTrack = OrderTrack.builder()
+        .notes(OrderStatus.CANCELLED.defaultDescription())
+        .status(OrderStatus.CANCELLED)
+        .order(order)
+        .build();
+    return OrderTrackMapper.INSTANCE.OrderTrackToOrderTrackResDto(
+        orderTrackRepository.save(orderTrack));
+  }
 
 }

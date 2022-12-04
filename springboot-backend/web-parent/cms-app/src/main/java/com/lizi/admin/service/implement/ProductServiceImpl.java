@@ -124,4 +124,5 @@ public class ProductServiceImpl implements ProductService {
   public long getQuantityProduct() {
     return productRepo.count();
   }
+
 }

@@ -91,4 +91,14 @@ public class ProductOptionServiceImpl implements ProductOptionService {
   public void deleteProductOption(Long optionID) {
 
   }
+
+  @Override
+  public void decreasingQuantity(long id, int quantity) {
+    ProductOption productOption = getProductOption(id);
+
+    int currentQuantity = productOption.getQuantity();
+    productOption.setQuantity(currentQuantity - quantity);
+
+    productOptionRepo.save(productOption);
+  }
 }
