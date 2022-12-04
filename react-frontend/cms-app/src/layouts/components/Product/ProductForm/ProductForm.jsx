@@ -1,9 +1,17 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import notify from "../../../../utils/notify";
 import BackButton from "../../../../components/BackButton/BackButton";
-import { clear, setCategoryId, setCost, setDescription, setEnabled, setName, setPrice } from "../../../../redux/product/productForm/productFormSlice";
+import {
+  clear,
+  setCategoryId,
+  setCost,
+  setDescription,
+  setEnabled,
+  setName,
+  setPrice,
+} from "../../../../redux/product/productForm/productFormSlice";
 import categoryApi from "../../../../services/axios/categoryApi";
 import productApi from "../../../../services/axios/productApi";
 import ProductOptionForm from "../ProductOptionForm/ProductOptionForm";
@@ -18,37 +26,93 @@ const ProductForm = ({ product }) => {
   const [mode, setMode] = useState("create");
   const navigate = useNavigate();
   const [listLevel3Category, setListLevel3Category] = useState([]);
+  const [imageOptions, setImageOptions] = useState([
+    {
+      mainImage: null,
+      images: [],
+    },
+  ]);
 
   const onSubmitHandle = (e) => {
     e.preventDefault();
 
     console.log(form);
+    console.log(imageOptions);
 
     switch (mode) {
       case "create":
-        uploadImageProduct()
+        const uploads = [];
+        imageOptions.forEach((o, index) => {
+          uploads.push(
+            uploadImageProduct({ image: o.mainImage })
+              .then((resp) => {
+                if (resp.status === "OK") {
+                  return resp.data;
+                }
+              })
+              .then((data) => {
+                const uploadImages = [];
+                o.images.forEach((img, i) => {
+                  uploadImages.push(
+                    uploadImageProduct({ image: img }).then((resp) => {
+                      if (resp.status === "OK") {
+                        return Promise.resolve(resp.data);
+                      }
+                    })
+                  );
+                });
 
-        createProduct({
-          name: form.name,
-          description: form.description,
-          enabled: form.enabled,
-          cost: form.cost,
-          price: form.price,
-          categoryId: form.categoryId,
-        }).then((resp) => {
-          if (resp.status === "OK") {
-            toast.success("Thêm sản phẩm thành công!", {
-              position: toast.POSITION.TOP_RIGHT,
-              autoClose: 1900,
-            });
-            navigate("/product");
-          } else {
-            toast.success("Thêm sản phẩm không thành công!", {
-              position: toast.POSITION.TOP_RIGHT,
-              autoClose: 1900,
-            });
-          }
+                return Promise.all(uploadImages).then((respImages) =>
+                  Promise.resolve({ mainImage: data, images: respImages })
+                );
+              })
+          );
         });
+
+        Promise.all(uploads).then((resp) => {
+          console.log(resp);
+          let data = structuredClone(form);
+          console.log(data);
+          resp.forEach((o, i) => {
+            data.options[i].mainImageId = o.mainImage.id;
+            data.options[i].imageIds = o.images.map((img) => img.id);
+          });
+          return data;
+        }).then((data) => {
+          createProduct(data).then(resp => {
+            if (resp.status === 'OK') {
+              notify(1, "Thanh cong");
+              navigate("/product");
+            } else {
+              notify(0, "That bai");
+            }
+          })
+        });
+
+
+        // uploadImageProduct()
+
+        // createProduct({
+        //   name: form.name,
+        //   description: form.description,
+        //   enabled: form.enabled,
+        //   cost: form.cost,
+        //   price: form.price,
+        //   categoryId: form.categoryId,
+        // }).then((resp) => {
+        //   if (resp.status === "OK") {
+        //     toast.success("Thêm sản phẩm thành công!", {
+        //       position: toast.POSITION.TOP_RIGHT,
+        //       autoClose: 1900,
+        //     });
+        //     navigate("/product");
+        //   } else {
+        //     toast.success("Thêm sản phẩm không thành công!", {
+        //       position: toast.POSITION.TOP_RIGHT,
+        //       autoClose: 1900,
+        //     });
+        //   }
+        // });
         break;
 
       case "update":
@@ -243,7 +307,10 @@ const ProductForm = ({ product }) => {
                 aria-labelledby="tabs-profile-tab"
               >
                 <div className="productOptionGroup">
-                  <ProductOptionForm />
+                  <ProductOptionForm
+                    imageOptions={imageOptions}
+                    setImageOptions={setImageOptions}
+                  />
                 </div>
               </div>
             </div>

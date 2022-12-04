@@ -5,21 +5,51 @@ import {
   addSizeToOption,
   removeOption,
   removeSizeInOption,
+  setMainImage,
 } from "../../../../redux/product/productForm/productFormSlice";
 import ColorSelect from "../ColorSelect/ColorSelect";
 import SizeRow from "../SizeRow/SizeRow";
 
-const ProductOptionForm = () => {
+const ProductOptionForm = ({ imageOptions, setImageOptions }) => {
   const { form } = useSelector((state) => state.productForm);
   const dispatch = useDispatch();
 
   const handleAddOptionClick = (e) => {
+    setImageOptions([...imageOptions, {mainImage: null, images: []}])
     dispatch(addOption());
   };
 
   const handleRemoveOptionClick = (index) => {
     dispatch(removeOption(index));
   };
+
+  const handleSetMainImage = (image, index) => {
+    const imageOptionsCp = imageOptions.map((o, i) => {
+      console.log("map");
+      if (i === index) {
+        o.mainImage = image;
+      }
+      return o;
+    });
+
+    setImageOptions(imageOptionsCp, index);
+  }
+
+  const addImage = (image, index) => {
+    const imageOptionsCp = imageOptions.map((o, i) => {
+      console.log("map");
+      if (i === index) {
+        o.images.push(image);
+      }
+      return o;
+    });
+
+    setImageOptions(imageOptionsCp, index);
+  }
+
+  const removeImage = (index, indexImage) => {
+
+  }
 
   return (
     <div className="roductOptionForm">
@@ -30,6 +60,8 @@ const ProductOptionForm = () => {
             option={ot}
             handleAddOptionClick={handleAddOptionClick}
             handleRemoveOptionClick={handleRemoveOptionClick}
+            handleSetMainImage={handleSetMainImage}
+            addImage={addImage}
           />
         ))}
       </div>
@@ -42,23 +74,30 @@ const ProductOptionRow = ({
   index,
   handleAddOptionClick,
   handleRemoveOptionClick,
+  handleSetMainImage,
+  addImage,
 }) => {
   const { form } = useSelector((state) => state.productForm);
   const dispatch = useDispatch();
 
-  const [mainImage, setMainImage] = useState(null);
+  // const [mainImage, setMainImage] = useState(null);
   const [images, SetImages] = useState([]);
   const [previewMainImage, setPreviewMainImage] = useState(null);
   const [previewImages, setPreviewImages] = useState([]);
 
-  const onSelectMainImage = (e) => {
+  const onSelectMainImage = (e, index) => {
     console.log("select file");
     if (!e.target.files || e.target.files.length === 0) {
-      setMainImage(null);
+      // dispatch(setMainImage({ image: null, index: index }));
+      handleSetMainImage(null, index);
+      setPreviewMainImage(
+        "https://res.cloudinary.com/hauhc/image/upload/v1668745224/lizi/thumbnail_image_default_bgvxgk.jpg"
+      );
       return;
     }
 
-    setMainImage(e.target.files[0]);
+    // dispatch(setMainImage({ image: e.target.files[0], index: index }));
+    handleSetMainImage(e.target.files[0], index);
     setPreviewMainImage(URL.createObjectURL(e.target.files[0]));
   };
 
@@ -68,6 +107,7 @@ const ProductOptionRow = ({
       return;
     }
 
+    addImage(e.target.files[0], index);
     SetImages([...images, e.target.files[0]]);
     setPreviewImages([
       ...previewImages,
@@ -116,7 +156,7 @@ const ProductOptionRow = ({
           <div className="row-span-1 grid grid-cols-3 mb-3">
             {option.sizes.map((s, i) => (
               <SizeRow
-                optionIndex = {index}
+                optionIndex={index}
                 index={i}
                 handleAddSizeClick={handleAddSizeClick}
                 handleRemoveSizeClick={handleRemoveSizeClick}
@@ -138,7 +178,10 @@ const ProductOptionRow = ({
                 <div class="field file">
                   <label class="upload control">
                     <span class="button blue">Ảnh chính</span>
-                    <input type="file" onChange={onSelectMainImage} />
+                    <input
+                      type="file"
+                      onChange={(e) => onSelectMainImage(e, index)}
+                    />
                   </label>
                 </div>
               </div>
