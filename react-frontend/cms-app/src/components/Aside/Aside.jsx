@@ -23,7 +23,7 @@ const Aside = () => {
             </Link>
           </li> */}
           <h3 className="pl-4 pt-4 text-slate-400 uppercase">Quản lý</h3>
-          <li className={ pathName === '/' || pathName.startsWith('/category') ? 'active' : '' }>
+          <li className={ pathName.startsWith('/category') ? 'active' : '' }>
             <Link to={"/category"}>
               <span className="icon">
                 <i className="mdi mdi-hanger"></i>
@@ -81,7 +81,7 @@ const Aside = () => {
             </Link>
           </li> */}
           <h3 className="pl-4 pt-4 text-slate-400 uppercase">Thống kê</h3>
-          <li className={ pathName.startsWith('/statis') ? 'active' : '' }>
+          <li className={ pathName === '/' || pathName.startsWith('/statis') ? 'active' : '' }>
             <Link to={"/statis"}>
               <span className="icon">
                 <i className="mdi mdi-chart-bar"></i>
