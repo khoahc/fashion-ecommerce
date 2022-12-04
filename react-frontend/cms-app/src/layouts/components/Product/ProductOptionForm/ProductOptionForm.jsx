@@ -5,7 +5,6 @@ import {
   addSizeToOption,
   removeOption,
   removeSizeInOption,
-  setMainImage,
 } from "../../../../redux/product/productForm/productFormSlice";
 import ColorSelect from "../ColorSelect/ColorSelect";
 import SizeRow from "../SizeRow/SizeRow";
@@ -15,7 +14,7 @@ const ProductOptionForm = ({ imageOptions, setImageOptions }) => {
   const dispatch = useDispatch();
 
   const handleAddOptionClick = (e) => {
-    setImageOptions([...imageOptions, {mainImage: null, images: []}])
+    setImageOptions([...imageOptions, { mainImage: null, images: [] }]);
     dispatch(addOption());
   };
 
@@ -33,7 +32,7 @@ const ProductOptionForm = ({ imageOptions, setImageOptions }) => {
     });
 
     setImageOptions(imageOptionsCp, index);
-  }
+  };
 
   const addImage = (image, index) => {
     const imageOptionsCp = imageOptions.map((o, i) => {
@@ -45,11 +44,9 @@ const ProductOptionForm = ({ imageOptions, setImageOptions }) => {
     });
 
     setImageOptions(imageOptionsCp, index);
-  }
+  };
 
-  const removeImage = (index, indexImage) => {
-
-  }
+  const removeImage = (index, indexImage) => {};
 
   return (
     <div className="roductOptionForm">
@@ -128,32 +125,37 @@ const ProductOptionRow = ({
     <div className="">
       <div className="productOptionRow card-content">
         <div className="w-full">
-          <div className="row-span-1 grid grid-cols-2 mb-3">
+          <label className="label min-w-fit mr-4">#{index + 1}</label>
+          <div className="row-span-1 grid grid-cols-2 mb-4">
             <div className="w-full">
               <ColorSelect index={index} />
             </div>
             <div className="">
-              <div className="float-right">
+              <div className="float-right buttons nowrap">
                 <button
                   type="button"
-                  className="button blue"
+                  className="button blue small"
                   onClick={handleAddOptionClick}
                 >
-                  +
+                  <span class="icon">
+                    <i className="mdi mdi-newspaper-plus"></i>
+                  </span>
                 </button>
                 <button
                   type="button"
-                  className="button red"
+                  className="button red small"
                   onClick={(e) => {
                     handleRemoveOptionClick(index);
                   }}
                 >
-                  -
+                  <span class="icon">
+                    <i className="mdi mdi-newspaper-remove"></i>
+                  </span>
                 </button>
               </div>
             </div>
           </div>
-          <div className="row-span-1 grid grid-cols-3 mb-3">
+          <div className="row-span-1 grid grid-cols-1 mb-4">
             {option.sizes.map((s, i) => (
               <SizeRow
                 optionIndex={index}
@@ -164,20 +166,21 @@ const ProductOptionRow = ({
             ))}
           </div>
 
-          <div className="mb-3">
-            <div class="field">
+          <div className="mb-4">
+            <div className="field">
+              <label className="label min-w-fit mr-4">Ảnh chính: </label>
               <div class="field-body">
-                <img
-                  style={{ maxHeight: "10rem" }}
-                  src={
-                    previewMainImage ||
-                    "https://res.cloudinary.com/hauhc/image/upload/v1668745224/lizi/thumbnail_image_default_bgvxgk.jpg"
-                  }
-                  alt=""
-                />
-                <div class="field file">
-                  <label class="upload control">
-                    <span class="button blue">Ảnh chính</span>
+                {previewMainImage && (
+                  <img
+                    style={{ maxHeight: "15rem" }}
+                    src={previewMainImage}
+                    alt=""
+                    className="mb-4"
+                  />
+                )}
+                <div className="field file">
+                  <label className="upload control">
+                    <span className="button blue">Tải ảnh</span>
                     <input
                       type="file"
                       onChange={(e) => onSelectMainImage(e, index)}
@@ -188,14 +191,22 @@ const ProductOptionRow = ({
             </div>
           </div>
           <div>
-            <div class="field">
-              <div class="field-body">
-                {previewImages.map((img) => (
-                  <img style={{ maxHeight: "10rem" }} src={img} alt="" />
-                ))}
-                <div class="field file">
-                  <label class="upload control">
-                    <span class="button blue">Ảnh Bổ sung</span>
+            <div className="field">
+              <label className="label min-w-fit mr-4">Ảnh bổ sung: </label>
+              <div className="field-body">
+                <div className="row-span-1 grid grid-cols-4">
+                  {previewImages.map((img) => (
+                    <img
+                      style={{ maxHeight: "15rem" }}
+                      className="mb-4"
+                      src={img}
+                      alt=""
+                    />
+                  ))}
+                </div>
+                <div className="field file">
+                  <label className="upload control">
+                    <span className="button blue">Thêm ảnh</span>
                     <input type="file" onChange={onSelectImages} />
                   </label>
                 </div>

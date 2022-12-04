@@ -33,6 +33,10 @@ const ProductForm = ({ product }) => {
     },
   ]);
 
+  const validateForm = () => {
+
+  } 
+
   const onSubmitHandle = (e) => {
     e.preventDefault();
 
