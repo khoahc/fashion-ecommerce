@@ -7,10 +7,16 @@ export const userLogin = createAsyncThunk(
   "user/login",
   async ({ email, password }, { rejectWithValue }) => {
     try {
-      const { data } = await loginWithEmail({ email, password });
-      localStorage.setItem("userToken", data.accessToken);
-      return data;
+      const resp = await loginWithEmail({ email, password });
+      console.log(resp);
+      if (resp.status && resp.status === 'OK') {
+        localStorage.setItem("userToken", resp.data.accessToken);
+        return resp.data;
+      } else {
+        return rejectWithValue("Email hoặc mật khẩu không đúng");
+      }
     } catch (error) {
+      console.log("loi");
       if (error.response && error.response.data.message) {
         return rejectWithValue(error.response.data.message);
       } else {

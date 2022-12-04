@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import { userLogin } from "../../redux/user/userAction";
+import notify from "../../utils/notify";
 
 const Login = ({ setToken }) => {
-  const { loading, userToken, error } = useSelector((state) => state.user)
+  const { loading, userToken, error, success } = useSelector((state) => state.user)
   const dispatch = useDispatch()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,6 +21,13 @@ const Login = ({ setToken }) => {
       navigate('/')
     }
   }, [navigate, userToken])
+
+  useEffect(() => {
+    if (error) {
+      console.log(error);
+      notify(0, 'Email hoặc mật khẩu không đúng');
+    }
+  }, [error]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
