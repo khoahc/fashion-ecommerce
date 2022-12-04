@@ -63,27 +63,27 @@ const CategoryTableContent = ({ list }) => {
             </div>
           </td>
           {/* <td data-label="Created">
-            <small class="text-gray-500" title={category.createTime}>
+            <small className="text-gray-500" title={category.createTime}>
               {category.createTime}
             </small>
           </td> */}
           {/* <td data-label="Created">
-            <small class="text-gray-500" title={category.updateTime}>
+            <small className="text-gray-500" title={category.updateTime}>
               {category.updateTime}
             </small>
           </td> */}
-          <td class="actions-cell">
-            <div class="buttons justify-center nowrap">
+          <td className="actions-cell">
+            <div className="buttons justify-center nowrap">
               <Link
                 to={`/category/${category.id}`}
-                class="button small green --jb-modal"
+                className="button small green --jb-modal"
               >
-                <span class="icon">
-                  <i class="mdi mdi-eye"></i>
+                <span className="icon">
+                  <i className="mdi mdi-eye"></i>
                 </span>
               </Link>
               <button
-                class="button small red --jb-modal"
+                className="button small red --jb-modal"
                 data-target="sample-modal"
                 type="button"
                 onClick={() => {
@@ -91,8 +91,8 @@ const CategoryTableContent = ({ list }) => {
                   setCategoryIdChoose(category.id);
                 }}
               >
-                <span class="icon">
-                  <i class="mdi mdi-trash-can"></i>
+                <span className="icon">
+                  <i className="mdi mdi-trash-can"></i>
                 </span>
               </button>
               {

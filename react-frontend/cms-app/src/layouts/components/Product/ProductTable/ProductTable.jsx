@@ -86,7 +86,7 @@ const ProductTableContent = ({ list }) => {
           </td>
           <td className="actions-cell">
             <div className="buttons justify-center nowrap">
-              <button
+              {/* <button
                 class="button small red --jb-modal"
                 data-target="sample-modal"
                 type="button"
@@ -98,7 +98,7 @@ const ProductTableContent = ({ list }) => {
                 <span class="icon">
                   <i class="mdi mdi-eye"></i>
                 </span>
-              </button>
+              </button> */}
               <Link
                 to={`/product/${product.id}`}
                 class="button small green --jb-modal"
