@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import EmptyBodyTable from "../../../../components/EmptyBodyTable/EmptyBodyTable";
 import LoadingTableContent from "../../../../components/LoadingTableContent/LoadingTableContent";
+import ModalProductDetail from "../ModalProductDetail/ModalProductDetail";
 
 const ProductTable = ({ list, isLoading }) => {
   return (
@@ -37,6 +39,8 @@ const ProductTable = ({ list, isLoading }) => {
 };
 
 const ProductTableContent = ({ list }) => {
+  const [productIdChoose, setProductIdChoose] = useState(null);
+  const [showModalDetails, setShowModalDetails] = useState(false);
   if (list && list.length !== 0) {
     return list.map((product) => {
       return (
@@ -82,6 +86,19 @@ const ProductTableContent = ({ list }) => {
           </td>
           <td className="actions-cell">
             <div className="buttons justify-center nowrap">
+              <button
+                class="button small red --jb-modal"
+                data-target="sample-modal"
+                type="button"
+                onClick={() => {
+                  setShowModalDetails(true);
+                  setProductIdChoose(product.id);
+                }}
+              >
+                <span class="icon">
+                  <i class="mdi mdi-eye"></i>
+                </span>
+              </button>
               <Link
                 to={`/product/${product.id}`}
                 class="button small green --jb-modal"
@@ -99,6 +116,13 @@ const ProductTableContent = ({ list }) => {
                   <i class="mdi mdi-trash-can"></i>
                 </span>
               </button>
+              {productIdChoose != null && (
+                <ModalProductDetail
+                  id={productIdChoose}
+                  showModal={showModalDetails}
+                  setShowModal={setShowModalDetails}
+                />
+              )}
             </div>
           </td>
         </tr>
