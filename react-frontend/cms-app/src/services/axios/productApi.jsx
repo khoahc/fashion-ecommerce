@@ -27,7 +27,17 @@ const productApi = {
 
     uploadImageProduct: async (requestOption) => {
         const url = `/api/v1/products/image`;
-        return await axiosClientMultipart.post(url, requestOption);
+        return await axiosClientMultipart.put(url, requestOption);
+    },
+
+    disableProduct: async (id) => {
+        const url = `/api/v1/products/${id}/disable`;
+        return await axiosClientMultipart.put(url);
+    },
+
+    enableProduct: async (id) => {
+        const url = `/api/v1/products/${id}/enable`;
+        return await axiosClientMultipart.put(url);
     },
 };
 

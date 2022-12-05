@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import EmptyBodyTable from "../../../../components/EmptyBodyTable/EmptyBodyTable";
 import LoadingTableContent from "../../../../components/LoadingTableContent/LoadingTableContent";
+import ModalDisabledProduct from "../ModalDisabledProduct/ModalDisabledProduct";
+import ModalEnabledProduct from "../ModalEnabledProduct/ModalEnabledProduct";
 import ModalProductDetail from "../ModalProductDetail/ModalProductDetail";
 
 const ProductTable = ({ list, isLoading }) => {
@@ -41,6 +43,8 @@ const ProductTable = ({ list, isLoading }) => {
 const ProductTableContent = ({ list }) => {
   const [productIdChoose, setProductIdChoose] = useState(null);
   const [showModalDetails, setShowModalDetails] = useState(false);
+  const [showModalEnabled, setShowModalEnabled] = useState(false);
+  const [showModalDiabled, setShowModalDisabled] = useState(false);
   if (list && list.length !== 0) {
     return list.map((product) => {
       return (
@@ -74,13 +78,29 @@ const ProductTableContent = ({ list }) => {
           <td data-label="Status">
             <div className="flex items-center justify-center">
               {product.enabled ? (
-                <span className="icon text-green-600 text-2xl">
-                  <i className="mdi mdi-check-circle"></i>
-                </span>
+                <button
+                  className="--jb-modal"
+                  onClick={() => {
+                    setShowModalDisabled(true);
+                    setProductIdChoose(product.id);
+                  }}
+                >
+                  <span className="icon text-green-600 text-2xl hover:text-green-800">
+                    <i className="mdi mdi-check-circle"></i>
+                  </span>
+                </button>
               ) : (
-                <span className="icon text-red-600 text-2xl">
-                  <i className="mdi mdi-close-circle "></i>
-                </span>
+                <button
+                  className="--jb-modal"
+                  onClick={() => {
+                    setShowModalEnabled(true);
+                    setProductIdChoose(product.id);
+                  }}
+                >
+                  <span className="icon text-red-600 text-2xl hover:text-red-800">
+                    <i className="mdi mdi-close-circle "></i>
+                  </span>
+                </button>
               )}
             </div>
           </td>
@@ -117,11 +137,29 @@ const ProductTableContent = ({ list }) => {
                 </span>
               </button>
               {productIdChoose != null && (
-                <ModalProductDetail
-                  id={productIdChoose}
-                  showModal={showModalDetails}
-                  setShowModal={setShowModalDetails}
-                />
+                <>
+                  {showModalDetails && (
+                    <ModalProductDetail
+                      id={productIdChoose}
+                      showModal={showModalDetails}
+                      setShowModal={setShowModalDetails}
+                    />
+                  )}
+                  {showModalDiabled && (
+                    <ModalDisabledProduct
+                      id={productIdChoose}
+                      showModal={showModalDiabled}
+                      setShowModal={setShowModalDisabled}
+                    />
+                  )}
+                  {showModalEnabled && (
+                    <ModalEnabledProduct
+                      id={productIdChoose}
+                      showModal={showModalEnabled}
+                      setShowModal={setShowModalEnabled}
+                    />
+                  )}
+                </>
               )}
             </div>
           </td>
