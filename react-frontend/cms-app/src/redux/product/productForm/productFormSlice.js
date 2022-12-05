@@ -115,8 +115,12 @@ const productFormSlice = createSlice({
       state.form = initialForm;
     },
     setMainImage: (state, action) => {
-      state.imagesOptions[action.payload.optionIndex].mainImage = action.payload.image;
-    }
+      state.imagesOptions[action.payload.index].mainImage = action.payload.image;
+    }, 
+    setOption: (state, action) => {
+      state.form.options[action.payload.index].mainImageId = action.payload.option.mainImageId;
+      state.form.options[action.payload.index].imageIds = action.payload.option.imageIds;
+    },
   },
   extraReducers: {},
 });
@@ -137,5 +141,6 @@ export const {
   removeSizeInOption,
   clear,
   setMainImage,
+  setOption,
 } = productFormSlice.actions;
 export default productFormSlice.reducer;

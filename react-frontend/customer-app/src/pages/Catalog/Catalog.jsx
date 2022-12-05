@@ -1,15 +1,17 @@
+import Button from "@mui/material/Button";
 import clsx from "clsx";
 import _ from "lodash";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { IconContext } from "react-icons";
 import { FaTrashAlt } from "react-icons/fa";
+import { MdFilterAlt } from "react-icons/md";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useNavigate, useParams } from "react-router-dom";
 import Select from "react-select";
 
 import Breadcrumb from "../../components/Breadcrumb";
-import Button from "../../components/Button";
+import MyButton from "../../components/Button";
 import ColorFilter from "../../components/ColorFilter";
 import FilterSkeleton from "../../components/FilterSkeleton";
 import InfinityList from "../../components/InfinityList";
@@ -249,6 +251,10 @@ const Catalog = () => {
     updateProducts();
   }, [updateProducts]);
 
+  const filterLeft = useRef(null);
+
+  const filterToggle = () => filterLeft.current.classList.toggle(styles.active);
+
   return (
     <>
       {/* <img className={clsx(styles.banner)} src={category.image} alt="" /> */}
@@ -267,23 +273,45 @@ const Catalog = () => {
               {isLoading ? <Skeleton width={100} height={30} /> : category.name}
             </h2>
           </div>
-          <div className={clsx(styles.sort)}>
-            <Select
-              isSearchable={false}
-              placeholder={"Sắp xếp theo"}
-              defaultValue={selectedOption}
-              onChange={setSelectedOption}
-              options={optionsSort}
-              theme={(theme) => ({
-                ...theme,
-                borderRadius: 0,
-                colors: {
-                  ...theme.colors,
-                  primary25: "orange",
-                  primary: "black",
-                },
-              })}
-            />
+
+          <div className="flex-row flex-gap-1 ">
+            <div className={clsx(styles.filterMobileToggle)}>
+              <Button
+                variant="outlined"
+                startIcon={<MdFilterAlt />}
+                style={{
+                  margin: "10px auto",
+                  borderRadius: 1,
+                  color: "#000",
+                  textTransform: "capitalize",
+                  border: "1px solid #ccc",
+                  backgroundColor: "#fff",
+                  padding: "5px 20px",
+                  fontSize: "0.85rem",
+                }}
+                onClick={filterToggle}
+              >
+                Lọc
+              </Button>
+            </div>
+            <div className={clsx(styles.sort)}>
+              <Select
+                isSearchable={false}
+                placeholder={"Sắp xếp theo"}
+                defaultValue={selectedOption}
+                onChange={setSelectedOption}
+                options={optionsSort}
+                theme={(theme) => ({
+                  ...theme,
+                  borderRadius: 0,
+                  colors: {
+                    ...theme.colors,
+                    primary25: "orange",
+                    primary: "black",
+                  },
+                })}
+              />
+            </div>
           </div>
         </div>
 
@@ -294,17 +322,28 @@ const Catalog = () => {
                 [styles.up]: scrollDirection === "down",
                 [styles.down]: scrollDirection === "up",
               })}
+              ref={filterLeft}
             >
               <div className="mr-1">
                 {/* Button component */}
-                <Button
-                  border={true}
-                  paddingX={2}
-                  paddingY={1}
-                  children={"Xóa tất cả"}
-                  onClick={clearFilter}
-                />
-
+                <div className="flex-row flex-gap-1">
+                  <MyButton
+                    border={true}
+                    paddingX={2}
+                    paddingY={1}
+                    children={"Xóa tất cả"}
+                    onClick={clearFilter}
+                  />
+                  <div className={clsx(styles.btnApplyMobileToggle)}>
+                    <MyButton
+                      border={true}
+                      paddingX={2}
+                      paddingY={1}
+                      children={"Áp dụng"}
+                      onClick={filterToggle}
+                    />
+                  </div>
+                </div>
                 <div className={clsx(styles.menu)}>
                   <div className={clsx(styles.title)}>
                     <h4>Danh mục</h4>

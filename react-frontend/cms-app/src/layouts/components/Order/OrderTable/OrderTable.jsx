@@ -1,7 +1,7 @@
 import LoadingTableContent from "../../../../components/LoadingTableContent/LoadingTableContent";
 import OrderTableContent from "../../../../components/OrderTableContent";
 
-const OrderTable = ({ list, isLoading }) => {
+const OrderTable = ({ list, isLoading, pageSize, currentPage }) => {
   return (
     <table>
       <thead>
@@ -25,7 +25,11 @@ const OrderTable = ({ list, isLoading }) => {
         {isLoading ? (
           <LoadingTableContent colSpan={11} />
         ) : (
-          <OrderTableContent listOrder={list} />
+          <OrderTableContent
+            listOrder={list}
+            pageSize={pageSize}
+            currentPage={currentPage}
+          />
         )}
       </tbody>
     </table>

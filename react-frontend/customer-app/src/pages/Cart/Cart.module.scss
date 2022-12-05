@@ -1,3 +1,5 @@
+@import "../../sass/mixins";
+@import "../../sass/variables";
 .container {
   min-height: 100vh;
   display: flex;
@@ -8,8 +10,20 @@
   max-width: 1240px;
   margin: 50px auto;
 
+  @include tablet {
+    display: flex;
+    min-height: auto;
+    flex-direction: column;
+    margin: 20px;
+  }
+
   .left {
-    flex: 1.5;    
+    flex: 1.5;
+    @include tablet {
+      display: block;
+      margin: 10px auto;
+      flex: none;
+    }
   }
 
   .right {
@@ -17,6 +31,12 @@
     padding: 20px 10px;
     border-radius: 5px;
     background-color: #fff;
+
+    @include tablet {
+      display: block;
+      margin: 0px auto;
+      flex: none;
+    }
 
     .couponInput {
       border: 0.5px groove rgb(167, 166, 166);
@@ -37,6 +57,5 @@
         outline: none;
       }
     }
-
   }
 }

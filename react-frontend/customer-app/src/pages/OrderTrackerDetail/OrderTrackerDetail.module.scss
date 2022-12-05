@@ -1,3 +1,6 @@
+@import "../../sass/mixins";
+@import "../../sass/variables";
+
 .container {
   min-height: 100vh;
   display: flex;
@@ -8,6 +11,11 @@
   border-radius: 5px;
   margin: 20px auto 100px;
   padding: 50px 25px;
+
+  @include tablet {
+    flex-direction: column;
+    margin: 20px 20px 20px;
+  }
 
   .title {
     border-bottom: 1px solid #bbb;
@@ -23,6 +31,12 @@
     margin-right: 50px;
     border-radius: 5px;
     background-color: #fff;
+
+    @include tablet {
+      flex: 1;
+      margin-right: 0px;
+      width: 100%;
+    }
   }
 
   .right {
@@ -37,5 +51,11 @@
     transition: top 0.3s;
     box-shadow: 1px 1px 3px 1px #666;
     top: 100px;
+    @include tablet {
+      flex: 1;
+      box-shadow: none;
+      width: 100%;
+      padding: 10px 10px;
+    }
   }
 }

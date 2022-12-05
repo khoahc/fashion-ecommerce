@@ -1,3 +1,5 @@
+@import "../../sass/mixins";
+@import "../../sass/variables";
 .container {
   min-height: 100vh;
   display: flex;
@@ -9,6 +11,11 @@
   border-radius: 5px;
   margin: 50px auto 200px;
   padding: 50px 25px;
+  
+  @include tablet {
+    display: block;
+    margin: 50px 20px 50px;
+  }
 
   fieldset {
     border-radius: 0px !important;
@@ -24,6 +31,11 @@
     padding-right: 20px;
     flex: 2;
     border-right: 1px solid #999;
+    
+    @include tablet {
+      border-right: none;
+    }
+
 
     .gridContainer {
       display: grid;
@@ -37,6 +49,22 @@
       gap: 10px;
       // background-color: #2196f3;
       padding: 10px;
+
+      @include tablet {
+        display: grid;
+        grid-template-columns: auto auto auto;
+        grid-template-areas:
+          "fullName fullName fullName"
+          "phonenumber phonenumber phonenumber"
+          "email email email"
+          "tinh  tinh  tinh"
+          "huyen  huyen  huyen"
+          "xa  xa  xa"
+          "address address address";
+        gap: 10px;
+        // background-color: #2196f3;
+        padding: 10px;
+      }
     }
 
     .gridContainer > div {
@@ -84,7 +112,12 @@
     align-self: flex-start;
     transition: top 0.3s;
     top: 95px;
-    
+
+    @include tablet {
+      flex: none;
+      margin-top: 50px;
+    }
+
     .couponInput {
       border: 0.5px groove rgb(167, 166, 166);
       padding: 5px 10px;

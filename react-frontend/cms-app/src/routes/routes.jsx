@@ -22,7 +22,7 @@ import UserDetail from '../pages/User/UserDetail/UserDetail';
 // Public routes
 const publicRoutes = [
 
-    { path: config.routes.home, element: Category },
+    { path: config.routes.home, element: Statis },
 
     { path: config.routes.category, element: Category },
     { path: config.routes.addCategory, element: AddCategory },
