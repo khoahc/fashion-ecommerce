@@ -31,8 +31,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
           "\tProduct p \n" +
           "INNER JOIN Category c\n" +
           "ON p.category.id = c.id\n" +
-          "WHERE (c.allParentIds LIKE CONCAT('%-', :idCategory ,'-%'))\n" +
-          " OR c.slug = :slugCategory")
+          "WHERE ((c.allParentIds LIKE CONCAT('%-', :idCategory ,'-%'))\n" +
+          " OR c.slug = :slugCategory) AND p.enabled = TRUE ")
   Optional<List<ProductCatalogResponseDTO>> findAllProductsCatalogByCategorySlug(@Param("slugCategory") String slug, @Param("idCategory") Integer id);
 
   //find colors of product (name, slug and image attribute) by category slug and product slug
