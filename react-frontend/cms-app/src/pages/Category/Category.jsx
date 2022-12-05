@@ -4,6 +4,7 @@ import Pagination from "../../components/Pagination";
 import Titlebar from "../../components/Titlebar";
 import CategoryTable from "../../layouts/components/Category/CategoryTable";
 import categoryApi from "../../services/axios/categoryApi";
+import notify from "../../utils/notify";
 
 const { getAllCategories } = categoryApi;
 
@@ -22,21 +23,28 @@ const Category = () => {
     },
   ];
 
-  const getData = async ({params}) => {
+  const getData = async ({ params }) => {
     setIsLoading(true);
-    const resp = await getAllCategories({params});
-    console.log(resp);
-    setListCategory(resp.data);
-    setTotalCount(resp.totalCount);
-    setIsLoading(false);
+    getAllCategories({ params })
+      .then((resp) => {
+        console.log(resp);
+        if (resp.status === "OK") {
+          setListCategory(resp.data);
+          setTotalCount(resp.totalCount);
+          setIsLoading(false);
+        } else {
+          return new Promise.reject(resp.message);
+        }
+      })
+      .catch((error) => notify(0, error));
   };
 
   useEffect(() => {
-    getData();
+    getData({ params: { page: 1, size: PageSize } });
   }, []);
 
   useEffect(() => {
-    getData({params: { page: currentPage}});
+    getData({ params: { page: currentPage, size: PageSize } });
   }, [currentPage]);
 
   useEffect(() => {

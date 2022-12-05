@@ -9,29 +9,29 @@ const ModalDeleteCategory = (props) => {
       deleteCategory(props.categoryId)
           .then((response) => {
             if (response.status === "OK") {
-              props.setShowModalDeleteUser(false);
+              props.setShowModalDeleteCategory(false);
               notify(1, "Xóa loại sản phẩm thành công");
               console.log(response);
             } else {
-              props.setShowModalDeleteUser(false);
+              props.setShowModalDeleteCategory(false);
               notify(0, "Xóa loại sản phẩm thất bại!");
               return Promise.reject(new Error(response.message));
             }
           })
           .catch(function (error) {
-            props.setShowModalDeleteUser(false);
+            props.setShowModalDeleteCategory(false);
             notify(0, "Xóa loại sản phẩm thất bại!");
             console.log(error);
           });
         window.location.reload(true);
       };
       const handleClickClose = () => {
-        props.setShowModalDeleteUser(false);
+        props.setShowModalDeleteCategory(false);
       };
     
       return (
         <>
-          {props.showModalDeleteUser && (
+          {props.showModalDeleteCategory && (
             <div className="flex justify-center items-center bg-slate-600/60 overflow-x-hidden overflow-y-auto fixed inset-y-0 left-0 lg:left-60 right-0 z-50 outline-none focus:outline-none">
               <div className="relative w-auto my-2 mx-auto max-w-4xl">
                 <div className="h-[220px] w-[300px] border-0 rounded-lg shadow-lg relative flex flex-col bg-white outline-none focus:outline-none">
@@ -41,7 +41,7 @@ const ModalDeleteCategory = (props) => {
                     </h3>
                     <button
                       className="bg-transparent border-0 text-black float-right"
-                      onClick={() => props.setShowModalDeleteUser(false)}
+                      onClick={() => props.setShowModalDeleteCategory(false)}
                     >
                       <span className="icon text-xl ">
                         <i className="mdi mdi-close-circle-outline hover:text-red-600"></i>
