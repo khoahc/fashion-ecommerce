@@ -70,6 +70,20 @@ public class ProductController {
             .data(productService.updateProduct(id, productReqDto)).build());
   }
 
+  @PutMapping(value = "/{id}/disable")
+  public ResponseEntity<ResponseObject> disableProduct(@PathVariable("id") Long id) {
+    return ResponseEntity.ok().body(
+        ResponseObject.builder().status(HttpStatus.OK).message(Constant.SUCCESS)
+            .data(productService.disableProduct(id)).build());
+  }
+
+  @PutMapping(value = "/{id}/enable")
+  public ResponseEntity<ResponseObject> enableProduct(@PathVariable("id") Long id) {
+    return ResponseEntity.ok().body(
+        ResponseObject.builder().status(HttpStatus.OK).message(Constant.SUCCESS)
+            .data(productService.enableProduct(id)).build());
+  }
+
   @DeleteMapping(value = "/{id}")
   public ResponseEntity<ResponseObject> deleteProduct(@PathVariable(name = "id") Long id) {
     productService.deleteCategory(id);

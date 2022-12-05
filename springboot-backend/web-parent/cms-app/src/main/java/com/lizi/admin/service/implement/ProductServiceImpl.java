@@ -56,6 +56,11 @@ public class ProductServiceImpl implements ProductService {
         .orElseThrow(() -> new ResourceNotFoundException("product", "id", id)));
   }
 
+  private Product get(Long id) {
+    return productRepo.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("product", "id", id));
+  }
+
   @Override
   public ProductResDto createProduct(ProductReqDto productReqDto) {
     // check unique name
@@ -112,6 +117,20 @@ public class ProductServiceImpl implements ProductService {
     product.setCategory(category);
     product.setSlug(slug);
 
+    return ProductMapper.INSTANCE.productToDto(productRepo.save(product));
+  }
+
+  @Override
+  public ProductResDto disableProduct(Long id) {
+    Product product = get(id);
+    product.setEnabled(false);
+    return ProductMapper.INSTANCE.productToDto(productRepo.save(product));
+  }
+
+  @Override
+  public ProductResDto enableProduct(Long id) {
+    Product product = get(id);
+    product.setEnabled(true);
     return ProductMapper.INSTANCE.productToDto(productRepo.save(product));
   }
 

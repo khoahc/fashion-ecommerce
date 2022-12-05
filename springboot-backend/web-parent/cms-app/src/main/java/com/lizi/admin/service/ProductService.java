@@ -17,6 +17,8 @@ public interface ProductService {
   ProductResDto createProduct(ProductReqDto productReqDto);
 
   ProductResDto updateProduct(Long id, ProductReqDto productReqDto);
+  ProductResDto disableProduct(Long id);
+  ProductResDto enableProduct(Long id);
 
   void deleteCategory(Long id);
 
