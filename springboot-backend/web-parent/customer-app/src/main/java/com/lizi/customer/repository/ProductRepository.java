@@ -31,7 +31,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
           "\tProduct p \n" +
           "INNER JOIN Category c\n" +
           "ON p.category.id = c.id\n" +
-          "WHERE (c.allParentIds LIKE CONCAT('%', :idCategory ,'%'))\n" +
+          "WHERE (c.allParentIds LIKE CONCAT('%-', :idCategory ,'-%'))\n" +
           " OR c.slug = :slugCategory")
   Optional<List<ProductCatalogResponseDTO>> findAllProductsCatalogByCategorySlug(@Param("slugCategory") String slug, @Param("idCategory") Integer id);
 

@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
   @Query(value = "select * FROM tbl_categories c \n" +
-          "WHERE c.all_parent_ids like concat('%', (select id from tbl_categories where slug = :slug) , '%') ", nativeQuery = true)
+          "WHERE c.all_parent_ids like concat('%-', (select id from tbl_categories where slug = :slug) , '-%') ", nativeQuery = true)
   List<Category> findMenuCategoryBySlug(@Param(value = "slug") String slug);
 
   @Query(value = "select c FROM Category c \n" +
