@@ -1,9 +1,11 @@
 package com.lizi.admin.repository;
 
 import com.lizi.admin.dto.product.ProductOrderResDto;
+import com.lizi.common.entity.Order;
 import com.lizi.common.entity.OrderDetail;
 import com.lizi.common.entity.OrderTrack;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -20,5 +22,10 @@ public interface OrderTrackRepository extends JpaRepository<OrderTrack, Long> {
 
     @Query(value = "SELECT EXISTS(SELECT * FROM tbl_tracks o_t WHERE o_t.order_id = :orderId AND o_t.status = :status)", nativeQuery = true)
     Integer checkStatusOrderTrackByOrderId(@Param(value = "orderId") String orderId, @Param(value = "status") String status);
+
+    @Query("SELECT o FROM OrderTrack ot "
+        + "INNER JOIN ot.order o "
+        + "WHERE ot.status = com.lizi.common.entity.OrderStatus.PACKAGED")
+    Page<Order> findAllToDeliver(Pageable pageable);
 
 }
