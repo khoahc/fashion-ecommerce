@@ -42,21 +42,21 @@ public enum OrderStatus {
   PACKAGED {
     @Override
     public String defaultDescription() {
-      return "Products were packaged";
+      return "Đã đóng gói";
     }
   },
 
   SHIPPING {
     @Override
     public String defaultDescription() {
-      return "Đã gửi hàng";
+      return "Đang giao hàng";
     }
   },
 
   DELIVERED {
     @Override
     public String defaultDescription() {
-      return "Customer received products";
+      return "Đã nhận hàng";
     }
   },
 
