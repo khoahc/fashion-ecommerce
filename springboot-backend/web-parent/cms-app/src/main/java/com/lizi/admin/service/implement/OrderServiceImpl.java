@@ -57,12 +57,13 @@ public class OrderServiceImpl implements OrderService {
 
     return orderResDtoList.stream().map(orderResDto -> {
           orderResDto.setOrderStatus(orderTrackRepo.findStatusOrderTrackByOrderId(orderResDto.getId()));
-          orderResDto.setVerified(orderTrackRepo.checkStatusOrderTrackByOrderId(orderResDto.getId(),
-              OrderStatus.VERIFIED.name()) == 1);
-          orderResDto.setShipping(orderTrackRepo.checkStatusOrderTrackByOrderId(orderResDto.getId(),
-              OrderStatus.SHIPPING.name()) == 1);
-          orderResDto.setCancelled(orderTrackRepo.checkStatusOrderTrackByOrderId(orderResDto.getId(),
-              OrderStatus.CANCELLED.name()) == 1);
+//          orderResDto.setVerified(orderTrackRepo.checkStatusOrderTrackByOrderId(orderResDto.getId(),
+//              OrderStatus.VERIFIED.name()) == 1);
+//          orderResDto.setShipping(orderTrackRepo.checkStatusOrderTrackByOrderId(orderResDto.getId(),
+//              OrderStatus.SHIPPING.name()) == 1);
+//          orderResDto.setCancelled(orderTrackRepo.checkStatusOrderTrackByOrderId(orderResDto.getId(),
+//              OrderStatus.CANCELLED.name()) == 1);
+          setOrderCheckStatusForOrderResDto(orderResDto);
           return orderResDto;
         }
     ).collect(Collectors.toList());
@@ -75,12 +76,13 @@ public class OrderServiceImpl implements OrderService {
 
     return orderResDtoList.stream().map(orderResDto -> {
           orderResDto.setOrderStatus(orderTrackRepo.findStatusOrderTrackByOrderId(orderResDto.getId()));
-          orderResDto.setVerified(orderTrackRepo.checkStatusOrderTrackByOrderId(orderResDto.getId(),
-              OrderStatus.VERIFIED.name()) == 1);
-          orderResDto.setShipping(orderTrackRepo.checkStatusOrderTrackByOrderId(orderResDto.getId(),
-              OrderStatus.SHIPPING.name()) == 1);
-          orderResDto.setCancelled(orderTrackRepo.checkStatusOrderTrackByOrderId(orderResDto.getId(),
-              OrderStatus.CANCELLED.name()) == 1);
+//          orderResDto.setVerified(orderTrackRepo.checkStatusOrderTrackByOrderId(orderResDto.getId(),
+//              OrderStatus.VERIFIED.name()) == 1);
+//          orderResDto.setShipping(orderTrackRepo.checkStatusOrderTrackByOrderId(orderResDto.getId(),
+//              OrderStatus.SHIPPING.name()) == 1);
+//          orderResDto.setCancelled(orderTrackRepo.checkStatusOrderTrackByOrderId(orderResDto.getId(),
+//              OrderStatus.CANCELLED.name()) == 1);
+          setOrderCheckStatusForOrderResDto(orderResDto);
           return orderResDto;
         }
     ).collect(Collectors.toList());
@@ -161,6 +163,26 @@ public class OrderServiceImpl implements OrderService {
   @Override
   public BigDecimal getTotalRevenue() {
     return orderRepo.findTotalRevenue();
+  }
+
+  @Override
+  public Order getOrder(String id) {
+    return orderRepo.findById(id).orElseThrow(
+        () -> new ResourceNotFoundException(Constant.NOT_FOUND));
+  }
+
+  @Override
+  public void setOrderCheckStatusForOrderResDto(OrderResDto orderResDto) {
+    orderResDto.setVerified(orderTrackRepo.checkStatusOrderTrackByOrderId(orderResDto.getId(),
+        OrderStatus.VERIFIED.name()) == 1);
+    orderResDto.setPackaged(orderTrackRepo.checkStatusOrderTrackByOrderId(orderResDto.getId(),
+        OrderStatus.PACKAGED.name()) == 1);
+    orderResDto.setShipping(orderTrackRepo.checkStatusOrderTrackByOrderId(orderResDto.getId(),
+        OrderStatus.SHIPPING.name()) == 1);
+    orderResDto.setDelivered(orderTrackRepo.checkStatusOrderTrackByOrderId(orderResDto.getId(),
+        OrderStatus.DELIVERED.name()) == 1);
+    orderResDto.setCancelled(orderTrackRepo.checkStatusOrderTrackByOrderId(orderResDto.getId(),
+        OrderStatus.CANCELLED.name()) == 1);
   }
 
   @Override

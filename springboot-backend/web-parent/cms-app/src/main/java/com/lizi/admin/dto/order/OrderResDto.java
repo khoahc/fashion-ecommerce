@@ -49,7 +49,11 @@ public class OrderResDto {
 
   private boolean verified;
 
+  private boolean packaged;
+
   private boolean shipping;
+
+  private boolean delivered;
 
   private boolean cancelled;
 

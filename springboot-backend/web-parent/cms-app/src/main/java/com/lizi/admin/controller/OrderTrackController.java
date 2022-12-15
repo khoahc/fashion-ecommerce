@@ -31,11 +31,11 @@ public class OrderTrackController {
                     .data(orderTrackService.addOrderTrackVerifiedByOrderId(orderIdReqDto.getOrderId())).build());
   }
 
-  @PostMapping(value = "/shipping")
+  @PostMapping(value = "/package")
   public ResponseEntity<ResponseObject> addOrderTrackShippingByOrderId(@RequestBody OrderIdReqDto orderIdReqDto) {
     return ResponseEntity.ok().body(
             ResponseObject.builder().status(HttpStatus.OK).message(Constant.SUCCESS)
-                    .data(orderTrackService.addOrderTrackShippingByOrderId(orderIdReqDto.getOrderId())).build());
+                    .data(orderTrackService.addOrderTrackPackageByOrderId(orderIdReqDto.getOrderId())).build());
   }
 
   @PostMapping(value = "/cancelled")

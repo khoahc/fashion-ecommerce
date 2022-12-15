@@ -50,13 +50,13 @@ public class OrderTrackServiceImpl implements OrderTrackService {
   }
 
   @Override
-  public OrderTrackResDto addOrderTrackShippingByOrderId(String orderId) {
+  public OrderTrackResDto addOrderTrackPackageByOrderId(String orderId) {
     Order order = orderRepository.findById(orderId).orElseThrow(
         () -> new ResourceNotFoundException(Constant.NOT_FOUND));
 
     OrderTrack orderTrack = OrderTrack.builder()
-        .notes(OrderStatus.SHIPPING.defaultDescription())
-        .status(OrderStatus.SHIPPING)
+        .notes(OrderStatus.PACKAGED.defaultDescription())
+        .status(OrderStatus.PACKAGED)
         .order(order)
         .build();
     return OrderTrackMapper.INSTANCE.OrderTrackToOrderTrackResDto(

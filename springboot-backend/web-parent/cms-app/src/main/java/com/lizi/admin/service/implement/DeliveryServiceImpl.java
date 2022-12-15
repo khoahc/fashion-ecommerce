@@ -1,11 +1,16 @@
 package com.lizi.admin.service.implement;
 
 import com.lizi.admin.dto.order.OrderResDto;
+import com.lizi.admin.dto.orderTrack.OrderTrackResDto;
 import com.lizi.admin.mapper.OrderMapper;
+import com.lizi.admin.mapper.OrderTrackMapper;
 import com.lizi.admin.repository.OrderRepository;
 import com.lizi.admin.repository.OrderTrackRepository;
 import com.lizi.admin.service.DeliveryService;
+import com.lizi.admin.service.OrderService;
+import com.lizi.common.entity.Order;
 import com.lizi.common.entity.OrderStatus;
+import com.lizi.common.entity.OrderTrack;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +24,9 @@ public class DeliveryServiceImpl implements DeliveryService {
   @Autowired
   private OrderTrackRepository orderTrackRepo;
 
+  @Autowired
+  private OrderService orderService;
+
   @Override
   public List<OrderResDto> getAllOrder(Pageable pageable) {
     List<OrderResDto> orderResDtoList = OrderMapper.INSTANCE.entitiesToDtos(
@@ -26,12 +34,7 @@ public class DeliveryServiceImpl implements DeliveryService {
 
     return orderResDtoList.stream().map(orderResDto -> {
           orderResDto.setOrderStatus(orderTrackRepo.findStatusOrderTrackByOrderId(orderResDto.getId()));
-          orderResDto.setVerified(orderTrackRepo.checkStatusOrderTrackByOrderId(orderResDto.getId(),
-              OrderStatus.VERIFIED.name()) == 1);
-          orderResDto.setShipping(orderTrackRepo.checkStatusOrderTrackByOrderId(orderResDto.getId(),
-              OrderStatus.SHIPPING.name()) == 1);
-          orderResDto.setCancelled(orderTrackRepo.checkStatusOrderTrackByOrderId(orderResDto.getId(),
-              OrderStatus.CANCELLED.name()) == 1);
+          orderService.setOrderCheckStatusForOrderResDto(orderResDto);
           return orderResDto;
         }
     ).collect(Collectors.toList());
@@ -43,12 +46,26 @@ public class DeliveryServiceImpl implements DeliveryService {
   }
 
   @Override
-  public OrderResDto deliveringOrder() {
-    return null;
+  public OrderTrackResDto deliveringOrder(String id) {
+    Order order = orderService.getOrder(id);
+
+    OrderTrack orderTrack = OrderTrack.builder()
+        .notes(OrderStatus.SHIPPING.defaultDescription())
+        .status(OrderStatus.SHIPPING).order(order)
+        .build();
+
+    return OrderTrackMapper.INSTANCE.OrderTrackToOrderTrackResDto(orderTrackRepo.save(orderTrack));
   }
 
   @Override
-  public OrderResDto deliveredOrder() {
-    return null;
+  public OrderTrackResDto deliveredOrder(String id) {
+    Order order = orderService.getOrder(id);
+
+    OrderTrack orderTrack = OrderTrack.builder()
+        .notes(OrderStatus.DELIVERED.defaultDescription())
+        .status(OrderStatus.DELIVERED).order(order)
+        .build();
+
+    return OrderTrackMapper.INSTANCE.OrderTrackToOrderTrackResDto(orderTrackRepo.save(orderTrack));
   }
 }
