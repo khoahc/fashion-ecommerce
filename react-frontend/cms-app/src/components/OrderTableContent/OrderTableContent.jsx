@@ -4,15 +4,15 @@ import numberWithDot from "../../utils/numberWithDot";
 import EmptyBodyTable from "../EmptyBodyTable";
 import ModalCancelledOrder from "../ModalCancelledOrder";
 import ModalOrderDetail from "../ModalOrderDetail/ModalOrderDetail";
-import ModalShippingOrder from "../ModalShippingOrder";
+import ModalPackageOrder from "../ModalPackageOrder";
 import ModalVerifiedOrder from "../ModalVerifiedOrder";
 
 const OrderTableContent = (props) => {
   const colorOrderStatus = [
     {
       key: 1,
-      status: "Đã gửi hàng",
-      style: "bg-orange-500 text-white font-bold rounded-full p-2",
+      status: "Chưa xác nhận",
+      style: "bg-black font-bold text-white rounded-full p-2",
     },
     {
       key: 2,
@@ -21,25 +21,30 @@ const OrderTableContent = (props) => {
     },
     {
       key: 3,
-      status: "Chưa xác nhận",
-      style: "bg-black font-bold text-white rounded-full p-2",
+      status: "Đã đóng gói",
+      style: "bg-red-500  text-white rounded-full p-2",
     },
     {
       key: 4,
-      status: "Đã hủy",
-      style: "bg-red-500  text-white rounded-full p-2",
+      status: "Đang giao hàng",
+      style: "bg-orange-500 text-white font-bold rounded-full p-2",
     },
     {
       key: 5,
-      status: "Đã đóng gói",
+      status: "Đã nhận hàng",
       style: "bg-red-500  text-white rounded-full p-2",
-    }
+    },
+    {
+      key: 6,
+      status: "Đã hủy",
+      style: "bg-red-500  text-white rounded-full p-2",
+    },
   ];
 
   const [orderIdChoose, setOrderIdChoose] = useState(null);
   const [showModalViewOrderDetail, setShowModalViewOrderDetail] =
     useState(false);
-  const [showModalShippingOrder, setShowModalShippingOrder] = useState(false);
+  const [showModalPackageOrder, setShowModalPackageOrder] = useState(false);
   const [showModalConfirmOrder, setShowModalConfirmOrder] = useState(false);
   const [showModalCancelOrder, setShowModalCancelOrder] = useState(false);
 
@@ -134,18 +139,18 @@ const OrderTableContent = (props) => {
 
                 <button
                   className={`${
-                    (item.shipping || item.cancelled || !item.verified) &&
+                    (item.shipping || item.cancelled || !item.verified || item.packaged) &&
                     "disabled:opacity-25"
                   } !bg-orange-500 button small --jb-modal`}
                   type="button"
-                  disabled={item.shipping || item.cancelled || !item.verified}
+                  disabled={item.shipping || item.cancelled || !item.verified || item.packaged}
                   onClick={() => {
-                    setShowModalShippingOrder(true);
+                    setShowModalPackageOrder(true);
                     setOrderIdChoose(item.id);
                   }}
                 >
-                  <span className="icon" title="Chuyển hàng">
-                    <i className="mdi mdi-cart-check  text-white "></i>
+                  <span className="icon" title="Đóng gói">
+                    <i className="mdi mdi-package-variant  text-white "></i>
                   </span>
                 </button>
 
@@ -194,11 +199,11 @@ const OrderTableContent = (props) => {
                         }
                       />
                     )}
-                    {showModalShippingOrder && (
-                      <ModalShippingOrder
+                    {showModalPackageOrder && (
+                      <ModalPackageOrder
                         orderId={orderIdChoose}
-                        showModalShippingOrder={showModalShippingOrder}
-                        setShowModalShippingOrder={setShowModalShippingOrder}
+                        showModalShippingOrder={showModalPackageOrder}
+                        setShowModalShippingOrder={setShowModalPackageOrder}
                       />
                     )}
                     {showModalConfirmOrder && (

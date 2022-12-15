@@ -40,6 +40,10 @@ const Delivery = () => {
     getData({ params: { page: 1, size: PageSize } });
   }, []);
 
+  useEffect(() => {
+    getData({ params: { page: currentPage, size: PageSize } });
+  }, [currentPage]);
+
   return (
     <div>
       <Titlebar listTitle={listTitle} />
@@ -53,7 +57,13 @@ const Delivery = () => {
               pageSize={PageSize}
               currentPage={currentPage}
             />
-            {/* <Pagination /> */}
+            <Pagination
+              className="pagination-bar"
+              currentPage={currentPage}
+              totalCount={totalCount}
+              pageSize={PageSize}
+              onPageChange={(page) => setCurrentPage(page)}
+            />
           </div>
         </div>
       </section>
