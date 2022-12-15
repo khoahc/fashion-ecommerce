@@ -56,14 +56,14 @@ const Aside = () => {
             </Link>
           </li>
           </li> */}
-          {/* <li className={ pathName.startsWith('/delivery') ? 'active' : '' }>
+          <li className={ pathName.startsWith('/delivery') ? 'active' : '' }>
             <Link to={"/delivery"}>
               <span className="icon">
-                <i className="mdi mdi-truck-delivery"></i>
+                <i className="mdi mdi-truck"></i>
               </span>
               <span className="menu-item-label">Giao hàng</span>
             </Link>
-          </li> */}
+          </li>
           <li className={ pathName.startsWith('/user') ? 'active' : '' }>
             <Link to={"/user"}>
               <span className="icon">

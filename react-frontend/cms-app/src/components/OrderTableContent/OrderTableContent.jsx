@@ -29,6 +29,11 @@ const OrderTableContent = (props) => {
       status: "Đã hủy",
       style: "bg-red-500  text-white rounded-full p-2",
     },
+    {
+      key: 5,
+      status: "Đã đóng gói",
+      style: "bg-red-500  text-white rounded-full p-2",
+    }
   ];
 
   const [orderIdChoose, setOrderIdChoose] = useState(null);
