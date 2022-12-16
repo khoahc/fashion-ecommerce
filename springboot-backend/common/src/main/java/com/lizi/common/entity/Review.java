@@ -40,9 +40,15 @@ public class Review {
 
   private int rating;
 
-  @ManyToOne
-  @JoinColumn(name = "customer_id")
-  private Customer customer;
+  @Column(length = 40, nullable = false)
+  private String firstName;
+
+  @Column(length = 128, nullable = false)
+  private String email;
+
+//  @ManyToOne
+//  @JoinColumn(name = "customer_id")
+//  private Customer customer;
 
   @ManyToOne
   @JoinColumn(name = "product_id")
