@@ -10,6 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Breadcrumb from "../../components/Breadcrumb";
 import Button from "../../components/Button";
 import Grid from "../../components/Grid";
+import ReviewModal from "../../components/ReviewModal";
 import { addItem } from "../../redux/shopping-cart/cartItemsSlide";
 import * as product from "../../services/product";
 import * as notification from "../../utils/addNotificationElement";
@@ -30,6 +31,7 @@ const Product = () => {
   const [color, setColor] = useState(searchParams.get("color"));
   const [size, setSize] = useState(searchParams.get("size"));
 
+  const [openReviewModal, setOpenReviewModal] = useState(false);
   const [count, setCount] = useState(1);
 
   const notify = (type, message) => {
@@ -373,15 +375,25 @@ const Product = () => {
             </div>
             <div className="flex-column flex-right flex-gap-1">
               <div>
-                <Button>Viết đánh giá</Button>
+                <Button
+                  onClick={() => {
+                    setOpenReviewModal(true);
+                  }}
+                >
+                  Viết đánh giá
+                </Button>
               </div>
               <div>
-                <Button className="">Xem tất cả</Button>
+                <Button>Xem tất cả</Button>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      {openReviewModal && (
+        <ReviewModal setOpenReviewModal={setOpenReviewModal} productSlug={productDetail.slug}/>
+      )}
     </div>
   );
 };
