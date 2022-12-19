@@ -41,7 +41,7 @@ public class Review {
   private int rating;
 
   @Column(length = 40, nullable = false)
-  private String firstName;
+  private String fullName;
 
   @Column(length = 128, nullable = false)
   private String email;
@@ -62,4 +62,5 @@ public class Review {
   @Temporal(TemporalType.TIMESTAMP)
   private Date updateTime;
 
+  private boolean enabled;
 }

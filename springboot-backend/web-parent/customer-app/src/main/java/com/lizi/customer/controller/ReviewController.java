@@ -1,5 +1,6 @@
 package com.lizi.customer.controller;
 
+import com.lizi.customer.dto.request.ReviewRequestDTO;
 import com.lizi.customer.dto.response.ResponseObject;
 import com.lizi.customer.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +23,9 @@ public class ReviewController {
         return new ResponseObject<>(HttpStatus.OK, "Thành công", reviewService.getReviewsByProductSlug(productSlug));
     }
 
-//    @PostMapping("/{productSlug}")
-//    public ResponseObject addOrder(@PathVariable(name = "productSlug") String productSlug,
-//                                   @Valid @RequestBody ReviewRequestDTO reviewRequestDTO, HttpServletRequest request) {
-//        return new ResponseObject<>(HttpStatus.OK, "Thành công", reviewService.addReview(productSlug, reviewRequestDTO);
-//    }
+    @PostMapping
+    public ResponseObject addOrder(@Valid @RequestBody ReviewRequestDTO reviewRequestDTO, HttpServletRequest request) {
+        return new ResponseObject<>(HttpStatus.OK, "Thành công", reviewService.addReview(reviewRequestDTO));
+    }
 
 }

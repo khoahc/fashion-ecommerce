@@ -145,7 +145,7 @@ const ReviewModal = ({ setOpenReviewModal, productSlug }) => {
             maxRows={10}
             aria-label="comment"
             placeholder="Mời bạn chia sẻ thêm một số cảm nhận về sản phẩm ..."
-            style={{ width: 450, fontSize: "1rem", padding: "10px" }}
+            style={{ width: 450, fontSize: "1rem", padding: "10px", fontFamily: "Roboto, sans-serif" }}
             {...register("comment", {
               required: "Bình luận không được trống!",
               pattern: {
@@ -153,9 +153,7 @@ const ReviewModal = ({ setOpenReviewModal, productSlug }) => {
                   /[aAàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬbBcCdDđĐeEèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆfFgGhHiIìÌỉỈĩĨíÍịỊjJkKlLmMnNoOòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢpPqQrRsStTuUùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰvVwWxXyYỳỲỷỶỹỸýÝỵỴzZ]/,
                 message: "Bình luận không hợp lệ!",
               },
-            })}
-            error={!!errors?.comment}
-            helperText={errors?.comment ? errors.comment.message : null}
+            })}            
           />
 
           <div className="flex-row flex-row-right flex-gap-1">

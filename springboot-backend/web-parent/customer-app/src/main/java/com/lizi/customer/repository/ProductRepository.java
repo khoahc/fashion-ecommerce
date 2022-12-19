@@ -59,6 +59,13 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
           "WHERE p.slug = :slugProduct\n")
   Optional<ProductDetailResponseDTO> findProductBySlugAndEnabledTrue(@Param("slugProduct") String slug);
 
+  //find product detail
+  @Query(value = "SELECT p \n" +
+          "FROM \n" +
+          "\tProduct p \n" +
+          "WHERE p.slug = :slugProduct and p.enabled = true\n")
+  Product findProductBySlug(@Param("slugProduct") String slug);
+
   //find rating average for product detail
   @Query(value =
           "SELECT avg(r.rating) FROM Review r \n" +

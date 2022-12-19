@@ -3,9 +3,8 @@
  */
 package com.lizi.customer.mapper;
 
-import com.lizi.common.entity.Category;
 import com.lizi.common.entity.Review;
-import com.lizi.customer.dto.response.CategoryResponseDTO;
+import com.lizi.customer.dto.request.ReviewRequestDTO;
 import com.lizi.customer.dto.response.ReviewResponseDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -22,7 +21,14 @@ public interface ReviewMapper {
 	@Mapping(target = "headline", source = "entity.headline")
 	@Mapping(target = "comment", source = "entity.comment")
 	@Mapping(target = "rating", source = "entity.rating")
-	@Mapping(target = "firstName", source = "entity.firstName")
+	@Mapping(target = "fullName", source = "entity.fullName")
 	ReviewResponseDTO reviewToReviewResponseDTO(Review entity);
+
+	@Mapping(target = "headline", source = "dto.headline")
+	@Mapping(target = "comment", source = "dto.comment")
+	@Mapping(target = "rating", source = "dto.rating")
+	@Mapping(target = "fullName", source = "dto.fullName")
+	@Mapping(target = "email", source = "dto.email")
+	Review reviewRequestDTOToReview(ReviewRequestDTO dto);
 
 }
