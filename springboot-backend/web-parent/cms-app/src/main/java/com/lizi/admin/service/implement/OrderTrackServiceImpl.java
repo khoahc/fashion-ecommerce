@@ -31,48 +31,44 @@ public class OrderTrackServiceImpl implements OrderTrackService {
   @Autowired
   private ProductOptionService productOptionService;
 
+  @Autowired
+  private ProductService productService;
+
   @Override
   public OrderTrackResDto addOrderTrackVerifiedByOrderId(String orderId) {
-    Order order = orderRepository.findById(orderId).orElseThrow(
-        () -> new ResourceNotFoundException(Constant.NOT_FOUND));
+    Order order = orderRepository.findById(orderId)
+        .orElseThrow(() -> new ResourceNotFoundException(Constant.NOT_FOUND));
 
-    order.getOrderDetails().stream().forEach(
-        odt -> productOptionService.decreasingQuantity(odt.getProductOption().getId(),
-            odt.getQuantity()));
+    order.getOrderDetails().stream().forEach(odt -> {
+      productOptionService.decreasingQuantity(odt.getProductOption().getId(), odt.getQuantity());
+      productService.increasingNumberOfOrder(odt.getProductOption().getProduct().getId(),
+          odt.getQuantity());
+    });
 
-    OrderTrack orderTrack = OrderTrack.builder()
-        .notes(OrderStatus.VERIFIED.defaultDescription())
-        .status(OrderStatus.VERIFIED)
-        .order(order)
-        .build();
+    OrderTrack orderTrack = OrderTrack.builder().notes(OrderStatus.VERIFIED.defaultDescription())
+        .status(OrderStatus.VERIFIED).order(order).build();
     return OrderTrackMapper.INSTANCE.OrderTrackToOrderTrackResDto(
         orderTrackRepository.save(orderTrack));
   }
 
   @Override
   public OrderTrackResDto addOrderTrackPackageByOrderId(String orderId) {
-    Order order = orderRepository.findById(orderId).orElseThrow(
-        () -> new ResourceNotFoundException(Constant.NOT_FOUND));
+    Order order = orderRepository.findById(orderId)
+        .orElseThrow(() -> new ResourceNotFoundException(Constant.NOT_FOUND));
 
-    OrderTrack orderTrack = OrderTrack.builder()
-        .notes(OrderStatus.PACKAGED.defaultDescription())
-        .status(OrderStatus.PACKAGED)
-        .order(order)
-        .build();
+    OrderTrack orderTrack = OrderTrack.builder().notes(OrderStatus.PACKAGED.defaultDescription())
+        .status(OrderStatus.PACKAGED).order(order).build();
     return OrderTrackMapper.INSTANCE.OrderTrackToOrderTrackResDto(
         orderTrackRepository.save(orderTrack));
   }
 
   @Override
   public OrderTrackResDto addOrderTrackCancelledByOrderId(String orderId) {
-    Order order = orderRepository.findById(orderId).orElseThrow(
-        () -> new ResourceNotFoundException(Constant.NOT_FOUND));
+    Order order = orderRepository.findById(orderId)
+        .orElseThrow(() -> new ResourceNotFoundException(Constant.NOT_FOUND));
 
-    OrderTrack orderTrack = OrderTrack.builder()
-        .notes(OrderStatus.CANCELLED.defaultDescription())
-        .status(OrderStatus.CANCELLED)
-        .order(order)
-        .build();
+    OrderTrack orderTrack = OrderTrack.builder().notes(OrderStatus.CANCELLED.defaultDescription())
+        .status(OrderStatus.CANCELLED).order(order).build();
     return OrderTrackMapper.INSTANCE.OrderTrackToOrderTrackResDto(
         orderTrackRepository.save(orderTrack));
   }

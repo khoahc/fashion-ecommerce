@@ -52,8 +52,7 @@ public class ProductServiceImpl implements ProductService {
 
   @Override
   public ProductResDto getProduct(Long id) {
-    return ProductMapper.INSTANCE.productToDto(productRepo.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("product", "id", id)));
+    return ProductMapper.INSTANCE.productToDto(get(id));
   }
 
   private Product get(Long id) {
@@ -93,8 +92,7 @@ public class ProductServiceImpl implements ProductService {
   @Override
   public ProductResDto updateProduct(Long id, ProductReqDto productReqDto) {
     // get product
-    Product product = productRepo.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("product", "id", id));
+    Product product = get(id);
 
     // check unique name
     productRepo.findByName(productReqDto.getName())
@@ -142,6 +140,14 @@ public class ProductServiceImpl implements ProductService {
   @Override
   public long getQuantityProduct() {
     return productRepo.count();
+  }
+
+  @Override
+  public void increasingNumberOfOrder(long id, int quantity) {
+    Product product = get(id);
+    product.setNumberOfOrder(product.getNumberOfOrder() + quantity);
+
+    productRepo.save(product);
   }
 
 }
