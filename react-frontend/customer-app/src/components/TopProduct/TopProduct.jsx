@@ -1,5 +1,5 @@
+import clsx from "clsx";
 import React from "react";
-import clsx from 'clsx';
 import Carousel from "../Carousel";
 import styles from "./TopProduct.module.scss";
 
@@ -10,7 +10,7 @@ function TopProduct(props) {
         <div className={clsx(styles.title)}>
           <h2>{props.title}</h2>
         </div>
-        <Carousel data={props.listProduct}/>
+        <Carousel data={props.listProduct} />
       </div>
     </div>
   );

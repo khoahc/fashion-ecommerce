@@ -16,7 +16,7 @@ import java.io.UnsupportedEncodingException;
 
 @RestController
 @RequestMapping(value ="/api/v1/order")
-@CrossOrigin(origins = "http://localhost")
+@CrossOrigin(origins = "*")
 public class OrderController {
   @Autowired
   private OrderService orderService;

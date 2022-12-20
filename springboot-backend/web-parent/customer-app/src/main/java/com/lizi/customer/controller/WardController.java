@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value ="/api/v1/ward")
-@CrossOrigin(origins = "http://localhost")
+@CrossOrigin(origins = "*")
 public class WardController {
   @Autowired
   private WardService wardService;

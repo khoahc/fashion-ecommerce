@@ -36,7 +36,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
   Optional<List<ProductCatalogResponseDTO>> findAllProductsCatalogByCategorySlug(@Param("slugCategory") String slug, @Param("idCategory") Integer id);
 
   //find colors of product (name, slug and image attribute) by category slug and product slug
-  @Query(value = "SELECT DISTINCT new com.lizi.customer.dto.response.ProductCatalogColorResponseDTO(color.name, color.slug, img.url as main_image) \n" +
+  @Query(value = "SELECT DISTINCT new com.lizi.customer.dto.response.ProductCatalogColorResponseDTO(color.name, color.slug, img.url) \n" +
           "FROM \n" +
           "\tProduct p \n" +
           "INNER JOIN Category c\n" +
@@ -59,10 +59,17 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
           "WHERE p.slug = :slugProduct\n")
   Optional<ProductDetailResponseDTO> findProductBySlugAndEnabledTrue(@Param("slugProduct") String slug);
 
+  //find product detail
+  @Query(value = "SELECT p \n" +
+          "FROM \n" +
+          "\tProduct p \n" +
+          "WHERE p.slug = :slugProduct and p.enabled = true\n")
+  Product findProductBySlug(@Param("slugProduct") String slug);
+
   //find rating average for product detail
   @Query(value =
           "SELECT avg(r.rating) FROM Review r \n" +
-          "\tWHERE r.product.slug = :slugProduct \n"+
+          "\tWHERE r.product.slug = :slugProduct AND (r.enabled = true OR r.bought = true)\n"+
           "\tGROUP BY r.product.slug\n")
   Double findRatingAverageBySlugProduct(@Param("slugProduct") String slugProduct);
 
