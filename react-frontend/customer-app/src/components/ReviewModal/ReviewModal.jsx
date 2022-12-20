@@ -1,10 +1,14 @@
 import StarIcon from "@mui/icons-material/Star";
+import { LoadingButton } from "@mui/lab";
 import { Rating, TextareaAutosize, TextField } from "@mui/material";
-import { orange } from "@mui/material/colors";
+import { green, orange } from "@mui/material/colors";
 import { Box } from "@mui/system";
 import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+
 import styles from "./ReviewModal.module.scss";
+import * as reviewService  from "../../services/review";
+import { toast } from "react-toastify";
 
 const ReviewModal = ({ setOpenReviewModal, productSlug }) => {
   const {
@@ -21,6 +25,29 @@ const ReviewModal = ({ setOpenReviewModal, productSlug }) => {
     4: "Tốt",
     5: "Rất tốt",
   };
+  const notify = (type, message) => {
+    type === 1
+      ? toast.success(message, {
+          position: "bottom-left",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        })
+      : toast.warn(message, {
+          position: "bottom-left",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+  };
 
   const getLabelText = (value) => {
     return `${value} Star${value !== 1 ? "s" : ""}, ${labels[value]}`;
@@ -28,6 +55,7 @@ const ReviewModal = ({ setOpenReviewModal, productSlug }) => {
 
   const [rating, setRating] = useState(5);
   const [hover, setHover] = useState(-1);
+  const [loading, setLoading] = useState(false);
 
   const inputRating = useRef();
 
@@ -38,28 +66,21 @@ const ReviewModal = ({ setOpenReviewModal, productSlug }) => {
 
   const onSubmit = (data) => {
     console.log("data", data);
-    // setLoading(true);
-    // const dataPost = {
-    //   ...data,
-    //   products: productsCheckout,
-    //   shipCost: shipCost,
-    //   totalPrice: totalPrice,
-    // };
-    // console.log(JSON.stringify(dataPost, null, 2) + " dataPost");
-
-    // //post order
-    // order
-    //   .postOrder(dataPost)
-    //   .then((response) => {
-    //     notify(1, "Đặt hàng thành công");
-    //     navigate("/order/verify");
-    //     console.log(response);
-    //   })
-    //   .catch(function (error) {
-    //     notify(0, "Đặt hàng thất bại!");
-    //     // setModalIsOpen(true);
-    //     console.log(error);
-    //   });
+    setLoading(true);
+    
+    //post review
+    reviewService
+      .postReview(data)
+      .then((response) => {
+        notify(1, "Đánh giá thành công");
+        setOpenReviewModal(false)
+        console.log(response);
+      })
+      .catch(function (error) {
+        notify(0, "Đánh giá thất bại!");
+        setOpenReviewModal(false);
+        console.log(error);
+      });
   };
 
   return (
@@ -145,7 +166,12 @@ const ReviewModal = ({ setOpenReviewModal, productSlug }) => {
             maxRows={10}
             aria-label="comment"
             placeholder="Mời bạn chia sẻ thêm một số cảm nhận về sản phẩm ..."
-            style={{ width: 450, fontSize: "1rem", padding: "10px", fontFamily: "Roboto, sans-serif" }}
+            style={{
+              width: 450,
+              fontSize: "1rem",
+              padding: "10px",
+              fontFamily: "Roboto, sans-serif",
+            }}
             {...register("comment", {
               required: "Bình luận không được trống!",
               pattern: {
@@ -153,7 +179,7 @@ const ReviewModal = ({ setOpenReviewModal, productSlug }) => {
                   /[aAàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬbBcCdDđĐeEèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆfFgGhHiIìÌỉỈĩĨíÍịỊjJkKlLmMnNoOòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢpPqQrRsStTuUùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰvVwWxXyYỳỲỷỶỹỸýÝỵỴzZ]/,
                 message: "Bình luận không hợp lệ!",
               },
-            })}            
+            })}
           />
 
           <div className="flex-row flex-row-right flex-gap-1">
@@ -209,9 +235,30 @@ const ReviewModal = ({ setOpenReviewModal, productSlug }) => {
             </button>
           </div>
           <form className="m-auto" onSubmit={handleSubmit(onSubmit)}>
-            <button className="px-2 py-1 btn-bg-green border-radius-1">
+            {/* <button className="px-2 py-1 btn-bg-green border-radius-1">
               Gửi
-            </button>
+            </button> */}
+            <LoadingButton
+              type="submit"
+              sx={{
+                backgroundColor: "#000",
+                color: "#fff",
+                textTransform: "capitalize",
+                border: "none",
+                cursor: "pointer",
+                backgroundColor: green[600],
+                padding: "8px 20px",
+                borderRadius: "10px",
+                "&:hover": {
+                  backgroundColor: green[800],
+                },
+              }}
+              size="small"
+              loading={loading}
+              variant="contained"
+            >
+              Gửi
+            </LoadingButton>
           </form>
         </div>
       </div>

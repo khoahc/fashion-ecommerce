@@ -10,9 +10,11 @@ import "react-toastify/dist/ReactToastify.css";
 import Breadcrumb from "../../components/Breadcrumb";
 import Button from "../../components/Button";
 import Grid from "../../components/Grid";
+import Review from "../../components/Review/Review";
 import ReviewModal from "../../components/ReviewModal";
 import { addItem } from "../../redux/shopping-cart/cartItemsSlide";
 import * as product from "../../services/product";
+import * as review from "../../services/review";
 import * as notification from "../../utils/addNotificationElement";
 import numberWithCommas from "../../utils/numberWithCommas";
 import styles from "./Product.module.scss";
@@ -24,6 +26,7 @@ const Product = () => {
 
   const [searchParams, setSearchParams] = useSearchParams();
   const [productDetail, setProductDetail] = useState([]);
+  const [reviewList, setReviewList] = useState([]);
 
   searchParams.get("size") !== null &&
     searchParams.set("size", searchParams.get("size").toUpperCase());
@@ -128,25 +131,40 @@ const Product = () => {
   };
 
   useEffect(() => {
-    // Promise.all([
-    product
-      .getProductDetailBySlug(
-        slugProduct,
-        searchParams.get("color"),
-        searchParams.get("size")
-      )
-      .then((data) => {
-        if (data.data.status === "OK") {
-          setProductDetail(data.data.data);
-          setCount(1);
-        } else {
-          return Promise.reject(new Error(data.message));
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        navigate("/error");
-      });
+    Promise.all([
+      product
+        .getProductDetailBySlug(
+          slugProduct,
+          searchParams.get("color"),
+          searchParams.get("size")
+        )
+        .then((data) => {
+          if (data.data.status === "OK") {
+            setProductDetail(data.data.data);
+            setCount(1);
+          } else {
+            return Promise.reject(new Error(data.message));
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          navigate("/error");
+        }),
+
+      review
+        .getReviewsByProductSlug(slugProduct)
+        .then((data) => {
+          if (data.status === "OK") {
+            setReviewList(data.data);
+          } else {
+            return Promise.reject(new Error(data.message));
+          }
+        })
+        .catch((error) => {
+          console.log("get review error", error);
+         
+        }),
+    ]);
 
     return () => {
       let size = document.getElementById("sizeNotification");
@@ -360,39 +378,50 @@ const Product = () => {
             </div>
           </div>
           <hr />
-          <div className="flex-row flex-center mb-2">
-            {/* Review */}
-            <div>
-              <h3 className="mb-1">Đánh giá sản phẩm</h3>
+          <div className="flex-column">
+            <div className="flex-row flex-center mb-2">
+              {/* Review */}
               <div>
-                <StarRatings
-                  rating={productDetail.rate}
-                  starSpacing="1px"
-                  starDimension="20px"
-                  starRatedColor="#F2C94C"
-                />
+                <h3 className="mb-1">Đánh giá sản phẩm</h3>
+                <div>
+                  <StarRatings
+                    rating={productDetail.rate}
+                    starSpacing="1px"
+                    starDimension="20px"
+                    starRatedColor="#F2C94C"
+                  />
+                </div>
+              </div>
+              <div className="flex-column flex-right flex-gap-1">
+                <div>
+                  <Button
+                    onClick={() => {
+                      setOpenReviewModal(true);
+                    }}
+                  >
+                    Viết đánh giá
+                  </Button>
+                </div>
+                {/* <div>
+                <Button>Xem tất cả</Button>
+              </div> */}
               </div>
             </div>
-            <div className="flex-column flex-right flex-gap-1">
-              <div>
-                <Button
-                  onClick={() => {
-                    setOpenReviewModal(true);
-                  }}
-                >
-                  Viết đánh giá
-                </Button>
-              </div>
-              <div>
-                <Button>Xem tất cả</Button>
-              </div>
+
+            <div className="">
+              {reviewList?.map((item, index) => (
+                <Review key={index} data={item} />
+              ))}
             </div>
           </div>
         </div>
       </div>
 
       {openReviewModal && (
-        <ReviewModal setOpenReviewModal={setOpenReviewModal} productSlug={productDetail.slug}/>
+        <ReviewModal
+          setOpenReviewModal={setOpenReviewModal}
+          productSlug={productDetail.slug}
+        />
       )}
     </div>
   );
