@@ -29,7 +29,7 @@ export default (props) => {
   return (
     <Swiper
       modules={[Navigation, Pagination, A11y, Autoplay]}
-      spaceBetween={20}
+      spaceBetween={20}      
       slidesPerView={3}
       autoplay={{ delay: 2000 }}
       navigation
