@@ -22,6 +22,7 @@ public interface ReviewMapper {
 	@Mapping(target = "comment", source = "entity.comment")
 	@Mapping(target = "rating", source = "entity.rating")
 	@Mapping(target = "fullName", source = "entity.fullName")
+	@Mapping(target = "reviewTime", source = "entity.reviewTime")
 	ReviewResponseDTO reviewToReviewResponseDTO(Review entity);
 
 	@Mapping(target = "headline", source = "dto.headline")

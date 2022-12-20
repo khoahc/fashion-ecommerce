@@ -13,6 +13,6 @@ import java.util.Optional;
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Long> {
   @Query(value = "SELECT r FROM Review r \n" +
-          "\tWHERE r.product.slug = :productSlug")
+          "\tWHERE r.product.slug = :productSlug and r.enabled = true")
   Optional<List<Review>> findReviewsByProductSlug(@Param(value = "productSlug") String productSlug);
 }

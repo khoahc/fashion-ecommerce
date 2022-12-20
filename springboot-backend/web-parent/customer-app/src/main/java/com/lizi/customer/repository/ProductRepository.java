@@ -69,7 +69,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
   //find rating average for product detail
   @Query(value =
           "SELECT avg(r.rating) FROM Review r \n" +
-          "\tWHERE r.product.slug = :slugProduct \n"+
+          "\tWHERE r.product.slug = :slugProduct AND r.enabled = true\n"+
           "\tGROUP BY r.product.slug\n")
   Double findRatingAverageBySlugProduct(@Param("slugProduct") String slugProduct);
 

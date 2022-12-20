@@ -80,5 +80,4 @@ public class Product {
   @Temporal(TemporalType.TIMESTAMP)
   private Date updateTime;
 
-  private double rating;
 }
