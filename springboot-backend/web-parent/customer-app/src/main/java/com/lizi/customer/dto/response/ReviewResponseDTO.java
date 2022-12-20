@@ -19,5 +19,6 @@ public class ReviewResponseDTO {
   private String fullName;
   @JsonFormat(pattern="dd-MM-yyyy hh:mm:ss", timezone = Constant.MY_TIME_ZONE)
   private Date reviewTime;
+  private boolean bought;
 
 }

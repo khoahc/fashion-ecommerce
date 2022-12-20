@@ -63,4 +63,6 @@ public class Review {
   private Date updateTime;
 
   private boolean enabled;
+
+  private boolean bought;
 }
