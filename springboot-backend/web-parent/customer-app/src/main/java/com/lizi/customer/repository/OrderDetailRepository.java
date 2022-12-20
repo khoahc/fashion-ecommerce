@@ -32,5 +32,5 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> 
 
   @Query(value = "SELECT o_d FROM OrderDetail o_d \n" +
           "\tWHERE o_d.productOption.product.slug = :productSlug and o_d.order.email = :email")
-  Optional<List<OrderDetail>> findByProductSlugAndEmail(String productSlug, String email);
+  List<OrderDetail> findByProductSlugAndEmail(String productSlug, String email);
 }

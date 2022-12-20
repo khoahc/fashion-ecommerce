@@ -70,8 +70,8 @@ public class ReviewServiceImpl implements ReviewService {
   }
 
   private boolean checkBought(String productSlug, String email) {
-    Optional<List<OrderDetail>> orderDetails = orderDetailRepository.findByProductSlugAndEmail(productSlug, email);
-    return orderDetails.isPresent();
+    List<OrderDetail> orderDetails = orderDetailRepository.findByProductSlugAndEmail(productSlug, email);
+    return !orderDetails.isEmpty();
   }
 
   public boolean checkProductSlug(String productSlug) {
