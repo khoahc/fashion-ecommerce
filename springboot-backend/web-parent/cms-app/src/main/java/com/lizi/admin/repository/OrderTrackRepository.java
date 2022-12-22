@@ -23,7 +23,7 @@ public interface OrderTrackRepository extends JpaRepository<OrderTrack, Long> {
     @Query(value = "SELECT EXISTS(SELECT * FROM tbl_tracks o_t WHERE o_t.order_id = :orderId AND o_t.status = :status)", nativeQuery = true)
     Integer checkStatusOrderTrackByOrderId(@Param(value = "orderId") String orderId, @Param(value = "status") String status);
 
-    @Query("SELECT DISTINCT o FROM OrderTrack ot "
+    @Query("SELECT DISTINCT(ot.order) FROM OrderTrack ot "
         + "INNER JOIN ot.order o "
         + "WHERE ot.status = com.lizi.common.entity.OrderStatus.PACKAGED OR ot.status = com.lizi.common.entity.OrderStatus.SHIPPING")
     Page<Order> findAllToDeliver(Pageable pageable);

@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class DeliveryServiceImpl implements DeliveryService {
@@ -28,6 +30,7 @@ public class DeliveryServiceImpl implements DeliveryService {
   private OrderService orderService;
 
   @Override
+  @Transactional(propagation = Propagation.REQUIRES_NEW, readOnly = true)
   public List<OrderResDto> getAllOrder(Pageable pageable) {
     List<OrderResDto> orderResDtoList = OrderMapper.INSTANCE.entitiesToDtos(
         orderTrackRepo.findAllToDeliver(pageable).getContent());
@@ -41,6 +44,7 @@ public class DeliveryServiceImpl implements DeliveryService {
   }
 
   @Override
+  @Transactional(propagation = Propagation.REQUIRES_NEW, readOnly = true)
   public Long getTotalCount(Pageable pageable) {
     return orderTrackRepo.findAllToDeliver(pageable).getTotalElements();
   }

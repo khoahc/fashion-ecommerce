@@ -31,7 +31,7 @@ public class DeliveryController {
   public ResponseEntity<ResponsePaginationObject> all(
       @RequestParam(name = "page", required = false, defaultValue = Constant.PAGE_DEFAULT) int page,
       @RequestParam(name = "size", required = false, defaultValue = Constant.SIZE_DEFAULT) int size) {
-    Sort sort = Sort.by(Direction.DESC, "updateTime");
+    Sort sort = Sort.by(Direction.DESC, "order.updateTime");
     Pageable pageable = PageRequest.of(page - 1, size, sort);
 
     return ResponseEntity.ok().body(
