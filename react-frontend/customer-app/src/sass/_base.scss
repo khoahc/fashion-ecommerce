@@ -18,7 +18,7 @@ html {
 
 body {
   font-family: "Roboto", sans-serif;
-  background-color: #efefef;
+  background-color: #ededed;
 }
 
 img {
@@ -287,6 +287,26 @@ hr {
 
 .btn-bg-black {
   background-color: #000;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-bg-black:hover {
+  background-color: #333;
+  color: #fff;
+}
+
+.btn-bg-green {
+  background-color: green;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-bg-green:hover {
+  background-color: rgb(13, 149, 13);
+  color: #fff;
 }
 
 .btn-bg-black:hover:enabled {

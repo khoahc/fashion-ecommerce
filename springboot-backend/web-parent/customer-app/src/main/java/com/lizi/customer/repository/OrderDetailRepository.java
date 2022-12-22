@@ -1,5 +1,6 @@
 package com.lizi.customer.repository;
 
+import com.lizi.common.entity.Order;
 import com.lizi.common.entity.OrderDetail;
 import com.lizi.customer.dto.response.ProductCartResponseDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> {
@@ -27,4 +29,8 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> 
           "where o_d.order.id = :orderId")
   List<ProductCartResponseDTO> findAllProductOptionByOrderId(@Param(value = "orderId") String id);
 
+
+  @Query(value = "SELECT o_d FROM OrderDetail o_d \n" +
+          "\tWHERE o_d.productOption.product.slug = :productSlug and o_d.order.email = :email")
+  List<OrderDetail> findByProductSlugAndEmail(String productSlug, String email);
 }
