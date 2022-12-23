@@ -1,25 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import Titlebar from "../../../components/Titlebar";
-import ProductForm from "../../../layouts/components/Product/ProductForm";
-import productApi from "../../../services/axios/productApi";
+import ProductFormDetail from "../../../layouts/components/Product/ProductFormDetail/ProductFormDetail";
+import { getProductInfo } from "../../../redux/product/productForm/productFormAction";
 
-const { getProductDetails } = productApi
 const ProductDetail = () => {
+  const { form } = useSelector((state) => state.productForm);
+  const dispatch = useDispatch();
   const { productId } = useParams();
-  const [product, setProduct] = useState({});
 
   useEffect(() => {
-    getProductDetails(productId).then(resp => {
-      if (resp.status === 'OK') {
-        return resp.data;
-      } else {
-
-      }
-    }).then(data => {
-      setProduct(data);
-    });
-  }, [productId]);
+    dispatch(getProductInfo({id: productId}));
+  }, [dispatch, productId]);
 
   const listTitle = [
     {
@@ -27,7 +20,7 @@ const ProductDetail = () => {
       link: "/product",
     },
     {
-      title: `${product.name}`,
+      title: `${form.name}`,
     },
   ];
 
@@ -36,7 +29,7 @@ const ProductDetail = () => {
       <Titlebar listTitle={listTitle} />
 
       <section className="section main-section">
-        <ProductForm product={product} />
+        <ProductFormDetail />
       </section>
     </div>
   );

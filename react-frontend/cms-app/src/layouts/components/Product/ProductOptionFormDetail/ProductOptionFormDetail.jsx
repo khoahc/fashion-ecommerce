@@ -7,10 +7,11 @@ import {
   removeSizeInOption,
 } from "../../../../redux/product/productForm/productFormSlice";
 import ColorSelect from "../ColorSelect/ColorSelect";
+import ColorSelectDetail from "../ColorSelectDetail";
 import SizeRow from "../SizeRow/SizeRow";
 
-const ProductOptionForm = ({ imageOptions, setImageOptions }) => {
-  const { form } = useSelector((state) => state.productForm);
+const ProductOptionFormDetail = ({ imageOptions, setImageOptions }) => {
+  const { options } = useSelector((state) => state.productForm.form);
   const dispatch = useDispatch();
 
   const handleAddOptionClick = (e) => {
@@ -51,7 +52,7 @@ const ProductOptionForm = ({ imageOptions, setImageOptions }) => {
   return (
     <div className="roductOptionForm">
       <div className="card">
-        {form.options.map((ot, index) => (
+        {options.map((ot, index) => (
           <ProductOptionRow
             index={index}
             option={ot}
@@ -83,7 +84,6 @@ const ProductOptionRow = ({
   handleSetMainImage,
   addImage,
 }) => {
-  const { form } = useSelector((state) => state.productForm);
   const dispatch = useDispatch();
 
   // const [mainImage, setMainImage] = useState(null);
@@ -137,19 +137,10 @@ const ProductOptionRow = ({
           <label className="label min-w-fit mr-4">#{index + 1}</label>
           <div className="row-span-1 grid grid-cols-2 mb-4">
             <div className="w-full">
-              <ColorSelect index={index} />
+              <ColorSelectDetail index={index} value={option.color} />
             </div>
             <div className="">
               <div className="float-right buttons nowrap">
-                {/* <button
-                  type="button"
-                  className="button blue small"
-                  onClick={handleAddOptionClick}
-                >
-                  <span class="icon">
-                    <i className="mdi mdi-newspaper-plus"></i>
-                  </span>
-                </button> */}
                 <button
                   type="button"
                   className="button red small"
@@ -179,17 +170,28 @@ const ProductOptionRow = ({
             <div className="field">
               <label className="label min-w-fit mr-4">Ảnh chính: </label>
               <div class="field-body">
-                {previewMainImage && (
+                <img
+                  style={{ maxHeight: "15rem" }}
+                  src={option.mainImage}
+                  alt=""
+                  className="mb-4"
+                />
+                {/* {previewMainImage && (
                   <img
                     style={{ maxHeight: "15rem" }}
                     src={previewMainImage}
                     alt=""
                     className="mb-4"
                   />
-                )}
+                )} */}
                 <div className="field file">
                   <label className="upload control">
-                    <span className="button blue">Tải ảnh</span>
+                    <span className="button blue small">
+                      <span class="icon">
+                        <i className="mdi mdi-image-plus"></i>
+                      </span>
+                    </span>
+                    {/* <span className="button blue">Tải ảnh</span> */}
                     <input
                       type="file"
                       onChange={(e) => onSelectMainImage(e, index)}
@@ -204,14 +206,23 @@ const ProductOptionRow = ({
               <label className="label min-w-fit mr-4">Ảnh bổ sung: </label>
               <div className="field-body">
                 <div className="row-span-1 grid grid-cols-4">
-                  {previewImages.map((img) => (
+                  {option.images &&
+                    option.images.map((img) => (
+                      <img
+                        style={{ maxHeight: "15rem" }}
+                        src={img}
+                        alt=""
+                        className="mb-4"
+                      />
+                    ))}
+                  {/* {previewImages.map((img) => (
                     <img
                       style={{ maxHeight: "15rem" }}
                       className="mb-4"
                       src={img}
                       alt=""
                     />
-                  ))}
+                  ))} */}
                 </div>
                 <div className="field file">
                   <label className="upload control">
@@ -229,4 +240,4 @@ const ProductOptionRow = ({
   );
 };
 
-export default ProductOptionForm;
+export default ProductOptionFormDetail;

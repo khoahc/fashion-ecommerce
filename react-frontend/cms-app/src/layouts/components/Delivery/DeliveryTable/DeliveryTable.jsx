@@ -47,17 +47,17 @@ const DeliveryTableContent = (props) => {
     {
       key: 1,
       status: "Đã đóng gói",
-      style: "bg-red-500  text-white rounded-full p-2",
+      style: "bg-orange-500 text-white font-bold rounded-full p-2",
     },
     {
       key: 2,
       status: "Đang giao hàng",
-      style: "bg-red-500  text-white rounded-full p-2",
+      style: "bg-amber-400  text-white font-bold rounded-full p-2",
     },
     {
       key: 3,
       status: "Đã nhận hàng",
-      style: "bg-red-500  text-white rounded-full p-2",
+      style: "bg-red-500  text-white font-bold rounded-full p-2",
     },
   ];
 
