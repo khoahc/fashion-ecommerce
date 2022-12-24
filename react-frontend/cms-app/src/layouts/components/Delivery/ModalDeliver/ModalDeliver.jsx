@@ -1,27 +1,21 @@
 import React from 'react'
 import { ToastContainer } from 'react-toastify';
+import { deliverOder } from '../../../../services/axios/deliveryAPI';
+import notify from '../../../../utils/notify';
 
 const ModalDeliver = (props) => {
   const handleConfirm = () => {
-    // addOrderTrackVerifiedByOrderId({
-    //   orderId: props.orderId,
-    // })
-    //   .then((response) => {
-    //     if (response.status === "OK") {
-    //       props.setShowModalConfirmOrder(false);
-    //       notify(1, "Xác nhận thành công");
-    //       console.log(response);
-    //     } else {
-    //       props.setShowModalConfirmOrder(false);
-    //       notify(0, "Xác nhận thất bại!");
-    //       return Promise.reject(new Error(response.message));
-    //     }
-    //   })
-    //   .catch(function (error) {
-    //     props.setShowModalConfirmOrder(false);
-    //     notify(0, "Xác nhận thất bại!");
-    //     console.log(error);
-    //   });
+    deliverOder(props.orderId).then(resp => {
+      if (resp.status === 'OK') {
+        props.setShowModal(false);
+        notify(1, "Thành công");
+      } else {
+        return Promise.reject(new Error(resp.message));
+      }
+    }).catch(error => {
+      props.setShowModal(false);
+      notify(0, "Thất bại");
+    })
     window.location.reload(true);
   };
   const handleClickClose = () => {

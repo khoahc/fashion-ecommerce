@@ -10,8 +10,8 @@ export const getOrderDetailByOrderId = async (id) => {
   return await axiosClient.get(url);
 };
 
-export const addOrderTrackShippingByOrderId = async (requestOrderId) => {
-  const url = `/api/v1/order-track/shipping`;
+export const addOrderTrackPackageByOrderId = async (requestOrderId) => {
+  const url = `/api/v1/order-track/package`;
   return await axiosClient.post(url, requestOrderId);
 };
 

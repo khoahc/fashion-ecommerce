@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllColor } from "../../../../redux/color/colorAction";
 import { setColorId } from "../../../../redux/product/productForm/productFormSlice";
 
-const ColorSelect = ({ index }) => {
+const ColorSelectDetail = ({ index, value }) => {
   const { colors } = useSelector((state) => state.color);
   const dispatch = useDispatch();
 
@@ -33,7 +33,7 @@ const ColorSelect = ({ index }) => {
               className="input"
               type="text"
               placeholder="Màu sắc"
-              value={nameColor}
+              value={value && value.name}
               onInput={(e) => {
                 setNameColor(e.target.value);
               }}
@@ -46,6 +46,7 @@ const ColorSelect = ({ index }) => {
               onBlur={(e) => {
                 if (!onHover) setShowSelect(false);
               }}
+              disabled
             />
           </div>
         </div>
@@ -88,4 +89,4 @@ const ColorSelect = ({ index }) => {
   );
 };
 
-export default ColorSelect;
+export default ColorSelectDetail;

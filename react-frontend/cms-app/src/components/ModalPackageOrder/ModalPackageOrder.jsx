@@ -1,11 +1,11 @@
 import React from "react";
 import { ToastContainer } from "react-toastify";
-import { addOrderTrackShippingByOrderId } from "../../services/axios/orderApi";
+import { addOrderTrackPackageByOrderId } from "../../services/axios/orderApi";
 import notify from "../../utils/notify";
 
-const ModalShippingOrder = (props) => {
+const ModalPackageOrder = (props) => {
   const handleConfirm = () => {
-    addOrderTrackShippingByOrderId({
+    addOrderTrackPackageByOrderId({
       orderId: props.orderId,
     })
       .then((response) => {
@@ -53,7 +53,7 @@ const ModalShippingOrder = (props) => {
               </div>
 
               <div className="mx-4 mt-3 font-medium text-center">
-                Bạn có muốn xác nhận đã gửi hàng không?
+                Bạn có muốn xác đóng gói đơn hàng này không?
               </div>
 
               <div className="flex items-center gap-5 justify-center p-6  rounded-b">
@@ -92,4 +92,4 @@ const ModalShippingOrder = (props) => {
   );
 };
 
-export default ModalShippingOrder;
+export default ModalPackageOrder;

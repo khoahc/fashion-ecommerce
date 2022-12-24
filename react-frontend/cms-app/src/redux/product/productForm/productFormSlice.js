@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { getProductInfo } from "./productFormAction";
 
 const initialForm = {
   id: null,
@@ -122,7 +123,23 @@ const productFormSlice = createSlice({
       state.form.options[action.payload.index].imageIds = action.payload.option.imageIds;
     },
   },
-  extraReducers: {},
+  extraReducers: {
+    [getProductInfo.pending]: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    [getProductInfo.fulfilled]: (state, { payload }) => {
+      console.log("set product form");
+      console.log(payload);
+      state.loading = false;
+      state.form = payload;
+      state.success = true;
+    },
+    [getProductInfo.rejected]: (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    }
+  },
 });
 
 export const {

@@ -5,6 +5,7 @@ import LoadingTableContent from "../../../../components/LoadingTableContent/Load
 import ModalOrderDetail from "../../../../components/ModalOrderDetail/ModalOrderDetail";
 import numberWithDot from "../../../../utils/numberWithDot";
 import ModalDeliver from "../ModalDeliver/ModalDeliver";
+import ModalDelivered from "../ModalDelivered/ModalDelivered";
 
 const DeliveryTable = ({ list, isLoading, pageSize, currentPage }) => {
   return (
@@ -20,7 +21,7 @@ const DeliveryTable = ({ list, isLoading, pageSize, currentPage }) => {
           <th>STT</th>
           <th>Người mua</th>
           <th>Số điện thoại</th>
-          <th>Thời gian đặt</th>
+          <th>Địa chỉ</th>
           <th>Tổng tiền</th>
           <th className="text-center">Trạng thái</th>
           <th className="text-center">Chức năng</th>
@@ -46,17 +47,17 @@ const DeliveryTableContent = (props) => {
     {
       key: 1,
       status: "Đã đóng gói",
-      style: "bg-red-500  text-white rounded-full p-2",
+      style: "bg-orange-500 text-white font-bold rounded-full p-2",
     },
     {
       key: 2,
       status: "Đang giao hàng",
-      style: "bg-red-500  text-white rounded-full p-2",
+      style: "bg-amber-400  text-white font-bold rounded-full p-2",
     },
     {
       key: 3,
-      status: "Đã giao hàng",
-      style: "bg-red-500  text-white rounded-full p-2",
+      status: "Đã nhận hàng",
+      style: "bg-red-500  text-white font-bold rounded-full p-2",
     },
   ];
 
@@ -95,25 +96,14 @@ const DeliveryTableContent = (props) => {
             >
               {item.phoneNumber}
             </td>
-            {/* <td data-label="Status">
-          {item.enabled ? (
-            <span className="icon text-green-600 text-2xl">
-              <i className="mdi mdi-check-circle"></i>
-            </span>
-          ) : (
-            <span className="icon text-red-600 text-2xl">
-              <i className="mdi mdi-close-circle "></i>
-            </span>
-          )}
-        </td> */}
-            <td data-label="create-time">
+            <td data-label="create-time" className={`${item.cancelled && "line-through"} `} >
               <small
                 className={`${
                   item.cancelled && "line-through"
                 } text-gray-500 text-sm`}
                 title={item.createTime}
               >
-                {item.orderTime}
+                {item.address}
               </small>
             </td>
             <td
@@ -167,18 +157,18 @@ const DeliveryTableContent = (props) => {
                     setOrderIdChoose(item.id);
                   }}
                 >
-                  <span className="icon" title="Giao hàng">
+                  <span className="icon" title="Nhận giao hàng">
                     <i className="mdi mdi-truck-delivery  text-white "></i>
                   </span>
                 </button>
 
                 <button
                   className={`button small green --jb-modal ${
-                    (item.cancelled || item.verified || item.shipping) &&
+                    (!item.shipping || item.delivered) &&
                     "disabled:opacity-25"
                   } `}
                   type="button"
-                  disabled={item.cancelled || item.verified || item.shipping}
+                  disabled={!item.shipping || item.delivered}
                   onClick={() => {
                     setShowModalDelivered(true);
                     setOrderIdChoose(item.id);
@@ -207,20 +197,13 @@ const DeliveryTableContent = (props) => {
                         setShowModal={setShowModalDeliver}
                       />
                     )}
-                    {/* {showModalConfirmOrder && (
-                      <ModalVerifiedOrder
+                    {showModalDelivered && (
+                      <ModalDelivered
                         orderId={orderIdChoose}
-                        showModalConfirmOrder={showModalConfirmOrder}
-                        setShowModalConfirmOrder={setShowModalConfirmOrder}
+                        showModal={showModalDelivered}
+                        setShowModal={setShowModalDelivered}
                       />
                     )}
-                    {showModalCancelOrder && (
-                      <ModalCancelledOrder
-                        orderId={orderIdChoose}
-                        showModalCancelOrder={showModalCancelOrder}
-                        setShowModalCancelOrder={setShowModalCancelOrder}
-                      />
-                    )} */}
                   </>
                 )}
               </div>
