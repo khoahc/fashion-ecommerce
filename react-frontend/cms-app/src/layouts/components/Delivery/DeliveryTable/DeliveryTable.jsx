@@ -96,7 +96,10 @@ const DeliveryTableContent = (props) => {
             >
               {item.phoneNumber}
             </td>
-            <td data-label="create-time" className={`${item.cancelled && "line-through"} `} >
+            <td
+              data-label="create-time"
+              className={`${item.cancelled && "line-through"} `}
+            >
               <small
                 className={`${
                   item.cancelled && "line-through"
@@ -117,17 +120,19 @@ const DeliveryTableContent = (props) => {
               className={`${item.cancelled && "line-through"} text-center`}
               data-label="order-status"
             >
-              <small
-                className={`text-sm 
+              <div className="flex justify-center items-center">
+                <small
+                  className={`text-sm block w-fit 
               ${
                 colorOrderStatus.find((elem) =>
                   _.isEqual(item.orderStatus, elem.status)
                 ).style
               }`}
-                title={item.orderStatus}
-              >
-                {item.orderStatus}
-              </small>
+                  title={item.orderStatus}
+                >
+                  {item.orderStatus}
+                </small>
+              </div>
             </td>
 
             <td className="actions-cell">
@@ -164,8 +169,7 @@ const DeliveryTableContent = (props) => {
 
                 <button
                   className={`button small green --jb-modal ${
-                    (!item.shipping || item.delivered) &&
-                    "disabled:opacity-25"
+                    (!item.shipping || item.delivered) && "disabled:opacity-25"
                   } `}
                   type="button"
                   disabled={!item.shipping || item.delivered}

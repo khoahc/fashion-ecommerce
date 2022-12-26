@@ -63,7 +63,7 @@ const OrderTableContent = (props) => {
               data-label="stt"
               className={`${item.cancelled && "line-through"} `}
             >
-              {index + (props.pageSize * (props.currentPage - 1)) + 1}
+              {index + props.pageSize * (props.currentPage - 1) + 1}
             </td>
             <td
               data-label="name"
@@ -109,17 +109,19 @@ const OrderTableContent = (props) => {
               className={`${item.cancelled && "line-through"} text-center`}
               data-label="order-status"
             >
-              <small
-                className={`text-sm 
+              <div className="flex justify-center items-center">
+                <small
+                  className={`text-sm block w-fit 
               ${
                 colorOrderStatus.find((elem) =>
                   _.isEqual(item.orderStatus, elem.status)
                 ).style
               }`}
-                title={item.orderStatus}
-              >
-                {item.orderStatus}
-              </small>
+                  title={item.orderStatus}
+                >
+                  {item.orderStatus}
+                </small>
+              </div>
             </td>
 
             <td className="actions-cell">
@@ -139,11 +141,19 @@ const OrderTableContent = (props) => {
 
                 <button
                   className={`${
-                    (item.shipping || item.cancelled || !item.verified || item.packaged) &&
+                    (item.shipping ||
+                      item.cancelled ||
+                      !item.verified ||
+                      item.packaged) &&
                     "disabled:opacity-25"
                   } !bg-orange-500 button small --jb-modal`}
                   type="button"
-                  disabled={item.shipping || item.cancelled || !item.verified || item.packaged}
+                  disabled={
+                    item.shipping ||
+                    item.cancelled ||
+                    !item.verified ||
+                    item.packaged
+                  }
                   onClick={() => {
                     setShowModalPackageOrder(true);
                     setOrderIdChoose(item.id);
