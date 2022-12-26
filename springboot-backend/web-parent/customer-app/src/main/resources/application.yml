@@ -2,14 +2,30 @@ server:
     port: 81
     servlet:
         context-path: /lizi
+#    ssl:
+#        key-store-type: PKCS12
+#        key-store: classpath:keystore/lizi.p12
+#        key-store-password: lizi&Fashion
+#        key-alias: lizi
+#        enabled: true
+
 spring:
-    datasource:
-        password: 1234
-        url: jdbc:mysql://localhost:3306/lizi_db2
-        username: root
+    #datasource:
+        #password: 1234
+        #url: jdbc:mysql://localhost:3306/lizi_db2
+        #username: root
         #hikari:
         #minimum-idle: 1
         #maximum-pool-size: 2
+
+    # database test
+    datasource:
+        password: PASSWORD
+        url: jdbc:mysql://104.208.116.177:3306/lizi_db2_test
+        username: root
+        hikari:
+            minimum-idle: 1
+            maximum-pool-size: 2
     jpa:
         hibernate:
             ddl-auto: update
