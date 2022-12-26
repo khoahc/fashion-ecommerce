@@ -109,7 +109,7 @@ public class ProductServiceImpl implements ProductService {
 //            new ResourceNotFoundException("Không tìm thấy sản phẩm")));
 
     //set mainImage for product
-    String mainImage = productRepository.findMainImageForProductDetailBySlugProduct(slugProduct, slugColor);
+    String mainImage = productRepository.findMainImageForProductDetailBySlugProduct(slugProduct, slugColor).get(0);
     product.get().setMainImage(mainImage);
 
     //set all images for product

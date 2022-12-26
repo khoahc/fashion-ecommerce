@@ -74,20 +74,28 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
   Double findRatingAverageBySlugProduct(@Param("slugProduct") String slugProduct);
 
   //find main image for product detail
+//  @Query(value =
+//          "SELECT DISTINCT img.url as main_image \n" +
+//                  "FROM \n" +
+//                  "\ttbl_products p    \n" +
+//                  "    INNER JOIN tbl_product_options p_o\n" +
+//                  "    ON p.id = p_o.product_id\n" +
+//                  "\tINNER JOIN tbl_product_colors p_c\n" +
+//                  "    ON p_o.product_color_id = p_c.id\n" +
+//                  "    INNER JOIN tbl_images img\n" +
+//                  "    ON p_c.main_image_id = img.id\n" +
+//                  "    INNER JOIN tbl_color color\n" +
+//                  "    ON p_c.color_id = color.id\n" +
+//                  "WHERE p.slug = :slugProduct AND (:slugColor IS NULL OR color.slug = :slugColor) ORDER BY color.slug ASC LIMIT 1", nativeQuery = true )
   @Query(value =
-          "SELECT DISTINCT img.url as main_image \n" +
-                  "FROM \n" +
-                  "\ttbl_products p    \n" +
-                  "    INNER JOIN tbl_product_options p_o\n" +
-                  "    ON p.id = p_o.product_id\n" +
-                  "\tINNER JOIN tbl_product_colors p_c\n" +
-                  "    ON p_o.product_color_id = p_c.id\n" +
-                  "    INNER JOIN tbl_images img\n" +
-                  "    ON p_c.main_image_id = img.id\n" +
-                  "    INNER JOIN tbl_color color\n" +
-                  "    ON p_c.color_id = color.id\n" +
-                  "WHERE p.slug = :slugProduct AND (:slugColor IS NULL OR color.slug = :slugColor) ORDER BY color.slug ASC LIMIT 1", nativeQuery = true )
-  String findMainImageForProductDetailBySlugProduct(@Param("slugProduct") String slugProduct,
+      "SELECT pc.mainImage.url "
+          + "FROM Product p "
+          + "INNER JOIN p.options ot "
+          + "INNER JOIN ot.productColor pc "
+          + "INNER JOIN pc.color cl "
+          + "WHERE p.slug = :slugProduct "
+          + "AND (:slugColor IS NULL OR cl.slug = :slugColor)")
+  List<String> findMainImageForProductDetailBySlugProduct(@Param("slugProduct") String slugProduct,
                                                     @Param("slugColor") String slugColor);
 
   //find all images for product detail
@@ -105,7 +113,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                   "    ON p_i_c.image.id = img.id\n" +
                   "    INNER JOIN Color color\n" +
                   "    ON p_c.color.id = color.id\n" +
-                  "WHERE p.slug = :slugProduct AND (:slugColor IS NULL OR color.slug = :slugColor) ORDER BY color.slug ASC")
+                  "WHERE p.slug = :slugProduct AND (:slugColor IS NULL OR color.slug = :slugColor)")
+//                  "WHERE p.slug = :slugProduct AND (:slugColor IS NULL OR color.slug = :slugColor) ORDER BY color.slug ASC")
   Optional<List<ImageResponseDTO>> findAllImagesForProductDetailBySlugProduct(@Param("slugProduct") String slugProduct,
                                                     @Param("slugColor") String slugColor);
 
