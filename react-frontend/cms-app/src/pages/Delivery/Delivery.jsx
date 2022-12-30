@@ -36,6 +36,10 @@ const Delivery = () => {
     });
   };
 
+  const reloadData = () => {
+    getData({ params: { page: currentPage, size: PageSize } });
+  }
+
   useEffect(() => {
     getData({ params: { page: 1, size: PageSize } });
   }, []);
@@ -56,6 +60,7 @@ const Delivery = () => {
               isLoading={isLoading}
               pageSize={PageSize}
               currentPage={currentPage}
+              reloadData={reloadData}
             />
             <Pagination
               className="pagination-bar"

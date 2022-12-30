@@ -12,11 +12,11 @@ const ModalDelivered = (props) => {
           } else {
             return Promise.reject(new Error(resp.message));
           }
+          props.reloadData();
         }).catch(error => {
           props.setShowModal(false);
           notify(0, "Thất bại");
         })
-        window.location.reload(true);
       };
       const handleClickClose = () => {
         props.setShowModal(false);

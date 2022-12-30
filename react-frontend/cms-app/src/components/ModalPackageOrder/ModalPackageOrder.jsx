@@ -18,13 +18,13 @@ const ModalPackageOrder = (props) => {
           notify(0, "Xác nhận thất bại!");          
           return Promise.reject(new Error(response.message));
         }
+        props.reloadData();
       })
       .catch(function (error) {
         props.setShowModalShippingOrder(false);
         notify(0, "Xác nhận thất bại!");
         console.log(error);
       });
-    window.location.reload(true);
   };
   const handleClickClose = () => {
     props.setShowModalShippingOrder(false);

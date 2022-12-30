@@ -18,13 +18,13 @@ const ModalVerifiedOrder = (props) => {
           notify(0, "Xác nhận thất bại!");
           return Promise.reject(new Error(response.message));
         }
+        props.reloadData();
       })
       .catch(function (error) {
         props.setShowModalConfirmOrder(false);
         notify(0, "Xác nhận thất bại!");
         console.log(error);
       });
-    window.location.reload(true);
   };
   const handleClickClose = () => {
     props.setShowModalConfirmOrder(false);

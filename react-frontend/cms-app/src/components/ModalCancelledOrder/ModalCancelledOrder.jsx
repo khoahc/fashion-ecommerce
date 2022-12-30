@@ -11,20 +11,20 @@ const ModalCancelledOrder = (props) => {
       .then((response) => {
         if (response.status === "OK") {
           props.setShowModalCancelOrder(false);
-          notify(1, "Xác nhận thành công");
+          notify(1, "Hủy đơn thành công");
           console.log(response);
         } else {
           props.setShowModalCancelOrder(false);
-          notify(0, "Xác nhận thất bại!");
+          notify(0, "Hủy đơn thất bại!");
           return Promise.reject(new Error(response.message));
         }
+        props.reloadData();
       })
       .catch(function (error) {
         props.setShowModalCancelOrder(false);
-        notify(0, "Xác nhận thất bại!");
+        notify(0, "Hủy đơn thất bại!");
         console.log(error);
       });
-    window.location.reload(true);
   };
   const handleClickClose = () => {
     props.setShowModalCancelOrder(false);

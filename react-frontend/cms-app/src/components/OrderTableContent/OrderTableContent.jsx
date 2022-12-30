@@ -214,6 +214,7 @@ const OrderTableContent = (props) => {
                         orderId={orderIdChoose}
                         showModalShippingOrder={showModalPackageOrder}
                         setShowModalShippingOrder={setShowModalPackageOrder}
+                        reloadData={props.reloadData}
                       />
                     )}
                     {showModalConfirmOrder && (
@@ -221,6 +222,7 @@ const OrderTableContent = (props) => {
                         orderId={orderIdChoose}
                         showModalConfirmOrder={showModalConfirmOrder}
                         setShowModalConfirmOrder={setShowModalConfirmOrder}
+                        reloadData={props.reloadData}
                       />
                     )}
                     {showModalCancelOrder && (
@@ -228,6 +230,7 @@ const OrderTableContent = (props) => {
                         orderId={orderIdChoose}
                         showModalCancelOrder={showModalCancelOrder}
                         setShowModalCancelOrder={setShowModalCancelOrder}
+                        reloadData={props.reloadData}
                       />
                     )}
                   </>

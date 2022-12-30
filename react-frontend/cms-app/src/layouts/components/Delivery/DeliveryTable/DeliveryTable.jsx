@@ -7,7 +7,8 @@ import numberWithDot from "../../../../utils/numberWithDot";
 import ModalDeliver from "../ModalDeliver/ModalDeliver";
 import ModalDelivered from "../ModalDelivered/ModalDelivered";
 
-const DeliveryTable = ({ list, isLoading, pageSize, currentPage }) => {
+const DeliveryTable = ({ list, isLoading, pageSize, currentPage, reloadData }) => {
+
   return (
     <table>
       <thead>
@@ -35,6 +36,7 @@ const DeliveryTable = ({ list, isLoading, pageSize, currentPage }) => {
             listOrder={list}
             pageSize={pageSize}
             currentPage={currentPage}
+            reloadData={reloadData}
           />
         )}
       </tbody>
@@ -43,6 +45,7 @@ const DeliveryTable = ({ list, isLoading, pageSize, currentPage }) => {
 };
 
 const DeliveryTableContent = (props) => {
+
   const colorOrderStatus = [
     {
       key: 1,
@@ -71,7 +74,7 @@ const DeliveryTableContent = (props) => {
     <>
       {props.listOrder.length > 0 ? (
         props.listOrder.map((item, index) => (
-          <tr key={index}>
+          <tr key={item.id}>
             <td className="checkbox-cell">
               <label className="checkbox">
                 <input type="checkbox"></input>
@@ -199,6 +202,7 @@ const DeliveryTableContent = (props) => {
                         orderId={orderIdChoose}
                         showModal={showModalDeliver}
                         setShowModal={setShowModalDeliver}
+                        reloadData={props.reloadData}
                       />
                     )}
                     {showModalDelivered && (
@@ -206,6 +210,7 @@ const DeliveryTableContent = (props) => {
                         orderId={orderIdChoose}
                         showModal={showModalDelivered}
                         setShowModal={setShowModalDelivered}
+                        reloadData={props.reloadData}
                       />
                     )}
                   </>
