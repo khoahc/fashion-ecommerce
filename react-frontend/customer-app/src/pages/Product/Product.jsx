@@ -162,7 +162,6 @@ const Product = () => {
         })
         .catch((error) => {
           console.log("get review error", error);
-         
         }),
     ]);
 
@@ -333,28 +332,61 @@ const Product = () => {
                 )}
               </div>
             </div>
-            <Button
-              onClick={handleAddItemIntoCart}
-              backgroundColor="white"
-              color="black"
-              border="border"
-              radius="3"
-              fontWeight="3"
-              size="5"
-            >
-              Thêm vào giỏ
-            </Button>
 
-            <Button
-              onClick={handleBuyNow}
-              backgroundColor="black"
-              color="white"
-              radius="3"
-              fontWeight="3"
-              size="5"
-            >
-              Mua ngay
-            </Button>
+            {/* isStock */}
+            {productDetail.quantity > 0 ? (
+              <div className="flex-column flex-gap-1">
+                <Button
+                  onClick={handleAddItemIntoCart}
+                  backgroundColor="white"
+                  color="black"
+                  border="border"
+                  radius="3"
+                  fontWeight="3"
+                  size="5"
+                >
+                  Thêm vào giỏ
+                </Button>
+
+                <Button
+                  onClick={handleBuyNow}
+                  backgroundColor="black"
+                  color="white"
+                  radius="3"
+                  fontWeight="3"
+                  size="5"
+                >
+                  Mua ngay
+                </Button>
+              </div>
+            ) : productDetail.quantity < 1 ? (
+              <div className="flex-column flex-gap-1">
+                <Button
+                  disabled="true"
+                  backgroundColor="white"
+                  color="gray"
+                  border="border"
+                  radius="3"
+                  fontWeight="3"
+                  size="5"
+                >
+                  Thêm vào giỏ
+                </Button>
+
+                <Button
+                  disabled="true"
+                  backgroundColor="white"
+                  color="gray"
+                  radius="3"
+                  fontWeight="3"
+                  size="5"
+                >
+                  Mua ngay
+                </Button>
+              </div>
+            ) : (
+              ""
+            )}
 
             <ToastContainer
               position="bottom-right"

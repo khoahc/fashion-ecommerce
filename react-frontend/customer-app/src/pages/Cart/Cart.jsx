@@ -139,7 +139,7 @@ const Cart = () => {
   }, [cartItems]);
 
   useEffect(() => {
-    setCartProductsChose(cartProducts.filter((item) => item.enabled));
+    setCartProductsChose(() => cartProducts.filter((item) => item.enabled));
   }, [cartProducts]);
 
   const updateTotal = useCallback(() => {
@@ -179,12 +179,12 @@ const Cart = () => {
         {/* list cart */}
         {isLoading ? (
           <InfinityCartListSkeleton />
-        ) : cartProducts.length === 0 ? (
+        ) : cartProducts.length < 1 ? (
           <h2 className="mt-3 font-weight-5">
             Hiện tại không có sản phẩm nào trong giỏ hàng
           </h2>
         ) : (
-          cartProducts.map((item, index) => (
+          cartProducts?.map((item, index) => (
             <CartItem
               item={item}
               id={index}
@@ -246,7 +246,7 @@ const Cart = () => {
             <span>{numberWithCommas(Number(totalPrice))} đ</span>
           </div>
 
-          <p>Dụng mã giảm giá trong bước tiếp theo.</p>
+          {/* <p>Dụng mã giảm giá trong bước tiếp theo.</p> */}
         </div>
 
         <div className="flex-column flex-gap-1 py-2">
