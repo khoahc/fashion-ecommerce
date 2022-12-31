@@ -89,8 +89,8 @@ const Cart = () => {
     );
     return {
       ...cartItem,
-      count: cart.at(0).count,
-      enabled: cart.at(0).enabled,
+      count: cart.at(0)?.count,
+      enabled: cart.at(0)?.enabled,
     };
   };
 
