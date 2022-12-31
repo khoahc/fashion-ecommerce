@@ -24,7 +24,7 @@ public interface ProductOptionRepository extends JpaRepository<ProductOption, Lo
           "\ton pc.color.id = c.id\n" +
           "inner join Image img\n" +
           "\ton pc.mainImage.id = img.id\n" +
-          "where p.enabled = true")
+          "where p.enabled = true and po.quantity > 0")
   Optional<Set<ProductCartResponseDTO>> findAllProductOptionForCart();
 
   @Query(value = "select po.id " +
