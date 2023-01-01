@@ -52,6 +52,21 @@ public class CategoryServiceImpl implements CategoryService {
   }
 
   @Override
+  public List<CategoryResDto> getByLevel(Integer level) {
+    if (level == null || level == 1) {
+      return CategoryMapper.INSTANCE.categoriesToDtos(categoryRepo.findAllLevel1());
+    }
+    int lengthAllParentIds = 1 + level * 2;
+    return CategoryMapper.INSTANCE.categoriesToDtos(categoryRepo.findAllLevel1());
+  }
+
+  @Override
+  public List<CategoryResDto> getChildren(Long id) {
+    Category categoryParent = get(id);
+    return CategoryMapper.INSTANCE.categoriesToDtos(categoryRepo.findChildren(categoryParent));
+  }
+
+  @Override
   public CategoryResDto getCategory(Long id) {
     return CategoryMapper.INSTANCE.categoryToDto(categoryRepo.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("category", "id", id)));
@@ -118,6 +133,12 @@ public class CategoryServiceImpl implements CategoryService {
   @Override
   public void deleteCategory(Long id) {
     categoryRepo.deleteById(id);
+  }
+
+  @Override
+  public Category get(Long id) {
+    return categoryRepo.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("category", "id", id));
   }
 
   private String generateAllParentIds(Category parent) {

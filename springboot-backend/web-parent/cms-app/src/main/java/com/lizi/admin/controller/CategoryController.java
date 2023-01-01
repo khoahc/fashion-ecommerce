@@ -38,9 +38,16 @@ public class CategoryController {
   private CloudinaryService cloudinaryService;
 
   @GetMapping(value = "")
-  public ResponseEntity<ResponsePaginationObject> getAll(
+  public ResponseEntity<?> getAll(
       @RequestParam(name = "page", required = false, defaultValue = Constant.PAGE_DEFAULT) int page,
-      @RequestParam(name = "size", required = false, defaultValue = Constant.SIZE_DEFAULT) int size) {
+      @RequestParam(name = "size", required = false, defaultValue = Constant.SIZE_DEFAULT) int size,
+      @RequestParam(name = "isAll", required = false, defaultValue = "false") boolean isAll) {
+    if (isAll) {
+      return ResponseEntity.ok().body(
+          ResponseObject.builder().status(HttpStatus.OK).message(Constant.SUCCESS)
+              .data(categoryService.getAll()).build());
+    }
+
     Sort sort = Sort.by(Direction.DESC, "createTime");
     Pageable pageable = PageRequest.of(page - 1, size, sort);
     return ResponseEntity.ok().body(
@@ -63,11 +70,27 @@ public class CategoryController {
             .data(categoryService.getAllLevel1And2Category()).build());
   }
 
+  @GetMapping(value = "/level/{level}")
+  public ResponseEntity<ResponseObject> getCategoryByLevel(
+      @PathVariable(name = "level") Integer level,
+      @RequestParam(name = "id", required = false) Long id) {
+    return ResponseEntity.ok().body(
+        ResponseObject.builder().status(HttpStatus.OK).message(Constant.SUCCESS)
+            .data(categoryService.getByLevel(level)).build());
+  }
+
   @GetMapping(value = "/{id}")
   public ResponseEntity<ResponseObject> getCategory(@PathVariable(name = "id") Long id) {
     return ResponseEntity.ok().body(
         ResponseObject.builder().status(HttpStatus.OK).message(Constant.SUCCESS)
             .data(categoryService.getCategory(id)).build());
+  }
+
+  @GetMapping(value = "/{id}/children")
+  public ResponseEntity<ResponseObject> getAllCategoryChildren(@PathVariable(name = "id") Long id) {
+    return ResponseEntity.ok().body(
+        ResponseObject.builder().status(HttpStatus.OK).message(Constant.SUCCESS)
+            .data(categoryService.getChildren(id)).build());
   }
 
   @PostMapping(value = "")
@@ -88,15 +111,16 @@ public class CategoryController {
   @DeleteMapping(value = "/{id}")
   public ResponseEntity<ResponseObject> deleteCategory(@PathVariable(name = "id") Long id) {
     categoryService.deleteCategory(id);
-    return ResponseEntity.ok().body(
-        ResponseObject.builder().status(HttpStatus.OK).message(Constant.SUCCESS).build());
+    return ResponseEntity.ok()
+        .body(ResponseObject.builder().status(HttpStatus.OK).message(Constant.SUCCESS).build());
   }
 
   @PostMapping(value = "/image")
   public ResponseEntity<ResponseObject> uploadImageCategory(
       @RequestParam(name = "image") MultipartFile multipartFile) {
-    return ResponseEntity.ok().body(ResponseObject.builder().message(Constant.SUCCESS).status(
-        HttpStatus.OK).data(cloudinaryService.uploadImageCategory(multipartFile)).build());
+    return ResponseEntity.ok().body(
+        ResponseObject.builder().message(Constant.SUCCESS).status(HttpStatus.OK)
+            .data(cloudinaryService.uploadImageCategory(multipartFile)).build());
   }
 
 }
