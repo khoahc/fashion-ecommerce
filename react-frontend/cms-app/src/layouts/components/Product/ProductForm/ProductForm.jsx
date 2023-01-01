@@ -16,7 +16,8 @@ import categoryApi from "../../../../services/axios/categoryApi";
 import productApi from "../../../../services/axios/productApi";
 import ProductOptionForm from "../ProductOptionForm/ProductOptionForm";
 
-const { getAllLevel3Categories } = categoryApi;
+const { getAllLevel3Categories, getByLevel, getChildren, getAllCategories } =
+  categoryApi;
 const { createProduct, uploadImageProduct } = productApi;
 
 const ProductForm = ({ product }) => {
@@ -25,17 +26,25 @@ const ProductForm = ({ product }) => {
 
   const [mode, setMode] = useState("create");
   const navigate = useNavigate();
-  const [listLevel3Category, setListLevel3Category] = useState([]);
+  const [allCategory, setAllCategory] = useState([]);
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
+  // const [listLevel3Category, setListLevel3Category] = useState([]);
   const [imageOptions, setImageOptions] = useState([
     {
       mainImage: null,
       images: [],
     },
   ]);
+  const [categoryArr, setCategoryArr] = useState([
+    {
+      level: 1,
+      categoryId: null,
+      valueArr: [],
+    },
+  ]);
+  const [isEnableAddCategory, setIsEnableAddCategory] = useState(false);
 
-  const validateForm = () => {
-
-  } 
+  const validateForm = () => {};
 
   const onSubmitHandle = (e) => {
     e.preventDefault();
@@ -73,26 +82,27 @@ const ProductForm = ({ product }) => {
           );
         });
 
-        Promise.all(uploads).then((resp) => {
-          console.log(resp);
-          let data = structuredClone(form);
-          console.log(data);
-          resp.forEach((o, i) => {
-            data.options[i].mainImageId = o.mainImage.id;
-            data.options[i].imageIds = o.images.map((img) => img.id);
-          });
-          return data;
-        }).then((data) => {
-          createProduct(data).then(resp => {
-            if (resp.status === 'OK') {
-              notify(1, "Thanh cong");
-              navigate("/product");
-            } else {
-              notify(0, "That bai");
-            }
+        Promise.all(uploads)
+          .then((resp) => {
+            console.log(resp);
+            let data = structuredClone(form);
+            console.log(data);
+            resp.forEach((o, i) => {
+              data.options[i].mainImageId = o.mainImage.id;
+              data.options[i].imageIds = o.images.map((img) => img.id);
+            });
+            return data;
           })
-        });
-
+          .then((data) => {
+            createProduct(data).then((resp) => {
+              if (resp.status === "OK") {
+                notify(1, "Thanh cong");
+                navigate("/product");
+              } else {
+                notify(0, "That bai");
+              }
+            });
+          });
 
         // uploadImageProduct()
 
@@ -127,14 +137,68 @@ const ProductForm = ({ product }) => {
     }
   };
 
-  const getData = async () => {
-    getAllLevel3Categories()
+  const onChooseCategory = (e, i) => {
+    dispatch(setCategoryId(e.target.value));
+    categoryArr[i].categoryId = e.target.value;
+    setCategoryArr(categoryArr.slice(0, i + 1));
+    if (isHaveChildren(e.target.value)) {
+      setIsEnableAddCategory(true);
+    } else {
+      setIsEnableAddCategory(false);
+    }
+  };
+
+  const onAddCategory = (e) => {
+    setIsEnableAddCategory(false);
+    const currentIndex = categoryArr.length - 1;
+    const parentId = categoryArr[currentIndex].categoryId;
+    const nextLevel = categoryArr[currentIndex].level + 1;
+    const data = getCategoryChild(parentId);
+    console.log(data);
+    setCategoryArr([
+      ...categoryArr,
+      {
+        level: nextLevel,
+        categoryId: null,
+        valueArr: data,
+      },
+    ]);
+  };
+
+  const getDataAllCategory = async ({ params }) => {
+    getAllCategories({ params })
       .then((resp) => {
-        return resp.data;
+        console.log(resp);
+        if (resp.status === "OK") {
+          setAllCategory(resp.data);
+        } else {
+          return new Promise.reject(resp.message);
+        }
+        setIsFirstLoad(false);
       })
-      .then((data) => {
-        setListLevel3Category(data);
-      });
+      .catch((error) => notify(0, error));
+  };
+
+  const getDataCategoryLevel1 = () => {
+    return allCategory.filter((c) => !c.parent);
+  };
+
+  const getCategoryChild = (parentId) => {
+    return allCategory.filter((c) => {
+      if (c.parent && c.parent.id == parentId) {
+        console.log(c);
+      }
+      return c.parent != null && c.parent.id == parentId;
+    });
+  };
+
+  const isHaveChildren = (parentId) => {
+    for (let c of allCategory) {
+      if (c.parent && c.parent.id == parentId) {
+        return true;
+      }
+    }
+    return false;
   };
 
   useEffect(() => {
@@ -152,8 +216,29 @@ const ProductForm = ({ product }) => {
   }, [dispatch, product]);
 
   useEffect(() => {
-    getData();
+    getDataAllCategory({ params: { isAll: true } });
   }, []);
+
+  useEffect(() => {
+    if (!isFirstLoad) {
+      const categoryArrCp = categoryArr.map((c, i) => {
+        if (i === 0) {
+          const data = getDataCategoryLevel1();
+          return {
+            level: c.level,
+            categoryId: c.categoryId,
+            valueArr: data,
+          };
+        }
+        return c;
+      });
+      setCategoryArr(categoryArrCp);
+    }
+  }, [isFirstLoad]);
+
+  // useEffect(() => {
+  //   getData();
+  // }, []);
 
   return (
     <div className="card mb-0">
@@ -219,23 +304,37 @@ const ProductForm = ({ product }) => {
                     </div>
                     <div className="field">
                       <label class="label">Loại sản phẩm</label>
-                      <div className="control">
-                        <div className="select">
-                          <select
-                            value={form.categoryId}
-                            onChange={(e) => {
-                              dispatch(setCategoryId(e.target.value));
-                            }}
+                      <div className="control flex flex-wrap">
+                        {categoryArr.map((c, i) => (
+                          <>
+                            <div
+                              className="select mr-8"
+                              style={{ minWidth: "150px" }}
+                            >
+                              <select
+                                value={categoryArr[i].categoryId}
+                                i={i}
+                                onChange={(e) => onChooseCategory(e, i)}
+                              >
+                                <option value={null}>Loại sản phẩm</option>
+                                {categoryArr[i].valueArr.map((c) => (
+                                  <option value={c.id}>{c.name}</option>
+                                ))}
+                              </select>
+                            </div>
+                          </>
+                        ))}
+                        {isEnableAddCategory && (
+                          <button
+                            type="button"
+                            className="text-blue-700 text-2xl"
+                            onClick={onAddCategory}
                           >
-                            <option value={null}>Loại sản phẩm</option>
-                            {listLevel3Category.map((c) => (
-                              <option value={c.id}>
-                                {c.name +
-                                  (c.parent ? " - " + c.allParentNames : "")}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
+                            <span class="icon">
+                              <i className="mdi mdi-plus-circle"></i>
+                            </span>
+                          </button>
+                        )}
                       </div>
                     </div>
                     <div class="field">

@@ -46,7 +46,16 @@ const ProductOptionForm = ({ imageOptions, setImageOptions }) => {
     setImageOptions(imageOptionsCp, index);
   };
 
-  const removeImage = (index, indexImage) => {};
+  const removeImage = (index, imgIndex) => {
+    const imageOptionsCp = imageOptions.map((o, i) => {
+      console.log("map");
+      if (i === index) {
+        o.images.splice(imgIndex, 1);
+      }
+      return o;
+    });
+    setImageOptions(imageOptionsCp, index);
+  };
 
   return (
     <div className="roductOptionForm">
@@ -59,6 +68,7 @@ const ProductOptionForm = ({ imageOptions, setImageOptions }) => {
             handleRemoveOptionClick={handleRemoveOptionClick}
             handleSetMainImage={handleSetMainImage}
             addImage={addImage}
+            removeImage={removeImage}
           />
         ))}
       </div>
@@ -82,6 +92,7 @@ const ProductOptionRow = ({
   handleRemoveOptionClick,
   handleSetMainImage,
   addImage,
+  removeImage,
 }) => {
   const { form } = useSelector((state) => state.productForm);
   const dispatch = useDispatch();
@@ -120,6 +131,15 @@ const ProductOptionRow = ({
       URL.createObjectURL(e.target.files[0]),
     ]);
     console.log(previewImages);
+  };
+
+  const doRemoveImage = (i, imgI) => {
+    removeImage(i, imgI);
+    images.splice(imgI, 1);
+    console.log(previewImages);
+    console.log(imgI);
+    console.log(previewImages[imgI]);
+    previewImages.splice(imgI, 1);
   };
 
   const handleAddSizeClick = (e) => {
@@ -189,7 +209,12 @@ const ProductOptionRow = ({
                 )}
                 <div className="field file">
                   <label className="upload control">
-                    <span className="button blue">Tải ảnh</span>
+                    <span className="button blue small">
+                      <span class="icon">
+                        <i className="mdi mdi-image-plus"></i>
+                      </span>
+                    </span>
+                    {/* <span className="button blue">Tải ảnh</span> */}
                     <input
                       type="file"
                       onChange={(e) => onSelectMainImage(e, index)}
@@ -203,21 +228,38 @@ const ProductOptionRow = ({
             <div className="field">
               <label className="label min-w-fit mr-4">Ảnh bổ sung: </label>
               <div className="field-body">
-                <div className="row-span-1 grid grid-cols-4">
-                  {previewImages.map((img) => (
-                    <img
-                      style={{ maxHeight: "15rem" }}
-                      className="mb-4"
-                      src={img}
-                      alt=""
-                    />
+                <div className="flex flex-wrap items-center">
+                  {previewImages.map((img, i) => (
+                    <div className="relative inline-block mr-12 mb-12">
+                      <img
+                        style={{ maxHeight: "15rem" }}
+                        className="mb-4"
+                        src={img}
+                        alt=""
+                      />
+                      <button
+                        type="button"
+                        className="absolute top-0 right-0 rounded-full hover:text-orange-600"
+                        title="Xóa ảnh"
+                        onClick={(e) => doRemoveImage(index, i)}
+                      >
+                        <span class="icon">
+                          <i className="mdi mdi-close-circle text-lg"></i>
+                        </span>
+                      </button>
+                    </div>
                   ))}
-                </div>
-                <div className="field file">
-                  <label className="upload control">
-                    <span className="button blue">Thêm ảnh</span>
-                    <input type="file" onChange={onSelectImages} />
-                  </label>
+                  <div className="field file inline-block">
+                    <label className="upload control">
+                      <span className="button blue small">
+                        <span class="icon">
+                          <i className="mdi mdi-image-plus"></i>
+                        </span>
+                      </span>
+                      {/* <span className="button blue">Thêm ảnh</span> */}
+                      <input type="file" onChange={onSelectImages} />
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
