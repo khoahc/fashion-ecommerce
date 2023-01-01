@@ -1,6 +1,7 @@
 import { axiosClient, axiosClientMultipart } from "./axiosClient";
 
 const categoryApi = {
+
     getAllCategories: async ({params}) => {
         const url = `/api/v1/categories`;
         return await axiosClient.get(url, {params});
@@ -13,6 +14,16 @@ const categoryApi = {
 
     getAllLevel3Categories: async () => {
         const url = `/api/v1/categories/level-3`;
+        return await axiosClient.get(url);
+    },
+
+    getByLevel: async (level, id) => {
+        const url = id ? `/api/v1/categories/level/${level}?id=${id}` : `/api/v1/categories/level/${level}`;
+        return await axiosClient.get(url);
+    },
+
+    getChildren: async (id) => {
+        const url = `/api/v1/categories/${id}/children`;
         return await axiosClient.get(url);
     },
 

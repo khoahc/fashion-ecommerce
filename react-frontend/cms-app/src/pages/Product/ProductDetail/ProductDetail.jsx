@@ -14,6 +14,10 @@ const ProductDetail = () => {
     dispatch(getProductInfo({id: productId}));
   }, [dispatch, productId]);
 
+  useEffect(() => {
+    document.title = `${form.name}`;
+  });
+
   const listTitle = [
     {
       title: "Sản phẩm",

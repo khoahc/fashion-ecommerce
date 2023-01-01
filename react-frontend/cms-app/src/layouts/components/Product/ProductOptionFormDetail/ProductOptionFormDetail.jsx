@@ -226,7 +226,12 @@ const ProductOptionRow = ({
                 </div>
                 <div className="field file">
                   <label className="upload control">
-                    <span className="button blue">Thêm ảnh</span>
+                    <span className="button blue small">
+                      <span class="icon">
+                        <i className="mdi mdi-image-plus"></i>
+                      </span>
+                    </span>
+                    {/* <span className="button blue">Thêm ảnh</span> */}
                     <input type="file" onChange={onSelectImages} />
                   </label>
                 </div>
