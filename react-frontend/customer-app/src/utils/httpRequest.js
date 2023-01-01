@@ -2,7 +2,8 @@ import axios from "axios";
 
 const httpRequest = axios.create({
   // baseURL: process.env.REACT_APP_BASE_URL,
-  baseURL: "http://localhost:81/lizi/api/v1/",
+  baseURL: "http://lizi-fashion.online:81/lizi/api/v1/",
+  // baseURL: "http://localhost:81/lizi/api/v1/",
 });
 
 export const get = async (path, options = {}) => {
