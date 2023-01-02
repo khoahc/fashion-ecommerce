@@ -107,7 +107,7 @@ const ProductTableContent = ({ list }) => {
           <td className="actions-cell">
             <div className="buttons justify-center nowrap">
               {/* <button
-                class="button small red --jb-modal"
+                className="button small red --jb-modal"
                 data-target="sample-modal"
                 type="button"
                 onClick={() => {
@@ -115,25 +115,25 @@ const ProductTableContent = ({ list }) => {
                   setProductIdChoose(product.id);
                 }}
               >
-                <span class="icon">
-                  <i class="mdi mdi-eye"></i>
+                <span className="icon">
+                  <i className="mdi mdi-eye"></i>
                 </span>
               </button> */}
               <Link
                 to={`/product/${product.id}`}
-                class="button small green --jb-modal"
+                className="button small green --jb-modal"
               >
-                <span class="icon">
-                  <i class="mdi mdi-eye"></i>
+                <span className="icon">
+                  <i className="mdi mdi-eye"></i>
                 </span>
               </Link>
               <button
-                class="button small red --jb-modal"
+                className="button small red --jb-modal"
                 data-target="sample-modal"
                 type="button"
               >
-                <span class="icon">
-                  <i class="mdi mdi-trash-can"></i>
+                <span className="icon">
+                  <i className="mdi mdi-trash-can"></i>
                 </span>
               </button>
               {productIdChoose != null && (
