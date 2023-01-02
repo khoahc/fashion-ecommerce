@@ -128,15 +128,17 @@ public class OrderServiceImpl implements OrderService {
 
   @Override
   public List<StatisticPriceDataResDto> getRevenueOfMonth(String month, String year) {
-    List<StatisticPriceDataResDto> statisticPriceDataResDtoList = new ArrayList<StatisticPriceDataResDto>();
-    LocalDate currentdate = LocalDate.now();
-    Month currentMonth = currentdate.getMonth();
-    int currentDay = currentdate.getDayOfMonth();
+    List<StatisticPriceDataResDto> statisticPriceDataResDtoList = new ArrayList<>();
+    LocalDate currentDate = LocalDate.now();
+    Month currentMonth = currentDate.getMonth();
+    int currentDay = currentDate.getDayOfMonth();
+    int currentYear = currentDate.getYear();
 
     int maxDay = 31;
     if (currentMonth.getValue() == Integer.parseInt(month)) {
       maxDay = currentDay;
-    } else if (currentMonth.getValue() < Integer.parseInt(month)) {
+    } else if (currentMonth.getValue() < Integer.parseInt(month)
+        && currentYear == Integer.parseInt(year)) {
       maxDay = 0;
     }
 
@@ -144,9 +146,9 @@ public class OrderServiceImpl implements OrderService {
       BigDecimal revenueOfDayAndMonthAndYear = orderRepo.findRevenueOfDayAndMonthAndYear(
           Integer.toString(day), month, year);
       if (revenueOfDayAndMonthAndYear == null) {
-        if (Integer.parseInt(month) < currentMonth.getValue() || (
-            Integer.parseInt(month) == currentMonth.getValue()
-                && day <= currentDay)) {
+        if (Integer.parseInt(month) < currentMonth.getValue()
+            || (Integer.parseInt(month) == currentMonth.getValue() && day <= currentDay)
+            || (currentYear > Integer.parseInt(year))) {
           revenueOfDayAndMonthAndYear = BigDecimal.valueOf(0);
         }
       }
