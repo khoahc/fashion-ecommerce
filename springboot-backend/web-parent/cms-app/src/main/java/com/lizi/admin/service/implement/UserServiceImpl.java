@@ -123,7 +123,8 @@ public class UserServiceImpl implements UserService {
     user.setLastName(userReqDto.getLastName());
     user.setEnabled(userReqDto.isEnabled());
 
-    if (userReqDto.getPassword() != null) {
+
+    if (!userReqDto.getPassword().isBlank()) {
       user.setPassword(passwordEncoder.encode(userReqDto.getPassword()));
     }
 
