@@ -3,7 +3,7 @@ import {
   FormControlLabel,
   FormLabel,
   Radio,
-  RadioGroup
+  RadioGroup,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
@@ -16,7 +16,7 @@ import {
   getQuantityOrder,
   getRevenueOfMonth,
   getRevenueOfYear,
-  getTotalRevenue
+  getTotalRevenue,
 } from "../../services/axios/statisticApi";
 import numberWithDot from "../../utils/numberWithDot";
 
@@ -228,7 +228,7 @@ const Statis = () => {
             .catch((error) => {
               console.log("error :>> ", error);
             }),
-          getRevenueOfMonth(month - 1, year)
+          getRevenueOfMonth((month === 1 ? 12 : month - 1), (month === 1 ? year - 1 : year))
             .then((data) => {
               // console.log('data.status :>> ', data.status);
               if (data.status === "OK") {
@@ -266,6 +266,9 @@ const Statis = () => {
             }),
         ]);
         break;
+
+      default:
+        break;
     }
   };
   const [chooseRadio, setChooseRadio] = useState("month");
@@ -297,7 +300,7 @@ const Statis = () => {
         .catch((error) => {
           console.log("error :>> ", error);
         }),
-      getRevenueOfMonth(month - 1, year)
+      getRevenueOfMonth((month === 1 ? 12 : month - 1), (month === 1 ? year - 1 : year))
         .then((data) => {
           // console.log('data.status :>> ', data.status);
           if (data.status === "OK") {
@@ -308,7 +311,10 @@ const Statis = () => {
             dataChartPrevTmp = value;
             setDataChartPrev(value);
 
-            totalRevenuePrev = value.reduce((a, b) => a + b) === 0 ? 1 : value.reduce((a, b) => a + b);
+            totalRevenuePrev =
+              value.reduce((a, b) => a + b) === 0
+                ? 1
+                : value.reduce((a, b) => a + b);
             setEfficiency((totalRevenueCurrent / totalRevenuePrev) * 100);
             setChartOptionsMonth((prev) => ({
               ...prev,

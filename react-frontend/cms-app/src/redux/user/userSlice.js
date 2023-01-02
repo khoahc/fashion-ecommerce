@@ -9,6 +9,7 @@ const initialState = {
   loading: false,
   userInfo: {},
   userToken,
+  userPermissions: null,
   error: null,
   success: false,
 };
@@ -23,6 +24,9 @@ const userSlice = createSlice({
       state.userInfo = null;
       state.userToken = null;
       state.error = null;
+    },
+    setPermissions: (state, action) => {
+      state.userPermissions = action.payload;
     },
   },
   extraReducers: {
@@ -57,5 +61,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { logout } = userSlice.actions;
+export const { logout, setPermissions } = userSlice.actions;
 export default userSlice.reducer;

@@ -64,7 +64,7 @@ const Navbar = () => {
               </span>
             </div>
             <div className="navbar-dropdown user-actions">
-              <Link
+              {/* <Link
                 href="#"
                 className="navbar-item --set-active-profile-html"
               >
@@ -72,7 +72,7 @@ const Navbar = () => {
                   <i className="mdi mdi-account"></i>
                 </span>
                 <span>Trang Cá nhân</span>
-              </Link>
+              </Link> */}
               <hr className="navbar-divider"></hr>
               <button
                 className="navbar-item"

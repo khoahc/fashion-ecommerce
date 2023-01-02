@@ -32,7 +32,7 @@ const Pagination = ({
   let lastPage = paginationRange[paginationRange.length - 1];
 
   return (
-    <div class="table-pagination">
+    <div className="table-pagination">
       <ul
       className={classNames('pagination-container', { [className]: className })}
     >
