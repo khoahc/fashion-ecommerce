@@ -4,6 +4,8 @@ import com.lizi.admin.service.DeliveryService;
 import com.lizi.admin.util.Constant;
 import com.lizi.common.entity.ResponseObject;
 import com.lizi.common.entity.ResponsePaginationObject;
+import java.io.UnsupportedEncodingException;
+import javax.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -52,7 +54,8 @@ public class DeliveryController {
   }
 
   @PutMapping(value = "/delivered/{id}")
-  public ResponseEntity<ResponseObject> deliveredOrder(@PathVariable("id") String id) {
+  public ResponseEntity<ResponseObject> deliveredOrder(@PathVariable("id") String id)
+      throws MessagingException, UnsupportedEncodingException {
     return ResponseEntity.ok().body(
         ResponseObject.builder()
             .status(HttpStatus.OK)

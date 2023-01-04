@@ -1,6 +1,7 @@
 package com.lizi.admin.controller;
 
 import com.lizi.admin.dto.product.ProductReqDto;
+import com.lizi.admin.dto.product.ProductUpdateReqDto;
 import com.lizi.admin.service.CloudinaryService;
 import com.lizi.admin.service.ProductService;
 import com.lizi.admin.util.Constant;
@@ -64,10 +65,10 @@ public class ProductController {
 
   @PutMapping(value = "/{id}")
   public ResponseEntity<ResponseObject> updateProduct(@PathVariable(name = "id") Long id,
-      @RequestBody ProductReqDto productReqDto) {
+      @RequestBody ProductUpdateReqDto dto) {
     return ResponseEntity.ok().body(
         ResponseObject.builder().status(HttpStatus.OK).message(Constant.SUCCESS)
-            .data(productService.updateProduct(id, productReqDto)).build());
+            .data(productService.updateProduct(id, dto)).build());
   }
 
   @PutMapping(value = "/{id}/disable")

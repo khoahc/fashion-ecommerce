@@ -11,6 +11,7 @@ import com.lizi.common.entity.Category;
 import com.lizi.common.entity.Image;
 import com.lizi.common.exception.ResourceNotFoundException;
 import java.util.List;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -95,6 +96,7 @@ public class CategoryServiceImpl implements CategoryService {
     newCategory.setSlug(Util.toSlug(newCategory.getName()));
     newCategory.setSlug(generateSlugCategory(newCategory));
     newCategory.setAllParentIds(generateAllParentIds(parent));
+    newCategory.setDeleted(false);
 
     return CategoryMapper.INSTANCE.categoryToDto(categoryRepo.save(newCategory));
   }
@@ -132,7 +134,17 @@ public class CategoryServiceImpl implements CategoryService {
 
   @Override
   public void deleteCategory(Long id) {
-    categoryRepo.deleteById(id);
+    Category category = get(id);
+    deleteCategory(category);
+  }
+
+  @Override
+  public void deleteCategory(Category category) {
+    category.setDeleted(true);
+    categoryRepo.save(category);
+
+    Set<Category> children = category.getChildren();
+    children.stream().forEach(c -> deleteCategory(c));
   }
 
   @Override

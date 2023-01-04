@@ -2,6 +2,7 @@ package com.lizi.admin.service.implement;
 
 import com.lizi.admin.dto.product.ProductReqDto;
 import com.lizi.admin.dto.product.ProductResDto;
+import com.lizi.admin.dto.product.ProductUpdateReqDto;
 import com.lizi.admin.mapper.ProductMapper;
 import com.lizi.admin.repository.CategoryRepository;
 import com.lizi.admin.repository.ProductRepository;
@@ -90,28 +91,28 @@ public class ProductServiceImpl implements ProductService {
   }
 
   @Override
-  public ProductResDto updateProduct(Long id, ProductReqDto productReqDto) {
+  public ProductResDto updateProduct(Long id, ProductUpdateReqDto dto) {
     // get product
     Product product = get(id);
 
     // check unique name
-    productRepo.findByName(productReqDto.getName())
+    productRepo.findByName(dto.getName())
         .map(p -> {
           if (!p.equals(product)) {
-            throw new ResourceAlreadyExistsException("product", "name", productReqDto.getName());
+            throw new ResourceAlreadyExistsException("product", "name", dto.getName());
           }
           return p;
         });
 
     // get category
-    Category category = categoryRepo.findById(productReqDto.getCategoryId()).orElseThrow(
-        () -> new ResourceNotFoundException("category", "id", productReqDto.getCategoryId()));
+    Category category = categoryRepo.findById(dto.getCategoryId()).orElseThrow(
+        () -> new ResourceNotFoundException("category", "id", dto.getCategoryId()));
 
     // generate slug
-    String slug = Util.toSlug(productReqDto.getName());
+    String slug = Util.toSlug(dto.getName());
 
     // update data product
-    ProductMapper.INSTANCE.updateProductFromDto(productReqDto, product);
+    ProductMapper.INSTANCE.updateProductFromDto(dto, product);
     product.setCategory(category);
     product.setSlug(slug);
 

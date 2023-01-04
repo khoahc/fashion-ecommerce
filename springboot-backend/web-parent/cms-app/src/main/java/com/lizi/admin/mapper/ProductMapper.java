@@ -3,6 +3,7 @@ package com.lizi.admin.mapper;
 import com.lizi.admin.dto.category.CategoryResDto;
 import com.lizi.admin.dto.product.ProductReqDto;
 import com.lizi.admin.dto.product.ProductResDto;
+import com.lizi.admin.dto.product.ProductUpdateReqDto;
 import com.lizi.common.entity.Product;
 import com.lizi.common.entity.ProductOption;
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public interface ProductMapper {
   Product dtoToProduct(ProductReqDto productReqDto);
 
   @Mapping(ignore = true, target = "id")
-  void updateProductFromDto(ProductReqDto productReqDto, @MappingTarget Product product);
+  void updateProductFromDto(ProductUpdateReqDto dto, @MappingTarget Product product);
 
   @Named("getMainImage")
   public static String getMainImage(Set<ProductOption> options) {

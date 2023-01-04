@@ -23,6 +23,7 @@ public interface CategoryService {
   CategoryResDto updateCategory(Long id, CategoryReqDto categoryReqDto);
 
   void deleteCategory(Long id);
+  void deleteCategory(Category category);
 
   Category get(Long id);
 }
