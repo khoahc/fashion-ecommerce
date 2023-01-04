@@ -15,6 +15,7 @@ import {
 import categoryApi from "../../../../services/axios/categoryApi";
 import productApi from "../../../../services/axios/productApi";
 import ProductOptionForm from "../ProductOptionForm/ProductOptionForm";
+import { LoadingButton } from "@mui/lab";
 
 const { getAllLevel3Categories, getByLevel, getChildren, getAllCategories } =
   categoryApi;
@@ -23,6 +24,7 @@ const { createProduct, uploadImageProduct } = productApi;
 const ProductForm = ({ product }) => {
   const { form } = useSelector((state) => state.productForm);
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
 
   const [mode, setMode] = useState("create");
   const navigate = useNavigate();
@@ -54,6 +56,7 @@ const ProductForm = ({ product }) => {
 
     switch (mode) {
       case "create":
+        setIsLoading(true);
         const uploads = [];
         imageOptions.forEach((o, index) => {
           uploads.push(
@@ -96,13 +99,15 @@ const ProductForm = ({ product }) => {
           .then((data) => {
             createProduct(data).then((resp) => {
               if (resp.status === "OK") {
-                notify(1, "Thanh cong");
+                notify(1, "Thêm sản phẩm thành công");
                 navigate("/product");
               } else {
-                notify(0, "That bai");
+                notify(0, "Thêm sản phẩm thất bại");
               }
             });
-          });
+          })
+          .catch((error) => notify(0, "Thêm sản phẩm thất bại"))
+          .finally(() => setIsLoading(false));
 
         // uploadImageProduct()
 
@@ -423,9 +428,19 @@ const ProductForm = ({ product }) => {
 
           <div className="field grouped mt-10">
             <div className="control">
-              <button type="submit" className="button green">
+              <LoadingButton
+                className="button green"
+                type="submit"
+                sx={{
+                  height: "100%",
+                  fontSize: "100%",
+                  textTransform: "none",
+                }}
+                loading={isLoading}
+                variant="contained"
+              >
                 Lưu
-              </button>
+              </LoadingButton>
             </div>
             <div className="control">
               <BackButton text={"Hủy"} />

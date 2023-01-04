@@ -13,6 +13,7 @@ export const getProductInfo = createAsyncThunk(
       if (resp.status === 'OK') {
         console.log("Group");
         const productDetailsData = resp.data;
+        productDetailsData.categoryId = productDetailsData.category.id;
         productDetailsData.options = groupProductOptions(resp.data.options);
         console.log(productDetailsData);
         return productDetailsData;
