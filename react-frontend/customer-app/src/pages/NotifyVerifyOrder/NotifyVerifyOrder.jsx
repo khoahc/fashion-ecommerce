@@ -12,6 +12,7 @@ const NotifyVerifyOrder = () => {
     <div className="container">
       <div className="center text-center mY-10 m-autoX">
         <h1 className="mb-1">Cảm ơn bạn đã đặt hàng!</h1>
+        <h2 className="mb-1">Thông tin đơn hàng đã được chúng tôi gửi qua email!</h2>
         <h2 className="mb-3">Đơn hàng đang được chúng tôi xác nhận</h2>
         {/* <h2 className="font-weight-4">Vui lòng xác nhận đơn hàng qua email.</h2> */}
 
