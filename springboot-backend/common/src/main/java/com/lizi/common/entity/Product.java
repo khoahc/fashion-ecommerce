@@ -26,6 +26,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 
 @Getter
 @Setter
@@ -34,6 +35,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Builder
 @Entity
 @Table(name = "tbl_products")
+@Where(clause = "is_deleted=false")
 public class Product {
 
   @Id
@@ -79,5 +81,7 @@ public class Product {
   @UpdateTimestamp
   @Temporal(TemporalType.TIMESTAMP)
   private Date updateTime;
+
+  private boolean isDeleted;
 
 }
