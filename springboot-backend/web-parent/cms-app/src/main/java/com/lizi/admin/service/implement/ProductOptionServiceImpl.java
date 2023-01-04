@@ -1,5 +1,6 @@
 package com.lizi.admin.service.implement;
 
+import com.lizi.admin.dto.product.OptionSizeUpdateReqDto;
 import com.lizi.admin.dto.product.ProductColorReqDto;
 import com.lizi.admin.dto.product.ProductOptionReqDto;
 import com.lizi.admin.dto.product.ProductOptionResDto;
@@ -99,6 +100,20 @@ public class ProductOptionServiceImpl implements ProductOptionService {
     int currentQuantity = productOption.getQuantity();
     productOption.setQuantity(currentQuantity - quantity);
 
+    productOptionRepo.save(productOption);
+  }
+
+  @Override
+  public void updateQuantity(Long id, OptionSizeUpdateReqDto dto) {
+    ProductOption productOption = getProductOption(id);
+    productOption.setQuantity(dto.getQuantity());
+    productOptionRepo.save(productOption);
+  }
+
+  @Override
+  public void deleteSize(Long id) {
+    ProductOption productOption = getProductOption(id);
+    productOption.setDeleted(true);
     productOptionRepo.save(productOption);
   }
 }

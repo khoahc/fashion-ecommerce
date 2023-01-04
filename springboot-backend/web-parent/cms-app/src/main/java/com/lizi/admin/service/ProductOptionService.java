@@ -1,7 +1,7 @@
 package com.lizi.admin.service;
 
+import com.lizi.admin.dto.product.OptionSizeUpdateReqDto;
 import com.lizi.admin.dto.product.ProductOptionReqDto;
-import com.lizi.admin.dto.product.ProductOptionResDto;
 import com.lizi.common.entity.Product;
 import com.lizi.common.entity.ProductOption;
 import java.util.List;
@@ -22,4 +22,7 @@ public interface ProductOptionService {
   void deleteProductOption(Long optionId);
 
   void decreasingQuantity(long id, int quantity);
+
+  void updateQuantity(Long id, OptionSizeUpdateReqDto dto);
+  void deleteSize(Long id);
 }

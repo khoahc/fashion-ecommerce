@@ -136,7 +136,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
   @Query(value = "SELECT DISTINCT new com.lizi.customer.dto.response.SizeResponseDTO(p_o.size) FROM Product p \n" +
           "\tINNER JOIN ProductOption p_o\n"+
           "\tON p.id = p_o.product.id\n"+
-          "\tWHERE p.slug = :slugProduct\n")
+          "\tWHERE p.slug = :slugProduct AND p.isDeleted = false\n")
   Optional<List<SizeResponseDTO>> findAllSizesProductBySlugProduct(@Param("slugProduct") String slug);
 
   @Query(value = "SELECT DISTINCT new com.lizi.customer.dto.response.SizeResponseDTO(p_o.size) FROM Product p \n" +
@@ -146,7 +146,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
           "\tON p_o.productColor.id = p_c.id\n"+
           "\tINNER JOIN Color c\n" +
           "\tON p_c.color.id = c.id\n" +
-          "\tWHERE p.slug = :slugProduct AND c.slug = :slugColor\n")
+          "\tWHERE p.slug = :slugProduct AND c.slug = :slugColor AND p.isDeleted = false\n")
   Optional<List<SizeResponseDTO>>findAllSizesProductBySlugProductAndSlugColor(@Param("slugProduct") String slugProduct,
                                                                               @Param("slugColor") String slugColor);
 

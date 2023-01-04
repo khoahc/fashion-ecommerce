@@ -1,5 +1,6 @@
 package com.lizi.admin.controller;
 
+import com.lizi.admin.dto.product.OptionSizeUpdateReqDto;
 import com.lizi.admin.dto.product.ProductOptionReqDto;
 import com.lizi.admin.service.ProductOptionService;
 import com.lizi.admin.util.Constant;
@@ -66,6 +67,21 @@ public class ProductOptionController {
   public ResponseEntity<ResponseObject> deleteProductOption(
       @PathVariable(name = "optionId") Long optionId) {
     productOptionService.deleteProductOption(optionId);
+    return ResponseEntity.ok().body(
+        ResponseObject.builder().status(HttpStatus.OK).message(Constant.SUCCESS).build());
+  }
+
+  @PutMapping(value = "/options/{id}/size")
+  public ResponseEntity<ResponseObject> updateSize(@PathVariable(name = "id") Long id,
+      @RequestBody OptionSizeUpdateReqDto dto) {
+    productOptionService.updateQuantity(id, dto);
+    return ResponseEntity.ok().body(
+        ResponseObject.builder().status(HttpStatus.OK).message(Constant.SUCCESS).build());
+  }
+
+  @DeleteMapping(value = "/options/{id}/size")
+  public ResponseEntity<ResponseObject> deteleSize(@PathVariable(name = "id") Long id) {
+    productOptionService.deleteSize(id);
     return ResponseEntity.ok().body(
         ResponseObject.builder().status(HttpStatus.OK).message(Constant.SUCCESS).build());
   }
