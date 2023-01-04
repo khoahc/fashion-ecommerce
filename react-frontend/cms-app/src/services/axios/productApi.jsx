@@ -32,12 +32,24 @@ const productApi = {
 
     disableProduct: async (id) => {
         const url = `/api/v1/products/${id}/disable`;
-        return await axiosClientMultipart.put(url);
+        return await axiosClient.put(url);
     },
 
     enableProduct: async (id) => {
         const url = `/api/v1/products/${id}/enable`;
-        return await axiosClientMultipart.put(url);
+        return await axiosClient.put(url);
+    },
+
+    // product options
+
+    updateQuantitySizeOption: async (id, requestOption) => {
+        const url = `/api/v1/products/options/${id}/size`;
+        return await axiosClient.put(url, requestOption);
+    },
+
+    removeSizeInOption: async (id) => {
+        const url = `/api/v1/products/options/${id}/size`;
+        return await axiosClient.delete(url);
     },
 };
 

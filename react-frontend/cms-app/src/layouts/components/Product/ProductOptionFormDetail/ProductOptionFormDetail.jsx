@@ -8,7 +8,7 @@ import {
 } from "../../../../redux/product/productForm/productFormSlice";
 import ColorSelect from "../ColorSelect/ColorSelect";
 import ColorSelectDetail from "../ColorSelectDetail";
-import SizeRow from "../SizeRow/SizeRow";
+import SizeRowDetail from "../SizeRowDetail";
 
 const ProductOptionFormDetail = ({ imageOptions, setImageOptions }) => {
   const { options } = useSelector((state) => state.productForm.form);
@@ -48,6 +48,9 @@ const ProductOptionFormDetail = ({ imageOptions, setImageOptions }) => {
   };
 
   const removeImage = (index, indexImage) => {};
+  const doRemoveImage = (index, i) => {
+
+  }
 
   return (
     <div className="roductOptionForm">
@@ -60,6 +63,7 @@ const ProductOptionFormDetail = ({ imageOptions, setImageOptions }) => {
             handleRemoveOptionClick={handleRemoveOptionClick}
             handleSetMainImage={handleSetMainImage}
             addImage={addImage}
+            doRemoveImage={doRemoveImage}
           />
         ))}
       </div>
@@ -83,6 +87,7 @@ const ProductOptionRow = ({
   handleRemoveOptionClick,
   handleSetMainImage,
   addImage,
+  doRemoveImage,
 }) => {
   const dispatch = useDispatch();
 
@@ -157,9 +162,10 @@ const ProductOptionRow = ({
           </div>
           <div className="row-span-1 grid grid-cols-1 mb-4">
             {option.sizes.map((s, i) => (
-              <SizeRow
+              <SizeRowDetail
                 optionIndex={index}
                 index={i}
+                idSize={s.id}
                 handleAddSizeClick={handleAddSizeClick}
                 handleRemoveSizeClick={handleRemoveSizeClick}
               />
@@ -205,15 +211,27 @@ const ProductOptionRow = ({
             <div className="field">
               <label className="label min-w-fit mr-4">Ảnh bổ sung: </label>
               <div className="field-body">
-                <div className="row-span-1 grid grid-cols-4">
+                <div className="flex flex-wrap items-center">
                   {option.images &&
-                    option.images.map((img) => (
-                      <img
-                        style={{ maxHeight: "15rem" }}
-                        src={img}
-                        alt=""
-                        className="mb-4"
-                      />
+                    option.images.map((img, i) => (
+                      <div className="relative inline-block mr-12 mb-12">
+                        <img
+                          style={{ maxHeight: "15rem" }}
+                          src={img}
+                          alt=""
+                          className="mb-4"
+                        />
+                        <button
+                          type="button"
+                          className="absolute top-0 right-0 rounded-full hover:text-orange-600"
+                          title="Xóa ảnh"
+                          onClick={(e) => doRemoveImage(index, i)}
+                        >
+                          <span class="icon">
+                            <i className="mdi mdi-close-circle text-lg"></i>
+                          </span>
+                        </button>
+                      </div>
                     ))}
                   {/* {previewImages.map((img) => (
                     <img

@@ -10,6 +10,7 @@ export const ADMIN = {
         '/delivery',
         // '/review',
         '/user',
+        '/',
     ],
 };
 
@@ -20,6 +21,7 @@ export const SALES_PERSON = {
         // '/customer', 
         '/order',
         '/statis',
+        '/',
     ],
 };
 
