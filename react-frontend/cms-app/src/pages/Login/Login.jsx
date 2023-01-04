@@ -5,8 +5,10 @@ import { userLogin } from "../../redux/user/userAction";
 import notify from "../../utils/notify";
 
 const Login = ({ setToken }) => {
-  const { loading, userToken, error, success } = useSelector((state) => state.user)
-  const dispatch = useDispatch()
+  const { loading, userToken, error, success } = useSelector(
+    (state) => state.user
+  );
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -18,20 +20,26 @@ const Login = ({ setToken }) => {
   useEffect(() => {
     if (userToken) {
       console.log("navigateS");
-      navigate('/')
+      navigate("/");
     }
-  }, [navigate, userToken])
+  }, [navigate, userToken]);
 
   useEffect(() => {
     if (error) {
       console.log(error);
-      notify(0, 'Email hoặc mật khẩu không đúng');
+      notify(0, "Email hoặc mật khẩu không đúng");
     }
   }, [error]);
 
+  useEffect(() => {
+    if (success) {
+      notify(1, "Đăng nhập thành công");
+    }
+  }, [success])
+
   const handleLogin = async (e) => {
     e.preventDefault();
-    dispatch(userLogin({email, password}));
+    dispatch(userLogin({ email, password }));
 
     // loginWithEmail({
     //   email: email,
@@ -57,8 +65,11 @@ const Login = ({ setToken }) => {
   };
 
   return (
-    <section class="login-page section main-section flex justify-center items-center h-screen">
-      <div class="card max-w-lg w-full">
+    <section
+      class="login-page section main-section flex justify-center items-center h-screen"
+      style={{ backgroundImage: "url(/static/img/bg13.jpg)" }}
+    >
+      <div class="card max-w-lg w-full rounded-2xl">
         <header class="card-header">
           <p class="card-header-title">
             <span class="icon">
@@ -110,6 +121,11 @@ const Login = ({ setToken }) => {
               <div class="control">
                 <button type="submit" class="button blue">
                   Đăng nhập
+                  {loading && (
+                    <span class="icon ml-2">
+                      <i className="mdi mdi-spin mdi-loading mdi-24px"></i>
+                    </span>
+                  )}
                 </button>
               </div>
             </div>

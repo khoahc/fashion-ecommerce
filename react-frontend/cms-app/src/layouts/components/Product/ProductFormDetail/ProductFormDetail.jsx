@@ -19,7 +19,7 @@ const { getAllLevel3Categories } = categoryApi;
 const ProductFormDetail = () => {
   const { form } = useSelector((state) => state.productForm);
   const dispatch = useDispatch();
-  
+
   const navigate = useNavigate();
   const [listLevel3Category, setListLevel3Category] = useState([]);
   const [imageOptions, setImageOptions] = useState([
@@ -199,6 +199,17 @@ const ProductFormDetail = () => {
                     </div>
                   </div>
                 </div>
+                <hr />
+                <div className="field grouped mt-10">
+                  <div className="control">
+                    <button type="submit" className="button green">
+                      Lưu
+                    </button>
+                  </div>
+                  <div className="control">
+                    <BackButton text={"Hủy"} />
+                  </div>
+                </div>
               </div>
               <div
                 class="tab-pane fade"
@@ -213,19 +224,6 @@ const ProductFormDetail = () => {
                   />
                 </div>
               </div>
-            </div>
-          </div>
-
-          <hr />
-
-          <div className="field grouped mt-10">
-            <div className="control">
-              <button type="submit" className="button green">
-                Lưu
-              </button>
-            </div>
-            <div className="control">
-              <BackButton text={"Hủy"} />
             </div>
           </div>
         </div>
