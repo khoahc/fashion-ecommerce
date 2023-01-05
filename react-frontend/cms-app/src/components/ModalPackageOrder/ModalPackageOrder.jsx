@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { ToastContainer } from "react-toastify";
 import { addOrderTrackPackageByOrderId } from "../../services/axios/orderApi";
 import notify from "../../utils/notify";
 
 const ModalPackageOrder = (props) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleConfirm = () => {
+    setIsLoading(true);
     addOrderTrackPackageByOrderId({
       orderId: props.orderId,
     })
@@ -24,6 +27,9 @@ const ModalPackageOrder = (props) => {
         props.setShowModalShippingOrder(false);
         notify(0, "Xác nhận thất bại!");
         console.log(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
   const handleClickClose = () => {
@@ -62,7 +68,13 @@ const ModalPackageOrder = (props) => {
                   type="button"
                   onClick={handleConfirm}
                 >
-                  Xác nhận
+                  {isLoading ? (
+                    <span className="icon">
+                      <i className="mdi mdi-spin mdi-loading mdi-24px"></i>
+                    </span>
+                  ) : (
+                    "Xác nhận"
+                  )}
                 </button>
                 <button
                   className="hover:bg-red-700 hover:text-white  text-red-700 font-bold rounded-xl border-2 border-[#999] uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1"

@@ -1,10 +1,14 @@
 import React from "react";
+import { useState } from "react";
 import { ToastContainer } from "react-toastify";
 import { addOrderTrackVerifiedByOrderId } from "../../services/axios/orderApi";
 import notify from "../../utils/notify";
 
 const ModalVerifiedOrder = (props) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleConfirm = () => {
+    setIsLoading(true);
     addOrderTrackVerifiedByOrderId({
       orderId: props.orderId,
     })
@@ -24,6 +28,9 @@ const ModalVerifiedOrder = (props) => {
         props.setShowModalConfirmOrder(false);
         notify(0, "Xác nhận thất bại!");
         console.log(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
   const handleClickClose = () => {
@@ -60,7 +67,13 @@ const ModalVerifiedOrder = (props) => {
                   type="button"
                   onClick={handleConfirm}
                 >
-                  Xác nhận
+                  {isLoading ? (
+                    <span className="icon">
+                      <i className="mdi mdi-spin mdi-loading mdi-24px"></i>
+                    </span>
+                  ) : (
+                    "Xác nhận"
+                  )}
                 </button>
                 <button
                   className="hover:bg-red-700 hover:text-white  text-red-700 font-bold rounded-xl border-2 border-[#999] uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1"

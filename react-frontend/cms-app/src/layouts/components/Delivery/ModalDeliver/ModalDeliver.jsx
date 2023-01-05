@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { ToastContainer } from 'react-toastify';
 import { deliverOder } from '../../../../services/axios/deliveryAPI';
 import notify from '../../../../utils/notify';
 
 const ModalDeliver = (props) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleConfirm = () => {
+    setIsLoading(true);
     deliverOder(props.orderId).then(resp => {
       if (resp.status === 'OK') {
         props.setShowModal(false);
@@ -16,7 +19,9 @@ const ModalDeliver = (props) => {
     }).catch(error => {
       props.setShowModal(false);
       notify(0, "Thất bại");
-    })
+    }).finally(() => {
+      setIsLoading(false);
+    });
   };
   const handleClickClose = () => {
     props.setShowModal(false);
@@ -52,7 +57,13 @@ const ModalDeliver = (props) => {
                   type="button"
                   onClick={handleConfirm}
                 >
-                  Xác nhận
+                  {isLoading ? (
+                    <span className="icon">
+                      <i className="mdi mdi-spin mdi-loading mdi-24px"></i>
+                    </span>
+                  ) : (
+                    "Xác nhận"
+                  )}
                 </button>
                 <button
                   className="hover:bg-red-700 hover:text-white  text-red-700 font-bold rounded-xl border-2 border-[#999] uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1"
