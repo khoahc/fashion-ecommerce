@@ -144,8 +144,8 @@ public class DeliveryServiceImpl implements DeliveryService {
             "      <td style=\"font-family:Helvetica,Arial,sans-serif;font-size:19px;line-height:1.315789474;max-width:560px\">\n" +
             "        \n" +
             "            <p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\">Xin chào [[name]],</p>" +
-            "            <p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\">Đơn hàng của quý khách có mã <span style=\"font-weight: bold;\">[[orderId]]</span></p> đã được giao thành công.</p> " +
-            "            <p>Cảm quý khách</p>" +
+            "            <p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\">Đơn hàng của quý khách có mã <span style=\"font-weight: bold;\">[[orderId]]</span> đã được giao thành công.</p>" +
+            "            <p>Cảm quý khách.</p>" +
             "        \n" +
             "      </td>\n" +
             "      <td width=\"10\" valign=\"middle\"><br></td>\n" +
